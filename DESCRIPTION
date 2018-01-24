@@ -1,11 +1,23 @@
 Package: AfterSl1p
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
+Title: Generate Summary Graphics and Basic Analysis of 16s Data
+Version: 0.0.0.9000
+Author: J. C. Szamosi and Shahrokh Shekarriz
+Authors@R: c(person("JC", "Szamosi", email = "szamosjc@mcmaster.ca",
+                  role = c('aut','cre')), 
+           person('Shahrokh', 'Shekarriz', 
+                  email = 'shekas3@mcmaster.ca',
+                  role = c('aut','cre')))
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>=3.3.1)
+Imports:
+    dplyr (>= 0.7.2),
+    ggplot2 (>=2.2.1),
+    phyloseq (>=1.19.1)
+    
