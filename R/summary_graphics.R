@@ -103,16 +103,17 @@ prop_tax_down = function(physeq){
 #### Create the data frame for plotting ----------------------------------------
 
 ##### make_phy_df --------------------------------------------------------------
+
 #' Generate a Data Frame for Taxon Bar Charts
 #'
 #' \code{make_phy_df} generates a data frame that is useful for generating taxon
 #' bar charts.
 #'
-#' @section Description: This function takes a phyloseq object and generates a
+#' @section Details: This function takes a phyloseq object and generates a
 #'   data frame that is useful for plotting taxon abundance information. By
 #'   default it propagates taxon assignment information down the tree into
-#'   unassigned leves, and aggregates all taxa below 0.1% into a single 'Other'
-#'   category. It is most sensible to use this function with a relative
+#'   unassigned leves, and aggregates all taxa below 0.1 percent into a single
+#'   'Other' category. It is most sensible to use this function with a relative
 #'   abundance object, but if you know what you're doing and are careful about
 #'   the cutoff parameter, you can use it on normalized or raw counts.
 #'
@@ -121,7 +122,7 @@ prop_tax_down = function(physeq){
 #'   'Order', 'Class', 'Phylum'. TODO: make it possible to do this OTU-wise.
 #' @param cutoff The abundance cutoff below which taxa are grouped into 'Other'.
 #'   If you don't want anything grouped into 'Other', set this to 0.
-taxa_other_df = function(physeq, rank = 'Genus', cutoff = 0.001){
+make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001){
 
 	# Propogate taxonomic assignments down the tree
     physeq = prop_tax_down(physeq)

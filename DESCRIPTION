@@ -15,9 +15,9 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Depends:
-    R (>=3.3.1)
+    R (>= 3.3.1)
 Imports:
     dplyr (>= 0.7.2),
-    ggplot2 (>=2.2.1),
-    phyloseq (>=1.19.1)
-    
+    ggplot2 (>= 2.2.1),
+    phyloseq (>= 1.19.1)
+RoxygenNote: 6.0.1
