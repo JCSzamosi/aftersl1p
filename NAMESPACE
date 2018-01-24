@@ -1,2 +1,4 @@
 exportPattern("^[[:alpha:]]+")
-@import magrittr
+@import dplyr
+@import ggplot2
+@import phyloseq
