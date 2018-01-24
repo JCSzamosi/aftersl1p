@@ -25,3 +25,8 @@ fields.
   by ggplot and other functions.
 }
 
+\section{Value}{
+ A phyloseq object whose \code{tax_table} has had NAs replaced
+  with the higher level taxon assignments.
+}
+

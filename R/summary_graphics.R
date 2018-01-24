@@ -6,19 +6,22 @@
 #### Deal with taxa ------------------------------------------------------------
 
 ##### prop_tax_row -------------------------------------------------------------
+
 #' Propagate taxon information in a single row of a \code{tax_table} object.
 #'
 #' \code{prop_tax_row} Takes the taxon assignment from the lowest assigned level
 #' in an OTU's assignment and fills it in to all the lower, unresolved fields.
 #'
-#' @section Details:
-#' Often taxon cannot be assigned all the way down to genus from the limited
-#' information available from a given variable region of 16S (or other marker
-#' gene). If an OTU has been assigned to Order Enterobacteriales, but the Family
-#' and genus cannot be resolved, then the Family and Genus fields are left
-#' blank by QIIME. This function fills those fields with the string
-#' 'o_Enterobacteriales', so they are not parsed as NAs by ggplot and other
-#' functions.
+#' @section Details: Often taxon cannot be assigned all the way down to genus
+#'   from the limited information available from a given variable region of 16S
+#'   (or other marker gene). If an OTU has been assigned to Order
+#'   Enterobacteriales, but the Family and genus cannot be resolved, then the
+#'   Family and Genus fields are left blank by QIIME. This function fills those
+#'   fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
+#'   by ggplot and other functions.
+#'
+#' @section Value: A single row \code{tax_table} object to with NAs replaced
+#'   with higher-level taxon assignments
 #'
 #' @param taxrow A single row in a taxon table
 #'
@@ -50,20 +53,22 @@ prop_tax_row = function(taxrow){
 }
 
 ##### prop_tax_tab -------------------------------------------------------------
+
 #' Propagate taxon information down an entire \code{tax_table} object
 #'
-#' \code{prop_tax_tab} Takes the taxon assignment from the lowest assigned
-#' level in an OTU's assignment and fills it in to all the lower, unresolved
-#' fields.
+#' \code{prop_tax_tab} Takes the taxon assignment from the lowest assigned level
+#' in an OTU's assignment and fills it in to all the lower, unresolved fields.
 #'
-#' @section Details:
-#' Often taxon cannot be assigned all the way down to genus from the limited
-#' information available from a given variable region of 16S (or other marker
-#' gene). If an OTU has been assigned to Order Enterobacteriales, but the Family
-#' and genus cannot be resolved, then the Family and Genus fields are left
-#' blank by QIIME. This function fills those fields with the string
-#' 'o_Enterobacteriales', so they are not parsed as NAs by ggplot and other
-#' functions.
+#' @section Details: Often taxon cannot be assigned all the way down to genus
+#'   from the limited information available from a given variable region of 16S
+#'   (or other marker gene). If an OTU has been assigned to Order
+#'   Enterobacteriales, but the Family and genus cannot be resolved, then the
+#'   Family and Genus fields are left blank by QIIME. This function fills those
+#'   fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
+#'   by ggplot and other functions.
+#'
+#' @section Value: A \code{tax_table} object with NAs replaced with higher-level
+#'   taxon assignment
 #'
 #' @param taxtab a \code{tax_table} object
 #'
@@ -78,6 +83,8 @@ prop_tax_tab = function(taxtab){
 
     return(taxtab)
 }
+
+##### prop_tax_down ------------------------------------------------------------
 
 #' Propagate taxon information down an entire \code{tax_table} in a phylose
 #' object
@@ -94,6 +101,9 @@ prop_tax_tab = function(taxtab){
 #'   fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
 #'   by ggplot and other functions.
 #'
+#' @section Value: A phyloseq object whose \code{tax_table} has had NAs replaced
+#'   with the higher level taxon assignments.
+#'
 #' @param physeq a phyloseq object with a filled \code{tax_table} slot.
 prop_tax_down = function(physeq){
     tax_tab(physeq) = prop_tax_tab(tax_tab(physeq))
@@ -109,13 +119,17 @@ prop_tax_down = function(physeq){
 #' \code{make_phy_df} generates a data frame that is useful for generating taxon
 #' bar charts.
 #'
-#' @section Details: This function takes a phyloseq object and generates a
-#'   data frame that is useful for plotting taxon abundance information. By
-#'   default it propagates taxon assignment information down the tree into
-#'   unassigned leves, and aggregates all taxa below 0.1 percent into a single
-#'   'Other' category. It is most sensible to use this function with a relative
+#' @section Details: This function takes a phyloseq object and generates a data
+#'   frame that is useful for plotting taxon abundance information. By default
+#'   it propagates taxon assignment information down the tree into unassigned
+#'   leves, and aggregates all taxa below 0.1 percent into a single 'Other'
+#'   category. It is most sensible to use this function with a relative
 #'   abundance object, but if you know what you're doing and are careful about
 #'   the cutoff parameter, you can use it on normalized or raw counts.
+#'
+#' @section Value: A data frame similar in structure to that generated by
+#'   \code{psmelt}, but with an 'Other' category added and taxon levels ordered
+#'   for use in plotting.
 #'
 #' @param physeq A phyloseq object.
 #' @param rank The rank at which to glom taxa. Must be one of 'Genus', 'Family',
@@ -181,6 +195,16 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001){
 #'
 #' \code{plot_tax_bar} creates a taxa bar chart from the data frame generated by
 #' \code{make_phy_df()}.
+#'
+#' @section Details:
+#'   This function generates a ggplot object that is a
+#'   first-pass, reasonable attempt at a taxon bar chart. The taxa are ordered
+#'   by mean abundance and the 'Other' category is at the top. Because it's a
+#'   regular ggplot object, you can add more geoms or facet it or manipulate it
+#'   however you like using ggplot functions.
+#'
+#' @section Value:
+#'   A ggplot object.
 #'
 #' @param tax_df The data frame used for plotting. Unless you really know what
 #'   you're doing, use the data frame output by \code{make_phy_df()}.

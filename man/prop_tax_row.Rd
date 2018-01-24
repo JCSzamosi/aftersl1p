@@ -14,14 +14,18 @@ prop_tax_row(taxrow)
 in an OTU's assignment and fills it in to all the lower, unresolved fields.
 }
 \section{Details}{
+ Often taxon cannot be assigned all the way down to genus
+  from the limited information available from a given variable region of 16S
+  (or other marker gene). If an OTU has been assigned to Order
+  Enterobacteriales, but the Family and genus cannot be resolved, then the
+  Family and Genus fields are left blank by QIIME. This function fills those
+  fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
+  by ggplot and other functions.
+}
 
-Often taxon cannot be assigned all the way down to genus from the limited
-information available from a given variable region of 16S (or other marker
-gene). If an OTU has been assigned to Order Enterobacteriales, but the Family
-and genus cannot be resolved, then the Family and Genus fields are left
-blank by QIIME. This function fills those fields with the string
-'o_Enterobacteriales', so they are not parsed as NAs by ggplot and other
-functions.
+\section{Value}{
+ A single row \code{tax_table} object to with NAs replaced
+  with higher-level taxon assignments
 }
 
 \keyword{internal}
