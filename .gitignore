@@ -4,3 +4,4 @@
 .Ruserdata
 *.swp
 *.swo
+test_data/*
