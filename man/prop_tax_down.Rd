@@ -5,10 +5,14 @@
 \title{Propagate taxon information down an entire \code{tax_table} in a phylose
 object}
 \usage{
-prop_tax_down(physeq)
+prop_tax_down(physeq, dada2)
 }
 \arguments{
 \item{physeq}{a phyloseq object with a filled \code{tax_table} slot.}
+
+\item{dada2}{a flag to indicate whether the data tables were generated in
+dada2 or not. If not, it's assumed they were generated in QIIME 1. Just
+gets passed to \code{prop_tax_tab()}.}
 }
 \description{
 \code{prop_tax_down} Takes the taxon assignment from the lowest assigned

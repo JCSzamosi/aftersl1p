@@ -19,5 +19,6 @@ Depends:
 Imports:
     dplyr (>= 0.7.2),
     ggplot2 (>= 2.2.1),
-    phyloseq (>= 1.19.1)
+    phyloseq (>= 1.19.1),
+    rlang (>= 0.1.2)
 RoxygenNote: 6.0.1
