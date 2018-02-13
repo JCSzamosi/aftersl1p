@@ -1,4 +1,6 @@
+################################################################################
 ### Imports
+################################################################################
 
 #' @import dplyr
 #' @import ggplot2
@@ -6,29 +8,21 @@
 #' @import rlang
 NULL
 
+################################################################################
 ### Objects
+################################################################################
+
 cols_21 = c("#4f8579","#783fcc","#69d24d","#cb4bbd","#c6dc46","#542871",
             "#78d792","#cc4472","#83d7d0","#d44d33","#676fcd","#ceb854",
             "#403d57","#b97839","#84a4cb","#588038","#c68ac4","#48472a",
             "#c9c39c","#6e2b34","#c78889")
+
 ################################################################################
-### Functions to generate summarizing graphics
+### Functions to generate exploratory graphics
 ################################################################################
 
 ### Deal with data -------------------------------------------------------------
 #### Deal with taxa ------------------------------------------------------------
-
-##### remain -------------------------------------------------------------------
-
-#' Calculate the remainder for the 'Other' section of a phyloseq data frame.
-#'
-#' @section Value: a numeric vector
-#'
-#' @param x A numeric vector
-#' @param tot The desired total. Default is 1.
-remain = function(x, tot = 1){
-    tot-sum(x)
-}
 
 ##### prop_tax_row -------------------------------------------------------------
 
@@ -147,6 +141,18 @@ prop_tax_down = function(physeq, dada2){
 }
 
 #### Create the data frame for plotting ----------------------------------------
+
+##### remain -------------------------------------------------------------------
+
+#' Calculate the remainder for the 'Other' section of a phyloseq data frame.
+#'
+#' @section Value: a numeric vector
+#'
+#' @param x A numeric vector
+#' @param tot The desired total. Default is 1.
+remain = function(x, tot = 1){
+    tot-sum(x)
+}
 
 ##### make_phy_df --------------------------------------------------------------
 
@@ -341,7 +347,7 @@ plot_read_depth = function(physeq){
     return(depth_plot)
 }
 
-#### plot_abundance_violing ----------------------------------------------------
+#### plot_abundance_violin -----------------------------------------------------
 
 #' Make violin plots of taxon abundance
 #'
@@ -387,4 +393,16 @@ plot_taxon_violin = function(phy_df, f1 = NULL, f2 = NULL, col_by = NULL,
     plt = plt + scale_y_log10()
 
     return(plt)
+}
+
+
+#### plot_alpha ----------------------------------------------------------------
+
+#' Plot alpha diversity
+#'
+#' Plot the alpha diversity of a phyloseq data set.
+#'
+plot_alpha = function(physeq) {
+    # rarefy
+
 }
