@@ -1,4 +1,3 @@
-
 ### Imports
 
 #' @import dplyr
@@ -7,6 +6,11 @@
 #' @import rlang
 NULL
 
+### Objects
+cols_21 = c("#4f8579","#783fcc","#69d24d","#cb4bbd","#c6dc46","#542871",
+            "#78d792","#cc4472","#83d7d0","#d44d33","#676fcd","#ceb854",
+            "#403d57","#b97839","#84a4cb","#588038","#c68ac4","#48472a",
+            "#c9c39c","#6e2b34","#c78889")
 ################################################################################
 ### Functions to generate summarizing graphics
 ################################################################################
@@ -294,10 +298,7 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 
 	# Pick colours
 	if (is.null(colours)){
-		colours = c('grey69',"#4f8579","#783fcc","#69d24d","#cb4bbd","#c6dc46",
-					"#542871","#78d792","#cc4472","#83d7d0","#d44d33","#676fcd",
-					"#ceb854","#403d57","#b97839","#84a4cb","#588038","#c68ac4",
-					"#48472a","#c9c39c","#6e2b34","#c78889")
+		colours = c('grey69',cols_21)
 	} else {
 		colours = c('grey69',colours)
 	}
@@ -338,4 +339,52 @@ plot_read_depth = function(physeq){
         ylab('Number of samples') +
         ggtitle('Distribution of read depths')
     return(depth_plot)
+}
+
+#### plot_abundance_violing ----------------------------------------------------
+
+#' Make violin plots of taxon abundance
+#'
+#' @param phy_df A data frame constructed from a phyloseq object, as with
+#'   \code{psmelt()} (or \code{make_phy_df()})
+#' @param f1,f2 Two columns to facet by. If both are used, the first will be
+#'   rows and the second will be columns.
+#' @param col_by A column to colour points by. If this column has more than 21
+#'   unique values, you must provide your own list of colours with the
+#'   \code{colours} parameter.
+#' @param colours An optional vector of colours to use when colouring the
+#'   points.
+plot_taxon_violin = function(phy_df, f1 = NULL, f2 = NULL, col_by = NULL,
+                             colours = NULL){
+    plt = ggplot(phy_df, aes(x = extraction, y = Abundance))
+    if (!is.null(col_by)){
+        if (is.null(colours)){
+            colours = cols_21
+        }
+        plt = plt + geom_point(aes_string(colour = col_by),
+                               alpha = 0.3,
+                               position = position_jitter(width = 0.3)) +
+            scale_colour_manual(values = colours)
+    } else {
+        plt = plt + geom_point(alpha = 0.3,
+                               position = position_jitter(width = 0.3),
+                               colour = 'goldenrod')
+    }
+    plt = plt + geom_violin(fill = NA)
+
+    if (!is.null(f1)){
+        if (!is.null(f2)){
+            form = formula(paste(f1, '~', f2))
+            plt = plt + facet_grid(form)
+        } else {
+            form = formula(paste('~', f1))
+            plt = plt + facet_wrap(form)
+        }
+    } else if (!is.null(f2)){
+        form = formula(paste('~', f2))
+        plt = plt + facet_wrap(form)
+    }
+    plt = plt + scale_y_log10()
+
+    return(plt)
 }
