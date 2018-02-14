@@ -53,6 +53,7 @@ prop_tax_row = function(taxrow,dada2){
 	ranks = colnames(taxrow)
 
 	hasNA = FALSE
+	tax = NA
 	for (i in 1:length(ranks)){
 
 	    if (!is.na(taxrow[,ranks[i]])){
@@ -66,10 +67,12 @@ prop_tax_row = function(taxrow,dada2){
 	if (!hasNA){
 		return (taxrow)
 	} else {
-		init = tolower(substring(ranks[i-1],1,1))
-		if (dada2){
+	    if (is.na(tax)){
+	        assn = 'Unassigned'
+	    } else if (dada2){
 		    assn = tax
 		} else {
+		    init = tolower(substring(ranks[i-1],1,1))
 		    assn = paste(init,tax,sep = '_')
 		}
 		taxrow[,ranks[i:length(ranks)]] = assn
