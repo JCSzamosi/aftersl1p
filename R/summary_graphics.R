@@ -154,6 +154,39 @@ remain = function(x, tot = 1){
     tot-sum(x)
 }
 
+
+##### order_taxa ---------------------------------------------------------------
+
+#' Order Taxon Name Factors
+#'
+#' \code{order_taxa} reorders the taxon names in a taxon column (e.g. 'Class' or
+#' 'Phylum') by the taxon's mean abundance (but always makes sure to put Other
+#' first).
+#'
+#' @section Value: A data frame that is identical to the one given, but with the
+#'   specified column re-ordered by its mean abundance
+#'
+#' @param phy_df A data frame of a phyloseq object, as produced by
+#'   \code{psmelt()} or \code{make_phy_df()}.
+#' @param rank The name of the column to be re-ordered
+#' @param abund The name of the abundances column. Defaults to 'Abundance'
+order_taxa = function(phy_df, rank, abund = 'Abundance'){
+
+    phy_df[,rank] = factor(phy_df[,rank])
+	phy_df %>%
+        filter(UQ(sym(rank)) != 'Other') %>%
+		group_by(UQ(sym(rank))) %>%
+		summarize(Mean = mean(UQ(sym(abund)))) %>%
+		data.frame() -> mean_abunds
+
+	lev_ord = levels(droplevels(mean_abunds[,rank]))
+	lev_ord = lev_ord[order(mean_abunds$Mean)]
+
+	phy_df[,rank] = factor(phy_df[,rank], levels = c('Other',lev_ord))
+
+    return(phy_df)
+}
+
 ##### make_phy_df --------------------------------------------------------------
 
 #' Generate a Data Frame for Taxon Bar Charts
@@ -211,18 +244,6 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, dada2 = FALSE){
 		psmelt() %>%
 		data.frame() -> abunds
 
-	# Order the rank by mean abundance
-
-	abunds %>%
-		group_by(UQ(sym(rank))) %>%
-		summarize(Mean = mean(Abundance)) %>%
-		data.frame() -> mean_abunds
-
-	lev_ord = levels(mean_abunds[,rank])
-	lev_ord = lev_ord[order(mean_abunds$Mean)]
-
-	abunds[,rank] = factor(abunds[,rank], levels = lev_ord)
-
 	# List all the metadata columns so that they are included in the data frame
 	metacols = names(abunds)[4:(match(ranks[1],names(abunds))-1)]
 	# Make an 'Other' row for each sample
@@ -240,7 +261,11 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, dada2 = FALSE){
 	newdf[,taxcols] = abunds[,taxcols]
 	newdf = rbind(as.data.frame(others),
 				as.data.frame(newdf))
-	newdf[,rank] = factor(newdf[,rank], levels = c('Other',lev_ord))
+
+	# Order the tax cols by mean abundance
+	for (r in taxcols){
+	    newdf = order_taxa(newdf, r)
+	}
 
 	return(newdf)
 
