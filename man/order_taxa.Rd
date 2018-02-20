@@ -4,7 +4,7 @@
 \alias{order_taxa}
 \title{Order Taxon Name Factors}
 \usage{
-order_taxa(phy_df, rank, abund = "Abundance")
+order_taxa(phy_df, rank, abund = "Abundance", decreasing = FALSE)
 }
 \arguments{
 \item{phy_df}{A data frame of a phyloseq object, as produced by
@@ -13,6 +13,9 @@ order_taxa(phy_df, rank, abund = "Abundance")
 \item{rank}{The name of the column to be re-ordered}
 
 \item{abund}{The name of the abundances column. Defaults to 'Abundance'}
+
+\item{decreasing}{Specifies whether the taxon order should be based on
+decreasing or increasing abundance. Defaults to FALSE.}
 }
 \description{
 \code{order_taxa} reorders the taxon names in a taxon column (e.g. 'Class' or
