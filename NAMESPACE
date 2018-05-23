@@ -3,4 +3,6 @@
 import(dplyr)
 import(ggplot2)
 import(phyloseq)
+import(pipeR)
 import(rlang)
+import(tidyr)

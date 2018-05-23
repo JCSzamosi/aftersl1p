@@ -3,9 +3,11 @@
 ################################################################################
 
 #' @import dplyr
+#' @import tidyr
 #' @import ggplot2
 #' @import phyloseq
 #' @import rlang
+#' @import pipeR
 NULL
 
 ################################################################################
@@ -56,7 +58,7 @@ cols_70 = c("#00cf9b","#fc00bf","#52e62c","#a000b2","#9fff37","#5066ff",
 			   "#ffae8e","#472700","#ffb4b6","#807100")
 
 ################################################################################
-### Functions to generate exploratory graphics
+### Functions to generate taxa bar charts
 ################################################################################
 
 ### Deal with data -------------------------------------------------------------
@@ -693,4 +695,138 @@ plot_rank_ab = function(){
 plot_alpha = function(physeq) {
     # rarefy
 
+}
+
+
+################################################################################
+### Functions to generate distance bar charts
+################################################################################
+
+#### lddf_check ----------------------------------------------------------------
+
+#' Check the inputs of \code{long_distance_df()}
+#'
+#' For internal use only
+lddf_check = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
+                            suff = c('1','2')){
+
+    # Check inputs
+    if (!is.logical(diag)){
+        stop('diag must be either TRUE or FALSE')
+    }
+
+    if ((length(suff) != 2) | (suff[1] == suff[2]) | (!is.character(suff))){
+        stop('suff must be a vector of two non-identical strings')
+    }
+
+    if (!(idcol %in% colnames(metadat))){
+        stop('idcol must be one of the column names of metadat')
+    }
+
+    # Check sample names
+
+    ## If it's a proper distance matrix, it will have a "Labels" attribute
+    if (!is.null(attr(dmat,'Labels'))){
+        d_samps = attr(dmat, 'Labels')
+    } else if (!is.null(colnames(dmat))){
+        if (any(colnames(dmat) != rownames(dmat))){
+            stop(paste('The row and column names of dmat must be the same,',
+                        'and in the same order.'))
+        } else {
+            d_samps = colnames(dmat)
+        }
+    }
+
+    if (!all(d_samps %in% as.character(metadat[,idcol]))){
+        stop('Some samples missing from metadata')
+    } else if (!all(as.character(metadat[,idcol]) %in% d_samps)){
+        warning(paste('Metadata samples that are not in the distance matrix',
+                        'will be excluded.'))
+    }
+}
+
+#### long_distance_df ----------------------------------------------------------
+
+#' Create a long data frame of among-sample distances
+#'
+#'
+#' \code{long_distance_df()} creates a long data frame of all the pairwise
+#' distances from a sample distance matrix (e.g. the output of
+#' \code{phyloseq::distance()}) with all the metadata listed for each sample.
+#' Allows for easy within- and among-group boxplots, or whatever other
+#' comparisons are of interest.
+#'
+#' @section Value: A data frame \eqn{N(N-1)} (or \eqn{N^2} if \code{diag = TRUE}
+#'   is set) rows (where N is the number of samples) with sample IDs, metadata,
+#'   and pairwise distances listed for each pair of samples. Sample ID and
+#'   metadata columns have '1' or '2' appended to them so the user can tell
+#'   which column belongs to which sample.
+#' @param dmat A distance matrix or other diagonal matrix object with sample
+#'   names as row and column names.
+#' @param metadat A data frame or data frame-like object with the data set's
+#'   metadata
+#' @param idcol (\code{'X.SampleID'}.) A string. The column in \code{metadat}
+#'   that holds the sample names. Sample names should match the row/column namse
+#'   of the distance matrix. If there are samples in the metadata data frame
+#'   that are missing from the distance matrix, they will be excluded with a
+#'   warning. If there are samples in the distance matrix that are missing from
+#'   the metadata, you will get an error.
+#' @param diag (\code{FALSE}.) Logical. Whether the diagonal elements (zeros in
+#'   a distance matrix) should be included in the long data frame. Defaults to
+#'   \code{FALSE} because we almost never want them.
+#' @param suff (\code{c('1','2')}.) A character vector of length 2. The suffixes
+#'   to be appended to the metadata column names in the output. The two elements
+#'   must not be identical.
+#' @param distcol (\code{'Distance'}.) A string. The desired column name for the
+#'   distance column in your long data frame. Only here to avoid clashes with
+#'   existing metadata column names.
+long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
+                            suff = c('1','2'), distcol = 'Distance'){
+
+    # The sample data object does not play nice with others
+    metadat = data.frame(metadat)
+
+    # Check the inputs
+    lddf_check(dmat, metadat, idcol, diag, suff)
+
+    # Turn this into a usable matrix
+    dmat = as.matrix(dmat)
+    dmat[lower.tri(dmat)] = NA
+
+    # Make it long
+    dmat %>>%
+        {data.frame(ID1 = rownames(.),.)} %>%
+        gather(ID2, Distance, 2:(ncol(dmat)+1), na.rm = TRUE) -> distlong
+
+    ids = paste(idcol,suff, sep = '')
+    names(distlong)[1:2] = ids
+
+    # Add the metadata columns for the first sample
+    distlong %>%
+        inner_join(metadat, by = setNames(c(idcol), ids[1])) -> distlong
+
+    # Add the suffix to the column names
+    cn = colnames(distlong)
+    cn = ifelse(cn %in% colnames(metadat),
+                paste(cn, suff[1], sep = ''),
+                cn)
+    colnames(distlong) = cn
+
+    # Add the metadata columns to the second sample
+    distlong %>%
+        inner_join(metadat, by = setNames(c(idcol), ids[2])) -> distlong
+
+    # Add the suffix to the column names
+    cn = colnames(distlong)
+    cn = ifelse(cn %in% colnames(metadat),
+                paste(cn, suff[2], sep = ''),
+                cn)
+    colnames(distlong) = cn
+
+    if (!diag){
+        distlong %>%
+            filter(UQ(sym(ids[1])) != UQ(sym(ids[2]))) -> distlong
+    }
+
+    return(distlong)
 }

@@ -14,8 +14,8 @@ the rank given to \code{make_phy_df()}.}
 
 \item{colours}{A character vector of colour names or hex values. Must have
 enough colours to accommodate all your taxa at the appropriate rank. If you
-don't provide one, there is an internal one that has 21 colours that the
-function will try to use.}
+don't provide one, there are a few internal vectors that have 21, 31, 60,
+or 70 colours that the function will try to use.}
 
 \item{sample}{The name of the sample column in the data frame.}
 
