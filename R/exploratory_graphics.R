@@ -475,7 +475,13 @@ rank_abund = function(phy_df, varbs = NULL, bases = NULL, abunds = 'Abundance',
 #' @param f2 The factor to use when re-ordering \code{f1}.
 order_levs = function(f1,f2){
 
-    lev_ord = unique(as.character(f1)[order(as.character(f2))])
+    if (is.numeric(f2)){
+        ord = order(f2)
+    } else {
+        ord = order(as.character(f2))
+    }
+
+    lev_ord = unique(as.character(f1)[ord])
     f1 = factor(f1, levels = lev_ord)
 
     return(f1)
