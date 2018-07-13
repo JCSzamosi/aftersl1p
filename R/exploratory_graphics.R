@@ -176,7 +176,11 @@ prop_tax_tab = function(taxtab, indic){
 #' @param physeq a phyloseq object with a filled \code{tax_table} slot.
 #' @param indic a flag to indicate if the taxon names have level indicators. If
 #'   FALSE, they are added. Just gets passed to \code{prop_tax_tab()}.
-prop_tax_down = function(physeq, indic){
+#' @param dbig a flag to indicate whether taxa that have the same names at one
+#'   taxonomic level, but different names at a \textit{higher} taxonomic level
+#'   (e.g. genus Clostridium can belong to one of several families) should be
+#'   disambiguated.
+prop_tax_down = function(physeq, indic, dbig = TRUE){
 
 	# Deal with the case where the blanks aren't NAs
     tt = tax_table(physeq)
@@ -190,6 +194,33 @@ prop_tax_down = function(physeq, indic){
     tax_table(physeq) = tt
 
     tax_table(physeq) = prop_tax_tab(tax_table(physeq), indic)
+
+    if(dbig){
+        tt = data.frame(tax_table(physeq))
+        levs = colnames(tt)
+        for (i in 2:length(levs)){
+            tt %>%
+                select(UQ(sym(levs[i-1])), UQ(sym(levs[i]))) %>%
+                add_count(UQ(sym(levs[i]))) %>%
+                mutate_if(is.factor, as.character) %>%
+                mutate(NewCol = ifelse(n > 1,
+                                       paste(UQ(sym(levs[i])),UQ(sym(levs[i-1])),
+                                             sep = ' ('),
+                                       as.character(UQ(sym(levs[i])))),
+                       NewCol = ifelse(n > 1,
+                                       paste(NewCol, ')', sep = ''),
+                                       NewCol)) %>%
+                rename(paste('New',levs[i],sep = '') = 'NewCol') %>%
+                right_join(tt) -> tt
+
+
+        }
+
+        tt = select(tt,-starts_with('New'), starts_with('New'))
+        rownames(tt) = rownames(tax_table(physeq))
+        tax_table(physeq) = tt
+    }
+
     return(physeq)
 }
 
@@ -478,7 +509,8 @@ order_levs = function(f1,f2){
     if (is.numeric(f2)){
         ord = order(f2)
     } else {
-        ord = order(f2)
+        ord = order(f2) # don't revert this to as-character. It needs to respect
+                        # f2's level ordering. Find another way.
     }
 
     lev_ord = unique(as.character(f1)[ord])
