@@ -478,7 +478,7 @@ order_levs = function(f1,f2){
     if (is.numeric(f2)){
         ord = order(f2)
     } else {
-        ord = order(as.character(f2))
+        ord = order(f2)
     }
 
     lev_ord = unique(as.character(f1)[ord])
