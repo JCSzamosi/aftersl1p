@@ -180,7 +180,7 @@ prop_tax_tab = function(taxtab, indic){
 #'   taxonomic level, but different names at a \textit{higher} taxonomic level
 #'   (e.g. genus Clostridium can belong to one of several families) should be
 #'   disambiguated.
-prop_tax_down = function(physeq, indic, dbig = TRUE){
+prop_tax_down = function(physeq, indic, dbig = FALSE){
 
 	# Deal with the case where the blanks aren't NAs
     tt = tax_table(physeq)
@@ -196,33 +196,38 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
     tax_table(physeq) = prop_tax_tab(tax_table(physeq), indic)
 
     if(dbig){
-        tt = data.frame(tax_table(physeq))
-        levs = colnames(tt)
-        for (i in 2:length(levs)){
-            tt %>%
-                select(UQ(sym(levs[i-1])), UQ(sym(levs[i]))) %>%
-                add_count(UQ(sym(levs[i]))) %>%
-                mutate_if(is.factor, as.character) %>%
-                mutate(NewCol = ifelse(n > 1,
-                                       paste(UQ(sym(levs[i])),UQ(sym(levs[i-1])),
-                                             sep = ' ('),
-                                       as.character(UQ(sym(levs[i])))),
-                       NewCol = ifelse(n > 1,
-                                       paste(NewCol, ')', sep = ''),
-                                       NewCol)) %>%
-                rename(paste('New',levs[i],sep = '') = 'NewCol') %>%
-                right_join(tt) -> tt
-
-
-        }
-
-        tt = select(tt,-starts_with('New'), starts_with('New'))
-        rownames(tt) = rownames(tax_table(physeq))
-        tax_table(physeq) = tt
+        physeq = dbig_taxa(physeq)
     }
 
     return(physeq)
 }
+
+# dbig_taxa = function(physeq){
+#     tt = data.frame(tax_table(physeq))
+#     levs = colnames(tt)
+#     for (i in 2:length(levs)){
+#         tt %>%
+#             select(UQ(sym(levs[i-1])), UQ(sym(levs[i]))) %>%
+#             add_count(UQ(sym(levs[i]))) %>%
+#             mutate_if(is.factor, as.character) %>%
+#             mutate(NewCol = ifelse(n > 1,
+#                                    paste(UQ(sym(levs[i])),UQ(sym(levs[i-1])),
+#                                          sep = ' ('),
+#                                    as.character(UQ(sym(levs[i])))),
+#                    NewCol = ifelse(n > 1,
+#                                    paste(NewCol, ')', sep = ''),
+#                                    NewCol)) %>%
+#             rename(paste('New',levs[i],sep = '') = 'NewCol') %>%
+#             right_join(tt) -> tt
+#     }
+#
+#     tt = select(tt,-starts_with('New'), starts_with('New'))
+#     rownames(tt) = rownames(tax_table(physeq))
+#     tax_table(physeq) = tt
+#
+#     return(physeq)
+#
+# }
 
 #### Create the data frame for plotting ----------------------------------------
 
