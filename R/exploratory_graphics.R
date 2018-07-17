@@ -83,7 +83,7 @@ cols_70 = c("#00cf9b","#fc00bf","#52e62c","#a000b2","#9fff37","#5066ff",
 #'
 #' @param physeq A phyloseq object with a tax table. Tax table must have 'Genus'
 #'   and 'Family' columns.
-dbig_taxa = function(physeq){
+dbig_genera = function(physeq){
     tt = data.frame(tax_table(physeq), stringsAsFactors = FALSE)
     tt %>%
         unique() %>%
