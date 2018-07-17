@@ -5,13 +5,16 @@
 \title{Propagate taxon information down an entire \code{tax_table} in a phylose
 object}
 \usage{
-prop_tax_down(physeq, indic)
+prop_tax_down(physeq, indic, dbig = TRUE)
 }
 \arguments{
 \item{physeq}{a phyloseq object with a filled \code{tax_table} slot.}
 
 \item{indic}{a flag to indicate if the taxon names have level indicators. If
 FALSE, they are added. Just gets passed to \code{prop_tax_tab()}.}
+
+\item{dbig}{a flag to indicate whether genus names that exist in multiple
+families should be disambiguated by appending the family name.}
 }
 \description{
 \code{prop_tax_down} Takes the taxon assignment from the lowest assigned

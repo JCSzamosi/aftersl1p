@@ -64,6 +64,51 @@ cols_70 = c("#00cf9b","#fc00bf","#52e62c","#a000b2","#9fff37","#5066ff",
 ### Deal with data -------------------------------------------------------------
 #### Deal with taxa ------------------------------------------------------------
 
+##### dbig_genera --------------------------------------------------------------
+
+#' Check for any genera that have the same name but are in different families
+#' and append the family name
+#'
+#' @section Details: \code{dbig_genera()} takes a phyloseq object with a
+#'   taxonomy table, disamibugates the genera by appending family names to any
+#'   genus names that are found in multiple families in this data set, and
+#'   returns the object with an update tax_table() object. The input phyloseq
+#'   object must have 'Genus' and 'Family' columns in its tax_table object. The
+#'   output object with have the disambiguated names in the 'Genus' column and
+#'   will have a new column called 'AmbigGenus' where the old genus names can be
+#'   found.
+#'
+#' @section Value: A phyloseq object with an updated Genus column and a column
+#'   called AmbigGenus containing the old Genus names.
+#'
+#' @param physeq A phyloseq object with a tax table. Tax table must have 'Genus'
+#'   and 'Family' columns.
+dbig_taxa = function(physeq){
+    tt = data.frame(tax_table(physeq), stringsAsFactors = FALSE)
+    tt %>%
+        unique() %>%
+        add_count(Genus) %>%
+        mutate_if(is.factor, as.character) %>%
+        mutate(NAmbigGenus = if_else(n > 1,
+                                     paste(Genus, Family, sep = ' ('),
+                                     Genus),
+               NAmbigGenus = if_else(n > 1,
+                                     paste(NAmbigGenus, ')', sep = ''),
+                                     Genus)) %>%
+        select(-n) %>%
+        right_join(tt) %>%
+        mutate(AmbigGenus = Genus,
+               Genus = NAmbigGenus) %>%
+        select(-NAmbigGenus) %>%
+        as.matrix() -> fixed
+
+    rownames(fixed) = rownames(tt)
+    tax_table(physeq) = fixed
+
+    return(physeq)
+
+}
+
 ##### prop_tax_row -------------------------------------------------------------
 
 #' Propagate taxon information in a single row of a \code{tax_table} object.
@@ -176,11 +221,9 @@ prop_tax_tab = function(taxtab, indic){
 #' @param physeq a phyloseq object with a filled \code{tax_table} slot.
 #' @param indic a flag to indicate if the taxon names have level indicators. If
 #'   FALSE, they are added. Just gets passed to \code{prop_tax_tab()}.
-#' @param dbig a flag to indicate whether taxa that have the same names at one
-#'   taxonomic level, but different names at a \textit{higher} taxonomic level
-#'   (e.g. genus Clostridium can belong to one of several families) should be
-#'   disambiguated.
-prop_tax_down = function(physeq, indic, dbig = FALSE){
+#' @param dbig a flag to indicate whether genus names that exist in multiple
+#'   families should be disambiguated by appending the family name.
+prop_tax_down = function(physeq, indic, dbig = TRUE){
 
 	# Deal with the case where the blanks aren't NAs
     tt = tax_table(physeq)
@@ -196,38 +239,12 @@ prop_tax_down = function(physeq, indic, dbig = FALSE){
     tax_table(physeq) = prop_tax_tab(tax_table(physeq), indic)
 
     if(dbig){
-        physeq = dbig_taxa(physeq)
+        physeq = dbig_genera(physeq)
     }
 
     return(physeq)
 }
 
-# dbig_taxa = function(physeq){
-#     tt = data.frame(tax_table(physeq))
-#     levs = colnames(tt)
-#     for (i in 2:length(levs)){
-#         tt %>%
-#             select(UQ(sym(levs[i-1])), UQ(sym(levs[i]))) %>%
-#             add_count(UQ(sym(levs[i]))) %>%
-#             mutate_if(is.factor, as.character) %>%
-#             mutate(NewCol = ifelse(n > 1,
-#                                    paste(UQ(sym(levs[i])),UQ(sym(levs[i-1])),
-#                                          sep = ' ('),
-#                                    as.character(UQ(sym(levs[i])))),
-#                    NewCol = ifelse(n > 1,
-#                                    paste(NewCol, ')', sep = ''),
-#                                    NewCol)) %>%
-#             rename(paste('New',levs[i],sep = '') = 'NewCol') %>%
-#             right_join(tt) -> tt
-#     }
-#
-#     tt = select(tt,-starts_with('New'), starts_with('New'))
-#     rownames(tt) = rownames(tax_table(physeq))
-#     tax_table(physeq) = tt
-#
-#     return(physeq)
-#
-# }
 
 #### Create the data frame for plotting ----------------------------------------
 
