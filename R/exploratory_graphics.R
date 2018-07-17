@@ -64,10 +64,12 @@ cols_70 = c("#00cf9b","#fc00bf","#52e62c","#a000b2","#9fff37","#5066ff",
 ### Deal with data -------------------------------------------------------------
 #### Deal with taxa ------------------------------------------------------------
 
-##### dbig_genera --------------------------------------------------------------
+##### dbig_taxa --------------------------------------------------------------
 
-#' Check for any genera that have the same name but are in different families
-#' and append the family name
+#' Disambiguate taxa
+#'
+#' Check for any taxa that have the same name but are in different higher-level
+#' classifications, and append the family name
 #'
 #' @section Details: \code{dbig_genera()} takes a phyloseq object with a
 #'   taxonomy table, disamibugates the genera by appending family names to any
@@ -84,29 +86,30 @@ cols_70 = c("#00cf9b","#fc00bf","#52e62c","#a000b2","#9fff37","#5066ff",
 #' @param physeq A phyloseq object with a tax table. Tax table must have 'Genus'
 #'   and 'Family' columns.
 dbig_genera = function(physeq){
-    tt = data.frame(tax_table(physeq), stringsAsFactors = FALSE)
-    tt %>%
-        unique() %>%
-        add_count(Genus) %>%
-        mutate_if(is.factor, as.character) %>%
-        mutate(NAmbigGenus = if_else(n > 1,
-                                     paste(Genus, Family, sep = ' ('),
-                                     Genus),
-               NAmbigGenus = if_else(n > 1,
-                                     paste(NAmbigGenus, ')', sep = ''),
-                                     Genus)) %>%
-        select(-n) %>%
-        right_join(tt) %>%
-        mutate(AmbigGenus = Genus,
-               Genus = NAmbigGenus) %>%
-        select(-NAmbigGenus) %>%
-        as.matrix() -> fixed
+	rank = 'Genus'
+	rank_abv = 'Family'
+	ambig = paste('Ambig',rank,sep = '')
 
-    rownames(fixed) = rownames(tt)
-    tax_table(physeq) = fixed
+	tt = data.frame(tax_table(physeq), stringsAsFactors = FALSE)
+    tt_glom = unique(tt)
 
-    return(physeq)
+	tax_vect = tt_glom[,rank]
 
+	if (any(duplicated(tax_vect)))
+	    dup_nms = unique(tax_vect[duplicated(tax_vect)])
+
+	    dups = rownames(tt_glom[tax_vect %in% dup_nms,])
+	    tt_glom[dups,rank] = paste(tt_glom[dups,rank],
+	                               ' (',
+	                               tt_glom[dups,rank_abv],
+	                               ')',
+	                               sep = ''
+	                               )
+
+	ambig = paste('Ambig',rank,sep = '')
+	tax_table(physeq)[,ambig] = tax_table(physeq)[,rank]
+	tax_table(physeq)[,rank] = tax_vect
+	}
 }
 
 ##### prop_tax_row -------------------------------------------------------------
