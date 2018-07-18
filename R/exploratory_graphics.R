@@ -608,13 +608,13 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	if (is.null(colours)){
 		num = length(unique(taxa_df[,rank]))
 		if (num <= 22){
-			colours = c('grey69',cols_21)
+			colours = c('grey69',rev(cols_21[1:(num-1)]))
 		} else if (num <= 31) {
-			colours = c('grey69',cols_31)
+			colours = c('grey69',rev(cols_31[1:(num-1)]))
 		} else if (num <= 61) {
-			colours = c('grey69',cols_60)
+			colours = c('grey69',rev(cols_60[1:(num-1)]))
 		} else if (num <= 71) {
-			colours = c('grey69',cols_70)
+			colours = c('grey69',rev(cols_70[1:(num-1)]))
 		} else {
 			stop('I can\'t handle more than 71 ranks. Please provide a colour vector.')
 		}
@@ -623,9 +623,9 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 							#num <= 32 ~ c('grey69',cols_31),
 							#num <= 61 ~ c('grey69',cols_60),
 							#num > 61 ~ c('grey69',cols_70))
-	} else if (!is.null(names(colours))) {
-	} else {
-		colours = c('grey69',colours)
+	} else if (is.null(names(colours))) {
+	    num = length(unique(taxa_df[,rank]))
+		colours = c('grey69',rev(colours[1:(num-1)]))
 	}
 
 	# Make sure the x axis is categorical
