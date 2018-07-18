@@ -116,6 +116,8 @@ dbig_genera = function(physeq){
 	    tax_table(physeq) = fixed
 
 	}
+
+	return(physeq)
 }
 
 ##### prop_tax_row -------------------------------------------------------------
@@ -341,6 +343,10 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 					   prop = TRUE){
 
 
+    # Check that its relab
+    if (any(otu_table(physeq) > 1)){
+        stop('physeq must be a relative abundance table. You have counts > 1.')
+    }
     ranks = colnames(tax_table(physeq))
 
     # Propogate taxonomic assignments down the tree
@@ -357,24 +363,6 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	# Filter out all taxa that are zero (<cutoff) everywhere, melt, and sort
 	phyl_glommed %>%
 		filter_taxa(function(x) sum(x) > 0, prune = TRUE) -> abunds_phy
-
-	# Deal with the fact that some ranks have multiple taxa with the same name but
-	# different values at higher ranks
-
-	tax_vect = tax_table(abunds_phy)[,rank]
-	rank_abv = ranks[which(rank == ranks) -1]
-	while (any(duplicated(tax_vect))){
-	    x = tax_vect[duplicated(tax_vect)][1]
-	    dups = rownames(tax_vect[tax_vect == x[[1]]])
-	    for (dup in dups){
-	        tax_vect[dup,1] = paste(x,
-	                                ' (',
-	                                tax_table(abunds_phy)[dup,rank_abv],
-	                                ')',
-	                                sep='')
-	    }
-	}
-	tax_table(abunds_phy)[,rank] = tax_vect
 
 	abunds_phy %>%
 	    psmelt() %>%
