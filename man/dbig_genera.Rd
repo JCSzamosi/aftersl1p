@@ -2,8 +2,7 @@
 % Please edit documentation in R/exploratory_graphics.R
 \name{dbig_genera}
 \alias{dbig_genera}
-\title{Check for any genera that have the same name but are in different families
-and append the family name}
+\title{Disambiguate taxa}
 \usage{
 dbig_genera(physeq)
 }
@@ -12,8 +11,8 @@ dbig_genera(physeq)
 and 'Family' columns.}
 }
 \description{
-Check for any genera that have the same name but are in different families
-and append the family name
+Check for any taxa that have the same name but are in different higher-level
+classifications, and append the family name
 }
 \section{Details}{
  \code{dbig_genera()} takes a phyloseq object with a

@@ -89,26 +89,32 @@ dbig_genera = function(physeq){
 	rank = 'Genus'
 	rank_abv = 'Family'
 	ambig = paste('Ambig',rank,sep = '')
+	nambig = paste('NAmbig',rank,sep = '')
 
 	tt = data.frame(tax_table(physeq), stringsAsFactors = FALSE)
     tt_glom = unique(tt)
 
 	tax_vect = tt_glom[,rank]
 
-	if (any(duplicated(tax_vect)))
+	if (any(duplicated(tax_vect))){
 	    dup_nms = unique(tax_vect[duplicated(tax_vect)])
 
-	    dups = rownames(tt_glom[tax_vect %in% dup_nms,])
-	    tt_glom[dups,rank] = paste(tt_glom[dups,rank],
-	                               ' (',
-	                               tt_glom[dups,rank_abv],
-	                               ')',
-	                               sep = ''
-	                               )
+	    tt_glom %>%
+	        mutate(AmbigGenus = Genus,
+	               NAmbigGenus = if_else(Genus %in% dup_nms,
+	                                     paste(Genus, ' (', Family,')',
+	                                           sep = ''),
+	                                     Genus)) %>%
+	        right_join(tt) %>%
+	        mutate(Genus = NAmbigGenus) %>%
+	        select(-NAmbigGenus) %>%
+	        mutate_if(is.factor, as.character) %>%
+	        as.matrix() -> fixed
 
-	ambig = paste('Ambig',rank,sep = '')
-	tax_table(physeq)[,ambig] = tax_table(physeq)[,rank]
-	tax_table(physeq)[,rank] = tax_vect
+	    rownames(fixed) = rownames(tt)
+
+	    tax_table(physeq) = fixed
+
 	}
 }
 
