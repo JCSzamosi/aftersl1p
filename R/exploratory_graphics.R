@@ -523,12 +523,12 @@ rank_abund = function(phy_df, varbs = NULL, bases = NULL, abunds = 'Abundance',
 #' @param f1 The factor to re-order. Levels of this factor must be nested within
 #'   \code{f2}
 #' @param f2 The factor to use when re-ordering \code{f1}.
-order_levs = function(f1,f2){
+order_levs = function(f1,...){
 
     if (is.numeric(f2)){
-        ord = order(f2)
+        ord = order(...)
     } else {
-        ord = order(f2) # don't revert this to as-character. It needs to respect
+        ord = order(...) # don't revert this to as-character. It needs to respect
                         # f2's level ordering. Find another way.
     }
 
