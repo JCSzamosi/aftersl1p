@@ -661,7 +661,7 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	if (means){
 	    indiv = indiv + geom_bar(stat = 'identity', position = 'fill')
 	} else {
-	    geom_bar(stat = "identity")
+	    indiv = indiv + geom_bar(stat = "identity")
 	}
 
 	if (yscale == 'sqrt') {
