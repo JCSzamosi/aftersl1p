@@ -5,7 +5,7 @@
 \title{Create a Taxa Bar Chart}
 \usage{
 plot_tax_bar(taxa_df, rank, colours = NULL, sample = "X.SampleID",
-  abund = "Abundance", legloc = "right", yscale = "lin")
+  abund = "Abundance", legloc = "right", yscale = "lin", means = FALSE)
 }
 \arguments{
 \item{rank}{The taxonomic rank at which to view the data. Must be one of
@@ -25,6 +25,11 @@ or 70 colours that the function will try to use.}
 'none' (absent)}
 
 \item{yscale}{Can be either 'lin' or 'sqrt'. The 'sqrt' plot can look weird.}
+
+\item{means}{If \code{TRUE}, sets \code{position = fill} in the
+\code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
+your \code{sample = } parameter is not actually sample names, but rather
+larger categories, to produce means.}
 
 \item{tax_df}{The data frame used for plotting. Unless you really know what
 you're doing, use the data frame output by \code{make_phy_df()}.}

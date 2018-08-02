@@ -4,7 +4,7 @@
 \alias{order_levs}
 \title{Order the levels of one factor by the values of another}
 \usage{
-order_levs(f1, f2)
+order_levs(f1, ...)
 }
 \arguments{
 \item{f1}{The factor to re-order. Levels of this factor must be nested within

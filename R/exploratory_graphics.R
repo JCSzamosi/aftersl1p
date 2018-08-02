@@ -525,12 +525,12 @@ rank_abund = function(phy_df, varbs = NULL, bases = NULL, abunds = 'Abundance',
 #' @param f2 The factor to use when re-ordering \code{f1}.
 order_levs = function(f1,...){
 
-    if (is.numeric(f2)){
-        ord = order(...)
-    } else {
+    # if (is.numeric(f2)){
+    #     ord = order(...)
+    # } else {
         ord = order(...) # don't revert this to as-character. It needs to respect
                         # f2's level ordering. Find another way.
-    }
+    # }
 
     lev_ord = unique(as.character(f1)[ord])
     f1 = factor(f1, levels = lev_ord)
@@ -580,9 +580,13 @@ rotate_ticks = function(){
 #' @param legloc Location of the legend. Can be 'right' (default), 'bottom', or
 #'   'none' (absent)
 #' @param yscale Can be either 'lin' or 'sqrt'. The 'sqrt' plot can look weird.
+#' @param means If \code{TRUE}, sets \code{position = fill} in the
+#'   \code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
+#'   your \code{sample = } parameter is not actually sample names, but rather
+#'   larger categories, to produce means.
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
-					 legloc = 'right', yscale = 'lin'){
+					 legloc = 'right', yscale = 'lin', means = FALSE){
 	## taxa_df:	The data frame produced by taxa_other_df()
 	## rank: The taxonomic rank to plot by
 	## colours:	A character vector with the right number of colours. If you
@@ -644,15 +648,21 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 
 	indiv = ggplot(taxa_df, aes_string(x = sample, y = abund, fill = rank,
 									   colour = rank)) +
-	geom_bar(stat = "identity") +
-	theme(axis.title.x = element_blank(),
+	    theme(axis.title.x = element_blank(),
 			axis.text.x = element_text(size = 10,
 									   angle = 90,
 									   hjust = 1,
 									   vjust = 0.5)) +
-	scale_fill_manual(values = colours, guide = guide_legend(reverse = TRUE)) +
-	scale_colour_manual(values = colours, guide = guide_legend(reverse = TRUE)) +
-	ylab(paste("Relative Abundance (",rank,")\n",sep=''))
+	    scale_fill_manual(values = colours,
+	                      guide = guide_legend(reverse = TRUE)) +
+	    scale_colour_manual(values = colours,
+	                        guide = guide_legend(reverse = TRUE)) +
+	    ylab(paste("Relative Abundance (",rank,")\n",sep=''))
+	if (means){
+	    indiv = indiv + geom_bar(stat = 'identity', position = 'fill')
+	} else {
+	    geom_bar(stat = "identity")
+	}
 
 	if (yscale == 'sqrt') {
 		indiv = indiv + scale_y_sqrt()
