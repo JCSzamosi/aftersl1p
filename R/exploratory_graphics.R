@@ -863,7 +863,11 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 
     # Turn this into a usable matrix
     dmat = as.matrix(dmat)
-    dmat[lower.tri(dmat)] = NA
+    if (diag) {
+        dmat[upper.tri(dmat)]= NA
+    } else {
+        dmat[!lower.tri(dmat)] = NA
+    }
 
     # Make it long
     dmat %>>%
@@ -894,11 +898,6 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
                 paste(cn, suff[2], sep = ''),
                 cn)
     colnames(distlong) = cn
-
-    if (!diag){
-        distlong %>%
-            filter(UQ(sym(ids[1])) != UQ(sym(ids[2]))) -> distlong
-    }
 
     return(distlong)
 }
