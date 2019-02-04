@@ -958,8 +958,8 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 ### Functions to generate PCoA plots
 ################################################################################
 
-### Make the data frame
-#### axis_num
+### Make the data frame --------------------------------------------------------
+#### axis_num ------------------------------------------------------------------
 
 #' Get the axis number
 #' Take a character vector of the form 'Axis.N' where N is a number and return
@@ -975,7 +975,7 @@ axis_num = function(AxisX){
     return(axes)
 }
 
-#### ord_df
+#### make_ ord_df --------------------------------------------------------------
 
 #' Make a data frame of the ordination
 #'
@@ -994,7 +994,7 @@ axis_num = function(AxisX){
 #' care about. Default is \code{FALSE}.
 #' @param axes A vector of integers indicating which ordination axes to include
 #' in the data frame. Defaults to \code{1:4}.
-ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
+make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
                   scree_only = FALSE, axes = 1:4){
     # Get the distance object and do the ordination
     d = distance(physeq, method = dist_meth)
@@ -1010,7 +1010,7 @@ ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
     weights = round(ord$values$Relative_eig * 100, 2)
 
     # Make the data frame
-    ord_df = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
+    ord_ = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
     ord_df %>%
         gather(AxisX, ValueX, starts_with('Axis.')) %>%
         left_join(ord_df) %>%
@@ -1021,4 +1021,37 @@ ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
 
     return(ord_long)
 
+}
+
+### Plot the ordination --------------------------------------------------------
+#### plt_ord ------------------------------------------------------------------
+#' Plot the ordination
+#'
+#' Make a multi-axis PCoA plot from the data frame
+#' @param ord_long The ordination data frame produced by \code{make_ord_df}
+#' @param colour The name of the column to use to colour the points.
+#' @param shape The name of the coloumn governing the shape of the points.
+#' @param pt_alph The transparency of the points. Default is 0.7
+plt_ord = function(ord_long, colour = NULL, shape = NULL, pt_alph = 0.7){
+    ord_plt = ggplot(ord_long, aes(ValueX, ValueY))
+
+    if (!is.null(colour) & !(is.null(shape))) {
+        ord_plt = ord_plt +
+            geom_point(aes_string(colour = colour, shape = shape),
+                       alpha = pt_alph)
+    } else if (!is.null(colour)){
+        ord_plt = ord_plt +
+            geom_point(aes_string(colour = colour), alpha = pt_alph)
+    } else if (!is.null(shape)){
+        ord_plt = ord_plt +
+            geom_point(aes_string(shape = shape), alpha = pt_alph)
+    } else {
+        ord_plt = ord_plt +
+            geom_point(alpha = pt_alph)
+    }
+
+    ord_plt = ord_plt +
+        facet_grid(AxisY ~ AxisX)
+
+    return(ord_plt)
 }
