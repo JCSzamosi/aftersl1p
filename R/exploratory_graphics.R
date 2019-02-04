@@ -817,6 +817,68 @@ lddf_check = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
     }
 }
 
+
+#### lddf_work -----------------------------------------------------------------
+
+#' Does the actual gathering and spreading without testing assumptions
+#'
+#' \code{lddf_work} Does the actual gathering, spreading, and joining associated
+#' with making the lddf, but without checking if the distance matrix is sensible
+#' or removing diagonals and repeats. This is for when you know what you're
+#' doing and have trimmed your distance matrix down to only what you know you
+#' need. Good for permutation tests.
+#'
+#' @param dmat A distance matrix or other diagonal matrix object with sample
+#'   names as row and column names.
+#' @param metadat A data frame or data frame-like object with the data set's
+#'   metadata
+#' @param idcol (\code{'X.SampleID'}.) A string. The column in \code{metadat}
+#'   that holds the sample names. Sample names should match the row/column namse
+#'   of the distance matrix. If there are samples in the metadata data frame
+#'   that are missing from the distance matrix, they will be excluded with a
+#'   warning. If there are samples in the distance matrix that are missing from
+#'   the metadata, you will get an error.
+#' @param suff (\code{c('1','2')}.) A character vector of length 2. The suffixes
+#'   to be appended to the metadata column names in the output. The two elements
+#'   must not be identical.
+#' @param distcol (\code{'Distance'}.) A string. The desired column name for the
+#'   distance column in your long data frame. Only here to avoid clashes with
+#'   existing metadata column names.
+lddf_work = function(dmat, metadat, idcol = 'X.SampleID', suff = c('1','2'),
+                     distcol = 'Distance'){
+    # Make it long
+    dmat %>>%
+        {data.frame(ID1 = rownames(.),.)} %>%
+        gather(ID2, Distance, 2:(ncol(dmat)+1), na.rm = TRUE) -> distlong
+
+    ids = paste(idcol,suff, sep = '')
+    names(distlong)[1:2] = ids
+
+    # Add the metadata columns for the first sample
+    distlong %>%
+        inner_join(metadat, by = setNames(c(idcol), ids[1])) -> distlong
+
+    # Add the suffix to the column names
+    cn = colnames(distlong)
+    cn = ifelse(cn %in% colnames(metadat),
+                paste(cn, suff[1], sep = ''),
+                cn)
+    colnames(distlong) = cn
+
+    # Add the metadata columns to the second sample
+    distlong %>%
+        inner_join(metadat, by = setNames(c(idcol), ids[2])) -> distlong
+
+    # Add the suffix to the column names
+    cn = colnames(distlong)
+    cn = ifelse(cn %in% colnames(metadat),
+                paste(cn, suff[2], sep = ''),
+                cn)
+    colnames(distlong) = cn
+
+    return(distlong)
+}
+
 #### long_distance_df ----------------------------------------------------------
 
 #' Create a long data frame of among-sample distances
@@ -852,8 +914,18 @@ lddf_check = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 #' @param distcol (\code{'Distance'}.) A string. The desired column name for the
 #'   distance column in your long data frame. Only here to avoid clashes with
 #'   existing metadata column names.
+#' @param baseline (\code{'NULL'}). A dataframe whose column names must also be
+#'   column names in the metadat data frame, and whose rows contain a subset of
+#'   the possible values/combinations. If this parameter is used, all the
+#'   samples whose metadata matches a row in this data frame will end up in
+#'   Sample1 and the rest will end up in Sample2. This means you will _not_ get
+#'   all the pairs, because the samples in Sample1 will not get compared to each
+#'   other, and neither will the samples in Sample2. If this parameter is not
+#'   used, the upper triangle of the distance matrix is used, without regard for
+#'   metadata values.
 long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
-                            suff = c('1','2'), distcol = 'Distance'){
+                            suff = c('1','2'), distcol = 'Distance',
+                            baseline = NULL){
 
     # The sample data object does not play nice with others
     metadat = data.frame(metadat)
@@ -863,41 +935,90 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 
     # Turn this into a usable matrix
     dmat = as.matrix(dmat)
-    if (diag) {
-        dmat[upper.tri(dmat)]= NA
+    if (is.null(baseline)){
+        if (diag) {
+            dmat[upper.tri(dmat)]= NA
+        } else {
+            dmat[!lower.tri(dmat)] = NA
+        }
     } else {
-        dmat[!lower.tri(dmat)] = NA
+        s1 = inner_join(metadat, baseline, by = colnames(baseline))[,idcol]
+        s2 = anti_join(metadat, baseline, by = colnames(baseline))[,idcol]
+        dmat = dmat[as.character(s1),as.character(s2)]
     }
 
-    # Make it long
-    dmat %>>%
-        {data.frame(ID1 = rownames(.),.)} %>%
-        gather(ID2, Distance, 2:(ncol(dmat)+1), na.rm = TRUE) -> distlong
+    lddf = lddf_work(dmat, metadat, idcol = idcol, suff = suff,
+                     distcol = distcol)
 
-    ids = paste(idcol,suff, sep = '')
-    names(distlong)[1:2] = ids
+    return(lddf)
+}
 
-    # Add the metadata columns for the first sample
-    distlong %>%
-        inner_join(metadat, by = setNames(c(idcol), ids[1])) -> distlong
 
-    # Add the suffix to the column names
-    cn = colnames(distlong)
-    cn = ifelse(cn %in% colnames(metadat),
-                paste(cn, suff[1], sep = ''),
-                cn)
-    colnames(distlong) = cn
+################################################################################
+### Functions to generate PCoA plots
+################################################################################
 
-    # Add the metadata columns to the second sample
-    distlong %>%
-        inner_join(metadat, by = setNames(c(idcol), ids[2])) -> distlong
+### Make the data frame
+#### axis_num
 
-    # Add the suffix to the column names
-    cn = colnames(distlong)
-    cn = ifelse(cn %in% colnames(metadat),
-                paste(cn, suff[2], sep = ''),
-                cn)
-    colnames(distlong) = cn
+#' Get the axis number
+#' Take a character vector of the form 'Axis.N' where N is a number and return
+#' a numeric vector of N in the same order
+#' @param AxisX The character vector of axes. Must only contain values of the
+#' form 'Axis.N'
+axis_num = function(AxisX){
+    AxisX %>%
+        strsplit('\\.') %>%
+        unlist() -> tmp
+    axes = as.numeric(tmp[seq(2,length(tmp),2)])
 
-    return(distlong)
+    return(axes)
+}
+
+#### ord_df
+
+#' Make a data frame of the ordination
+#'
+#' Take a phyloseq object and generate a data frame of the distance-based
+#' ordination of the samples for plotting.
+#'
+#' @param physeq A phyloseq object with an OTU table and sample data. The table
+#' should be rarefied (or relative abundance) so that the distance metrics will
+#' be meaningful.
+#' @param dist_meth The distance method to be use. Must be one of the methods
+#' accepted by the \code{phyloseq::distance()} function. Default is 'bray'.
+#' @param ord_meth The ordination method. Must be one of the methods accepted
+#' by the \code{phyloseq::ordinate()} function. Default is 'PCoA'.
+#' @param scree_only If \code{TRUE}, this function will print the scree plot of the
+#' requested ordination and then exit. Good for deciding how many axes you
+#' care about. Default is \code{FALSE}.
+#' @param axes A vector of integers indicating which ordination axes to include
+#' in the data frame. Defaults to \code{1:4}.
+ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
+                  scree_only = FALSE, axes = 1:4){
+    # Get the distance object and do the ordination
+    d = distance(physeq, method = dist_meth)
+    ord = ordinate(physeq, ord_meth, d)
+
+    # Scree
+    if (scree_only) {
+        print(plot_scree(ord))
+        return()
+    }
+
+    # Calculate the axis weights
+    weights = round(ord$values$Relative_eig * 100, 2)
+
+    # Make the data frame
+    ord_df = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
+    ord_df %>%
+        gather(AxisX, ValueX, starts_with('Axis.')) %>%
+        left_join(ord_df) %>%
+        gather(AxisY, ValueY, starts_with('Axis.')) %>%
+        mutate(AxisX = factor(paste(AxisX, weights[axis_num(AxisX)])),
+               AxisY = factor(paste(AxisY, weights[axis_num(AxisY)]))) ->
+        ord_long
+
+    return(ord_long)
+
 }

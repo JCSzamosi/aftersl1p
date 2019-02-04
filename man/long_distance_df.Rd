@@ -5,7 +5,7 @@
 \title{Create a long data frame of among-sample distances}
 \usage{
 long_distance_df(dmat, metadat, idcol = "X.SampleID", diag = FALSE,
-  suff = c("1", "2"), distcol = "Distance")
+  suff = c("1", "2"), distcol = "Distance", baseline = NULL)
 }
 \arguments{
 \item{dmat}{A distance matrix or other diagonal matrix object with sample
@@ -32,6 +32,16 @@ must not be identical.}
 \item{distcol}{(\code{'Distance'}.) A string. The desired column name for the
 distance column in your long data frame. Only here to avoid clashes with
 existing metadata column names.}
+
+\item{baseline}{(\code{'NULL'}). A dataframe whose column names must also be
+column names in the metadat data frame, and whose rows contain a subset of
+the possible values/combinations. If this parameter is used, all the
+samples whose metadata matches a row in this data frame will end up in
+Sample1 and the rest will end up in Sample2. This means you will _not_ get
+all the pairs, because the samples in Sample1 will not get compared to each
+other, and neither will the samples in Sample2. If this parameter is not
+used, the upper triangle of the distance matrix is used, without regard for
+metadata values.}
 }
 \description{
 \code{long_distance_df()} creates a long data frame of all the pairwise
