@@ -889,9 +889,9 @@ lddf_work = function(dmat, metadat, idcol = 'X.SampleID', suff = c('1','2'),
 #' Create a long data frame of among-sample distances
 #'
 #'
-#' \code{long_distance_df()} creates a long data frame of all the pairwise
+#' \code{long_distance_df} creates a long data frame of all the pairwise
 #' distances from a sample distance matrix (e.g. the output of
-#' \code{phyloseq::distance()}) with all the metadata listed for each sample.
+#' \code{\link{phyloseq::distance}}) with all the metadata listed for each sample.
 #' Allows for easy within- and among-group boxplots, or whatever other
 #' comparisons are of interest.
 #'
@@ -928,6 +928,7 @@ lddf_work = function(dmat, metadat, idcol = 'X.SampleID', suff = c('1','2'),
 #'   other, and neither will the samples in Sample2. If this parameter is not
 #'   used, the upper triangle of the distance matrix is used, without regard for
 #'   metadata values.
+#' @export
 long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
                             suff = c('1','2'), distcol = 'Distance',
                             baseline = NULL){

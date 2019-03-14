@@ -44,9 +44,9 @@ used, the upper triangle of the distance matrix is used, without regard for
 metadata values.}
 }
 \description{
-\code{long_distance_df()} creates a long data frame of all the pairwise
+\code{long_distance_df} creates a long data frame of all the pairwise
 distances from a sample distance matrix (e.g. the output of
-\code{phyloseq::distance()}) with all the metadata listed for each sample.
+\code{\link{phyloseq::distance}}) with all the metadata listed for each sample.
 Allows for easy within- and among-group boxplots, or whatever other
 comparisons are of interest.
 }
