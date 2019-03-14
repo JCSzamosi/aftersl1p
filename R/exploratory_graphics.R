@@ -234,6 +234,7 @@ prop_tax_tab = function(taxtab, indic){
 #'   FALSE, they are added. Just gets passed to \code{prop_tax_tab()}.
 #' @param dbig a flag to indicate whether genus names that exist in multiple
 #'   families should be disambiguated by appending the family name.
+#' @export
 prop_tax_down = function(physeq, indic, dbig = TRUE){
 
 	# Deal with the case where the blanks aren't NAs
