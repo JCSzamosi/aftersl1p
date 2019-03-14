@@ -15,7 +15,7 @@ Check for any taxa that have the same name but are in different higher-level
 classifications, and append the family name
 }
 \section{Details}{
- \code{dbig_genera()} takes a phyloseq object with a
+ \code{dbig_genera} takes a phyloseq object with a
   taxonomy table, disamibugates the genera by appending family names to any
   genus names that are found in multiple families in this data set, and
   returns the object with an update tax_table() object. The input phyloseq

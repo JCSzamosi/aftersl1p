@@ -11,7 +11,7 @@ plot_tax_bar(taxa_df, rank, colours = NULL, sample = "X.SampleID",
 \arguments{
 \item{rank}{The taxonomic rank at which to view the data. Must be one of
 'Genus', 'Family', 'Order', 'Class', 'Phylum'. May not be a lower rank than
-the rank given to \code{make_phy_df()}.}
+the rank given to \code{\link{make_phy_df}}.}
 
 \item{colours}{A character vector of colour names or hex values. Must have
 enough colours to accommodate all your taxa at the appropriate rank. If you
@@ -33,11 +33,11 @@ your \code{sample = } parameter is not actually sample names, but rather
 larger categories, to produce means.}
 
 \item{tax_df}{The data frame used for plotting. Unless you really know what
-you're doing, use the data frame output by \code{make_phy_df()}.}
+you're doing, use the data frame output by \code{\link{make_phy_df}}.}
 }
 \description{
 \code{plot_tax_bar()} creates a taxa bar chart from the data frame generated
-by \code{make_phy_df()}.
+by \code{\link{make_phy_df}}.
 }
 \section{Details}{
  This function generates a ggplot object that is a

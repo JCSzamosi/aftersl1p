@@ -9,7 +9,7 @@ plot_taxon_violin(phy_df, f1 = NULL, f2 = NULL, col_by = NULL,
 }
 \arguments{
 \item{phy_df}{A data frame constructed from a phyloseq object, as with
-\code{psmelt()} (or \code{make_phy_df()})}
+\code{\link{psmelt}} (or \code{\link{make_phy_df}})}
 
 \item{f1, f2}{Two columns to facet by. If both are used, the first will be
 rows and the second will be columns.}

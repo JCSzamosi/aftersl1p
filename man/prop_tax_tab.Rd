@@ -10,7 +10,7 @@ prop_tax_tab(taxtab, indic)
 \item{taxtab}{a \code{tax_table} object}
 
 \item{indic}{a flag to indicate if the taxon names have level indicators. If
-FALSE, they are added. Just gets passed to \code{prop_tax_row()}.}
+FALSE, they are added. Just gets passed to \code{\link{prop_tax_row}}.}
 }
 \description{
 \code{prop_tax_tab} Takes the taxon assignment from the lowest assigned level
