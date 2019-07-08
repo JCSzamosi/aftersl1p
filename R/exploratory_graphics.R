@@ -1010,7 +1010,7 @@ make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
     weights = round(ord$values$Relative_eig * 100, 2)
 
     # Make the data frame
-    ord_ = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
+    ord_df = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
     ord_df %>%
         gather(AxisX, ValueX, starts_with('Axis.')) %>%
         left_join(ord_df) %>%
