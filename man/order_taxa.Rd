@@ -8,7 +8,7 @@ order_taxa(phy_df, rank, abund = "Abundance", decreasing = FALSE)
 }
 \arguments{
 \item{phy_df}{A data frame of a phyloseq object, as produced by
-\code{psmelt()} or \code{make_phy_df()}.}
+\code{\link{psmelt}} or \code{\link{make_phy_df}}.}
 
 \item{rank}{The name of the column to be re-ordered}
 
