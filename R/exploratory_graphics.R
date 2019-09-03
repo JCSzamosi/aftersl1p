@@ -340,13 +340,18 @@ order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
 #'   If FALSE, they are added.
 #' @param prop Specifies whether taxa need to be propogated down the taxonomy
 #'   table (default, TRUE) or if this has already been done.
+#' @param count If FALSE (default) the function will expect a relative abundance
+#'   table and create an 'Other' category for taxa below the cutoff (and will
+#'   raise an error if the table is not relative abundance). If TRUE, the
+#'   function will not check for relative abundance and will not create an
+#'   'Other' category.
 #' @export
 make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
-					   prop = TRUE){
+					   prop = TRUE, count = FALSE){
 
 
     # Check that its relab
-    if (any(otu_table(physeq) > 1)){
+    if (!count & any(otu_table(physeq) > 1)){
         stop('physeq must be a relative abundance table. You have counts > 1.')
     }
     ranks = colnames(tax_table(physeq))
@@ -379,14 +384,19 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 
 	# Add in the taxonomic data columns
 	taxcols = names(abunds)[match(ranks[1],names(abunds)):ncol(abunds)]
-	others[taxcols] = 'Other'
 
-	# Combine the 'Other' data frame with the original
-	newdf = abunds[,metacols]
-	newdf$Abundance = abunds$Abundance
-	newdf[,taxcols] = abunds[,taxcols]
-	newdf = rbind(as.data.frame(others),
-				as.data.frame(newdf))
+	if (! count){
+	    others[taxcols] = 'Other'
+
+	    # Combine the 'Other' data frame with the original
+	    newdf = abunds[,metacols]
+	    newdf$Abundance = abunds$Abundance
+	    newdf[,taxcols] = abunds[,taxcols]
+	    newdf = rbind(as.data.frame(others),
+	                  as.data.frame(newdf))
+	} else {
+	    newdf = abunds
+	}
 
 	# Order the tax cols by mean abundance
 	for (r in taxcols){
