@@ -1,6 +1,4 @@
-################################################################################
-### Imports
-################################################################################
+# Imports ----------------------------------------------------------------------
 
 #' @import dplyr
 #' @import tidyr
@@ -10,9 +8,7 @@
 #' @import pipeR
 NULL
 
-################################################################################
-### Objects
-################################################################################
+# Objects ----------------------------------------------------------------------
 
 cols_21 = rev(c("#4f8579","#783fcc","#69d24d","#cb4bbd","#c6dc46","#542871",
             "#78d792","#cc4472","#83d7d0","#d44d33","#676fcd","#ceb854",
@@ -57,11 +53,12 @@ cols_70 = rev(c("#00cf9b","#fc00bf","#52e62c","#a000b2","#9fff37","#5066ff",
 			   "#ffd8a1","#00332c","#ff8763","#018b69","#9d5d00","#006a7f",
 			   "#ffae8e","#472700","#ffb4b6","#807100"))
 
-################################################################################
-### Functions to generate taxa bar charts
-################################################################################
+# Functions --------------------------------------------------------------------
+
+## Functions to generate taxa bar charts ---------------------------------------
 
 ### Deal with data -------------------------------------------------------------
+
 #### Deal with taxa ------------------------------------------------------------
 
 ##### dbig_taxa --------------------------------------------------------------
@@ -691,105 +688,10 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	return(indiv)
 }
 
-#### plot_read_depth -----------------------------------------------------------
 
-#' Plot read depth
-#'
-#' Creates a read depth histogram.
-#' @param physeq A phyloseq object
-#' @export
-plot_read_depth = function(physeq){
-    sample_sum_df = data.frame(Total = sample_sums(physeq),
-                               sample_data(physeq))
-    depth_plot = ggplot(sample_sum_df, aes(x = Total)) +
-        geom_histogram(colour = 'black', fill = 'grey57') +
-        scale_x_log10() +
-        xlab('Log10 read depth') +
-        ylab('Number of samples') +
-        ggtitle('Distribution of read depths') +
-        theme_bw()
-    return(depth_plot)
-}
+## Functions to generate distance bar charts -----------------------------------
 
-#### plot_abundance_violin -----------------------------------------------------
-
-#' Make violin plots of taxon abundance
-#'
-#' @param phy_df A data frame constructed from a phyloseq object, as with
-#'   \code{\link{psmelt}} (or \code{\link{make_phy_df}})
-#' @param f1,f2 Two columns to facet by. If both are used, the first will be
-#'   rows and the second will be columns.
-#' @param col_by A column to colour points by. If this column has more than 21
-#'   unique values, you must provide your own list of colours with the
-#'   \code{colours} parameter.
-#' @param colours An optional vector of colours to use when colouring the
-#'   points.
-#' @export
-plot_taxon_violin = function(phy_df, f1 = NULL, f2 = NULL, col_by = NULL,
-                             colours = NULL){
-    plt = ggplot(phy_df, aes(x = extraction, y = Abundance))
-    if (!is.null(col_by)){
-        if (is.null(colours)){
-			num = length(unique(phy_df[,col_by]))
-			colours = case_when(
-								num <= 22 ~ c('grey69',cols_21),
-								num <= 32 ~ c('grey69',cols_31),
-								num <= 61 ~ c('grey69',cols_60),
-								num > 61 ~ c('grey69',cols_70))
-        }
-        plt = plt + geom_point(aes_string(colour = col_by),
-                               alpha = 0.3,
-                               position = position_jitter(width = 0.3)) +
-            scale_colour_manual(values = colours)
-    } else {
-        plt = plt + geom_point(alpha = 0.3,
-                               position = position_jitter(width = 0.3),
-                               colour = 'goldenrod')
-    }
-    plt = plt + geom_violin(fill = NA)
-
-    if (!is.null(f1)){
-        if (!is.null(f2)){
-            form = formula(paste(f1, '~', f2))
-            plt = plt + facet_grid(form)
-        } else {
-            form = formula(paste('~', f1))
-            plt = plt + facet_wrap(form)
-        }
-    } else if (!is.null(f2)){
-        form = formula(paste('~', f2))
-        plt = plt + facet_wrap(form)
-    }
-    plt = plt + scale_y_log10() + theme_bw()
-
-    return(plt)
-}
-
-
-
-#### plot_rank_ab --------------------------------------------------------------
-
-#' Create a rank-abundance plot from a phyloseq data frame
-plot_rank_ab = function(){
-
-}
-#### plot_alpha ----------------------------------------------------------------
-
-#' Plot alpha diversity
-#'
-#' Plot the alpha diversity of a phyloseq data set.
-#'
-plot_alpha = function(physeq) {
-    # rarefy
-
-}
-
-
-################################################################################
-### Functions to generate distance bar charts
-################################################################################
-
-#### lddf_check ----------------------------------------------------------------
+### lddf_check -----------------------------------------------------------------
 
 #' Check the inputs of \code{long_distance_df()}
 #'
@@ -833,7 +735,7 @@ lddf_check = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 }
 
 
-#### lddf_work -----------------------------------------------------------------
+### lddf_work ------------------------------------------------------------------
 
 #' Does the actual gathering and spreading without testing assumptions
 #'
@@ -894,7 +796,7 @@ lddf_work = function(dmat, metadat, idcol = 'X.SampleID', suff = c('1','2'),
     return(distlong)
 }
 
-#### long_distance_df ----------------------------------------------------------
+### long_distance_df -----------------------------------------------------------
 
 #' Create a long data frame of among-sample distances
 #'
@@ -970,9 +872,8 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 }
 
 
-################################################################################
-### Functions to generate PCoA plots
-################################################################################
+
+## Functions to generate PCoA plots --------------------------------------------
 
 ### Make the data frame --------------------------------------------------------
 #### axis_num ------------------------------------------------------------------
@@ -1071,3 +972,45 @@ plt_ord = function(ord_long, colour = NULL, shape = NULL, pt_alph = 0.7){
 
     return(ord_plt)
 }
+
+
+## Miscellaneous Functions -----------------------------------------------------
+
+#### plot_read_depth -----------------------------------------------------------
+
+#' Plot read depth
+#'
+#' Creates a read depth histogram.
+#' @param physeq A phyloseq object
+#' @export
+plot_read_depth = function(physeq){
+    sample_sum_df = data.frame(Total = sample_sums(physeq),
+                               sample_data(physeq))
+    depth_plot = ggplot(sample_sum_df, aes(x = Total)) +
+        geom_histogram(colour = 'black', fill = 'grey57') +
+        scale_x_log10() +
+        xlab('Log10 read depth') +
+        ylab('Number of samples') +
+        ggtitle('Distribution of read depths') +
+        theme_bw()
+    return(depth_plot)
+}
+
+#### plot_rank_ab --------------------------------------------------------------
+
+#' Create a rank-abundance plot from a phyloseq data frame
+plot_rank_ab = function(){
+
+}
+#### plot_alpha ----------------------------------------------------------------
+
+#' Plot alpha diversity
+#'
+#' Plot the alpha diversity of a phyloseq data set.
+#'
+plot_alpha = function(physeq) {
+    # rarefy
+
+}
+
+
