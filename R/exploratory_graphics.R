@@ -1021,8 +1021,11 @@ make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
 #' @param ord_long The ordination data frame produced by \code{make_ord_df}
 #' @param colour The name of the column to use to colour the points.
 #' @param shape The name of the coloumn governing the shape of the points.
+#' @param size The size of the points. Passed to the \code{geom_point()} size
+#' argument and defaults to 1.
 #' @param pt_alph The transparency of the points. Default is 0.7
-plt_ord = function(ord_long, colour = NULL, shape = NULL, pt_alph = 0.7){
+plt_ord = function(ord_long, colour = NULL, shape = NULL, size = 1,
+                   pt_alph = 0.7){
     ord_plt = ggplot(ord_long, aes(ValueX, ValueY))
 
     if (!is.null(colour) & !(is.null(shape))) {
