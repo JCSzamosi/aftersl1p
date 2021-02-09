@@ -1009,19 +1009,6 @@ make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
         return(ord_long)
     }
 
-    # Calculate the axis weights
-    weights = round(ord$values$Relative_eig * 100, 2)
-
-    # Make the data frame
-    ord_df = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
-    ord_df %>%
-        gather(AxisX, ValueX, starts_with('Axis.')) %>%
-        left_join(ord_df) %>%
-        gather(AxisY, ValueY, starts_with('Axis.')) %>%
-        mutate(AxisX = factor(paste(AxisX, weights[axis_num(AxisX)])),
-               AxisY = factor(paste(AxisY, weights[axis_num(AxisY)]))) ->
-        ord_long
-
     return(ord_long)
 
 }
