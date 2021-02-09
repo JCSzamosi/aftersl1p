@@ -991,7 +991,7 @@ make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
 
     if (ord_meth == 'PCoA'){
         ord_long = make_pcoa_df(ord, physeq, axes)
-    } else if (ord_metho == 'RDA'){
+    } else if (ord_meth == 'RDA'){
         ord_long = make_rda_df(ord, physeq, axes)
     } else {
         ord_long = tryCatch(make_pcoa_df(ord, physeq, axes))
