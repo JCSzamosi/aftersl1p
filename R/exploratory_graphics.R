@@ -1030,17 +1030,17 @@ plt_ord = function(ord_long, colour = NULL, shape = NULL, size = 1,
 
     if (!is.null(colour) & !(is.null(shape))) {
         ord_plt = ord_plt +
-            geom_point(aes_string(colour = colour, shape = shape),
+            geom_point(aes_string(colour = colour, shape = shape, size = size),
                        alpha = pt_alph)
     } else if (!is.null(colour)){
         ord_plt = ord_plt +
-            geom_point(aes_string(colour = colour), alpha = pt_alph)
+            geom_point(aes_string(colour = colour), alpha = pt_alph, size = size)
     } else if (!is.null(shape)){
         ord_plt = ord_plt +
-            geom_point(aes_string(shape = shape), alpha = pt_alph)
+            geom_point(aes_string(shape = shape), alpha = pt_alph, size = size)
     } else {
         ord_plt = ord_plt +
-            geom_point(alpha = pt_alph)
+            geom_point(alpha = pt_alph, size = size)
     }
 
     ord_plt = ord_plt +
