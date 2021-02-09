@@ -4,8 +4,13 @@
 \alias{make_ord_df}
 \title{Make a data frame of the ordination}
 \usage{
-make_ord_df(physeq, dist_meth = "bray", ord_meth = "PCoA",
-  scree_only = FALSE, axes = 1:4)
+make_ord_df(
+  physeq,
+  dist_meth = "bray",
+  ord_meth = "PCoA",
+  scree_only = FALSE,
+  axes = 1:4
+)
 }
 \arguments{
 \item{physeq}{A phyloseq object with an OTU table and sample data. The table
@@ -27,5 +32,7 @@ in the data frame. Defaults to \code{1:4}.}
 }
 \description{
 Take a phyloseq object and generate a data frame of the distance-based
-ordination of the samples for plotting.
+ordination of the samples for plotting. This function has been tested with
+ordination methods 'PCoA' and 'RDA'. I can't make any promises if you use a
+different ordination method.
 }

@@ -4,9 +4,16 @@
 \alias{plot_tax_bar}
 \title{Create a Taxa Bar Chart}
 \usage{
-plot_tax_bar(taxa_df, rank, colours = NULL, sample = "X.SampleID",
-  abund = "Abundance", legloc = "right", yscale = "lin",
-  means = FALSE)
+plot_tax_bar(
+  taxa_df,
+  rank,
+  colours = NULL,
+  sample = "X.SampleID",
+  abund = "Abundance",
+  legloc = "right",
+  yscale = "lin",
+  means = FALSE
+)
 }
 \arguments{
 \item{rank}{The taxonomic rank at which to view the data. Must be one of

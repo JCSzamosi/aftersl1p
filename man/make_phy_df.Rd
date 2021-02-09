@@ -4,8 +4,14 @@
 \alias{make_phy_df}
 \title{Generate a Data Frame for Taxon Bar Charts}
 \usage{
-make_phy_df(physeq, rank = "Genus", cutoff = 0.001, indic = FALSE,
-  prop = TRUE)
+make_phy_df(
+  physeq,
+  rank = "Genus",
+  cutoff = 0.001,
+  indic = FALSE,
+  prop = TRUE,
+  count = FALSE
+)
 }
 \arguments{
 \item{physeq}{A phyloseq object.}
@@ -23,6 +29,12 @@ If FALSE, they are added.}
 
 \item{prop}{Specifies whether taxa need to be propogated down the taxonomy
 table (default, TRUE) or if this has already been done.}
+
+\item{count}{If FALSE (default) the function will expect a relative abundance
+table and create an 'Other' category for taxa below the cutoff (and will
+raise an error if the table is not relative abundance). If TRUE, the
+function will not check for relative abundance and will not create an
+'Other' category.}
 }
 \description{
 \code{make_phy_df} generates a data frame that is useful for generating taxon

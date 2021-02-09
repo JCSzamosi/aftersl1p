@@ -4,8 +4,13 @@
 \alias{lddf_work}
 \title{Does the actual gathering and spreading without testing assumptions}
 \usage{
-lddf_work(dmat, metadat, idcol = "X.SampleID", suff = c("1", "2"),
-  distcol = "Distance")
+lddf_work(
+  dmat,
+  metadat,
+  idcol = "X.SampleID",
+  suff = c("1", "2"),
+  distcol = "Distance"
+)
 }
 \arguments{
 \item{dmat}{A distance matrix or other diagonal matrix object with sample

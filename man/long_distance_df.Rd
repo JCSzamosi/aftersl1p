@@ -4,8 +4,15 @@
 \alias{long_distance_df}
 \title{Create a long data frame of among-sample distances}
 \usage{
-long_distance_df(dmat, metadat, idcol = "X.SampleID", diag = FALSE,
-  suff = c("1", "2"), distcol = "Distance", baseline = NULL)
+long_distance_df(
+  dmat,
+  metadat,
+  idcol = "X.SampleID",
+  diag = FALSE,
+  suff = c("1", "2"),
+  distcol = "Distance",
+  baseline = NULL
+)
 }
 \arguments{
 \item{dmat}{A distance matrix or other diagonal matrix object with sample

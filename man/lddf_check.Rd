@@ -4,8 +4,13 @@
 \alias{lddf_check}
 \title{Check the inputs of \code{long_distance_df()}}
 \usage{
-lddf_check(dmat, metadat, idcol = "X.SampleID", diag = FALSE,
-  suff = c("1", "2"))
+lddf_check(
+  dmat,
+  metadat,
+  idcol = "X.SampleID",
+  diag = FALSE,
+  suff = c("1", "2")
+)
 }
 \description{
 For internal use only
