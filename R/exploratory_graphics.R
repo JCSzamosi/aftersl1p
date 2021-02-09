@@ -917,8 +917,10 @@ make_rda_df = function(ord, physeq, axes){
                 %>% gather(AxisX, ValueX, starts_with('PC'))
                 %>% left_join(ord_df)
                 %>% gather(AxisY, ValueY, starts_with('PC'))
-                %>% mutate(AxisX = paste(AxisX, weights[AxisX]),
-                           AxisY = paste(AxisY, weights[AxisY])))
+                %>% mutate(AxisX = paste(AxisX, paste(weights[AxisX], '%',
+                                                      sep = '')),
+                           AxisY = paste(AxisY, paste(weights[AxisY], '%',
+                                                      sep = ''))))
 
     return(ord_long)
 }
@@ -941,14 +943,16 @@ make_pcoa_df = function(ord, physeq, axes){
 
     # Make the data frame
     ord_df = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
-    ord_df %>%
-        gather(AxisX, ValueX, starts_with('Axis.')) %>%
-        left_join(ord_df) %>%
-        gather(AxisY, ValueY, starts_with('Axis.')) %>%
-        mutate(AxisX = factor(paste(AxisX, weights[axis_num(AxisX)])),
-               AxisY = factor(paste(AxisY, weights[axis_num(AxisY)]))) ->
-        ord_long
-
+    ord_long = (ord_df
+                %>% gather(AxisX, ValueX, starts_with('Axis.'))
+                %>% left_join(ord_df)
+                %>% gather(AxisY, ValueY, starts_with('Axis.'))
+                %>% mutate(AxisX = factor(paste(AxisX,
+                                        paste(weights[axis_num(AxisX)], '%',
+                                                 sep = ''))),
+                           AxisY = factor(paste(AxisY,
+                                        paste(weights[axis_num(AxisY)], '%',
+                                                 sep = '')))))
     return(ord_long)
 }
 
