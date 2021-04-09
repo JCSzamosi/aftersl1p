@@ -327,9 +327,8 @@ order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
 #'   for use in plotting.
 #'
 #' @param physeq A phyloseq object.
-#' @param rank The rank at which to glom taxa. Must be one of 'Genus', 'Family',
-#'   'Order', 'Class', 'Phylum'. Default is 'Genus'. TODO: make it possible to
-#'   do this OTU-wise.
+#' @param rank The rank at which to glom taxa. Must be one of 'OTU', 'Genus',
+#'   'Family', 'Order', 'Class', 'Phylum'. Default is 'Genus'.
 #' @param cutoff The abundance cutoff below which taxa are grouped into 'Other'.
 #'   If you don't want anything grouped into 'Other', set this to 0. Default is
 #'   0.001.
@@ -352,6 +351,9 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
         stop('physeq must be a relative abundance table. You have counts > 1.')
     }
     ranks = colnames(tax_table(physeq))
+    if (rank == 'OTU'){
+        ranks = c(ranks, rank)
+    }
 
     # Propogate taxonomic assignments down the tree
     if (prop){
@@ -359,7 +361,11 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
     }
 
 	# Glom to the correct taxonomic rank
-	phyl_glommed = tax_glom(physeq, taxrank = rank)
+    if (rank == 'OTU'){
+        phyl_glommed = physeq
+    } else {
+        phyl_glommed = tax_glom(physeq, taxrank = rank)
+    }
 
 	# Set all counts < the cutoff to zero
 	otu_table(phyl_glommed)[otu_table(phyl_glommed) < cutoff] = 0
@@ -381,6 +387,9 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 
 	# Add in the taxonomic data columns
 	taxcols = names(abunds)[match(ranks[1],names(abunds)):ncol(abunds)]
+	if (rank == 'OTU'){
+	    taxcols = c(taxcols, 'OTU')
+	}
 
 	if (! count){
 	    others[taxcols] = 'Other'

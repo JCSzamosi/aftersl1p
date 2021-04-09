@@ -16,9 +16,8 @@ make_phy_df(
 \arguments{
 \item{physeq}{A phyloseq object.}
 
-\item{rank}{The rank at which to glom taxa. Must be one of 'Genus', 'Family',
-'Order', 'Class', 'Phylum'. Default is 'Genus'. TODO: make it possible to
-do this OTU-wise.}
+\item{rank}{The rank at which to glom taxa. Must be one of 'OTU', 'Genus',
+'Family', 'Order', 'Class', 'Phylum'. Default is 'Genus'.}
 
 \item{cutoff}{The abundance cutoff below which taxa are grouped into 'Other'.
 If you don't want anything grouped into 'Other', set this to 0. Default is
