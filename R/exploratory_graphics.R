@@ -101,8 +101,9 @@ dbig_genera = function(physeq){
 	               NAmbigGenus = if_else(Genus %in% dup_nms,
 	                                     paste(Genus, ' (', Family,')',
 	                                           sep = ''),
-	                                     Genus)) %>%
-	        right_join(tt) %>%
+	                                     Genus)) -> tmp
+	    tt %>%
+	        left_join(tmp) %>%
 	        mutate(Genus = NAmbigGenus) %>%
 	        select(-NAmbigGenus) %>%
 	        mutate_if(is.factor, as.character) %>%
@@ -975,21 +976,26 @@ make_pcoa_df = function(ord, physeq, axes){
 #' different ordination method.
 #'
 #' @param physeq A phyloseq object with an OTU table and sample data. The table
-#' should be rarefied (or relative abundance) so that the distance metrics will
-#' be meaningful.
+#'   should be rarefied (or relative abundance) so that the distance metrics
+#'   will be meaningful.
 #' @param dist_meth The distance method to be use. Must be one of the methods
-#' accepted by the \code{phyloseq::distance()} function. Default is 'bray'.
-#' @param ord_meth The ordination method. Must be one of the methods accepted
-#' by the \code{phyloseq::ordinate()} function. Default is 'PCoA'.
-#' @param scree_only If \code{TRUE}, this function will print the scree plot of the
-#' requested ordination and then exit. Good for deciding how many axes you
-#' care about. Default is \code{FALSE}.
+#'   accepted by the \code{phyloseq::distance()} function. Default is 'bray'. If
+#'   'jaccard' is used, adds the \code{binary = TRUE} argument.
+#' @param ord_meth The ordination method. Must be one of the methods accepted by
+#'   the \code{phyloseq::ordinate()} function. Default is 'PCoA'.
+#' @param scree_only If \code{TRUE}, this function will print the scree plot of
+#'   the requested ordination and then exit. Good for deciding how many axes you
+#'   care about. Default is \code{FALSE}.
 #' @param axes A vector of integers indicating which ordination axes to include
-#' in the data frame. Defaults to \code{1:4}.
+#'   in the data frame. Defaults to \code{1:4}.
 make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
                   scree_only = FALSE, axes = 1:4){
     # Get the distance object and do the ordination
-    d = distance(physeq, method = dist_meth)
+    if (dist_meth == 'jaccard'){
+        d = distance(physeq, method = dist_meth, binary = TRUE)
+    } else {
+        d = distance(physeq, method = dist_meth)
+    }
     ord = ordinate(physeq, ord_meth, d)
 
     # Scree
