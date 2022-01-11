@@ -1,0 +1,41 @@
+,Kingdom,Phylum,Class,Order,Family,Genus,Species,AmbigGenus
+sp1,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Fenollaria,Bar (Fenollaria),g_Bar,Bar
+sp2,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Finegoldia,Bar (Finegoldia),g_Bar,Bar
+sp3,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp4,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Anaerococcus,f_Anaerococcus,f_Anaerococcus,f_Anaerococcus
+sp5,Bacteria,Firmicutes,Clostridia,Oscillospirales,Foo,Faecalibacterium (Foo),prausnitzii,Faecalibacterium
+sp6,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Fenollaria,f_Fenollaria,f_Fenollaria,f_Fenollaria
+sp7,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Ezakiella,f_Ezakiella,f_Ezakiella,f_Ezakiella
+sp8,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,Blautia,obeum,Blautia
+sp9,Bacteria,Campilobacterota,Campylobacteria,Campylobacterales,Campylobacteraceae,Campylobacter,hominis,Campylobacter
+sp10,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,fragilis,Bacteroides
+sp11,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp12,Bacteria,Firmicutes,Clostridia,Oscillospirales,Ruminococcaceae,Faecalibacterium (Ruminococcaceae),g_Faecalibacterium,Faecalibacterium
+sp13,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Murdochiella,f_Murdochiella,f_Murdochiella,f_Murdochiella
+sp14,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp15,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp16,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacterales,Enterobacteriaceae,Escherichia-Shigella,coli,Escherichia-Shigella
+sp17,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,[Ruminococcus] gnavus group,g_[Ruminococcus] gnavus group,[Ruminococcus] gnavus group
+sp18,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Prevotellaceae,Prevotella,timonensis,Prevotella
+sp19,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,fragilis,Bacteroides
+sp20,Bacteria,Firmicutes,Clostridia,c_Clostridia,c_Clostridia,c_Clostridia,c_Clostridia,c_Clostridia
+sp21,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales
+sp22,Bacteria,Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes
+sp23,Bacteria,Firmicutes,Clostridia,c_Clostridia,c_Clostridia,c_Clostridia,c_Clostridia,c_Clostridia
+sp24,Bacteria,Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes
+sp25,Bacteria,Firmicutes,Clostridia,Oscillospirales,Ruminococcaceae,Faecalibacterium (Ruminococcaceae),prausnitzii,Faecalibacterium
+sp26,Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria
+sp27,Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria
+sp28,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,Blautia,obeum,Blautia
+sp29,Bacteria,Campilobacterota,Campylobacteria,Campylobacterales,Campylobacteraceae,Campylobacter,hominis,Campylobacter
+sp30,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,fragilis,Bacteroides
+sp31,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned
+sp32,Bacteria,Firmicutes,Clostridia,Oscillospirales,Ruminococcaceae,Faecalibacterium (Ruminococcaceae),g_Faecalibacterium,Faecalibacterium
+sp33,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned
+sp34,Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria
+sp35,Bacteria,Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota
+sp36,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacterales,Enterobacteriaceae,Escherichia-Shigella,coli,Escherichia-Shigella
+sp37,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,[Ruminococcus] gnavus group,g_[Ruminococcus] gnavus group,[Ruminococcus] gnavus group
+sp38,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Prevotellaceae,Prevotella,timonensis,Prevotella
+sp39,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,fragilis,Bacteroides
+sp40,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Ezakiella,f_Ezakiella,f_Ezakiella,f_Ezakiella
