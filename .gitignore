@@ -6,3 +6,4 @@
 *.swo
 test_data/*
 ring_dir
+private
