@@ -14,17 +14,18 @@ make_ord_df(
 }
 \arguments{
 \item{physeq}{A phyloseq object with an OTU table and sample data. The table
-should be rarefied (or relative abundance) so that the distance metrics will
-be meaningful.}
+should be rarefied (or relative abundance) so that the distance metrics
+will be meaningful.}
 
 \item{dist_meth}{The distance method to be use. Must be one of the methods
-accepted by the \code{phyloseq::distance()} function. Default is 'bray'.}
+accepted by the \code{phyloseq::distance()} function. Default is 'bray'. If
+'jaccard' is used, adds the \code{binary = TRUE} argument.}
 
-\item{ord_meth}{The ordination method. Must be one of the methods accepted
-by the \code{phyloseq::ordinate()} function. Default is 'PCoA'.}
+\item{ord_meth}{The ordination method. Must be one of the methods accepted by
+the \code{phyloseq::ordinate()} function. Default is 'PCoA'.}
 
-\item{scree_only}{If \code{TRUE}, this function will print the scree plot of the
-requested ordination and then exit. Good for deciding how many axes you
+\item{scree_only}{If \code{TRUE}, this function will print the scree plot of
+the requested ordination and then exit. Good for deciding how many axes you
 care about. Default is \code{FALSE}.}
 
 \item{axes}{A vector of integers indicating which ordination axes to include

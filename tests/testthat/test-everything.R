@@ -4,11 +4,11 @@ library(phyloseq)
 # Test dbig_genera() -----------------------------------------------------------
 
 ## Read in the data
-taxmat = read.csv('tests/testthat/taxmat_unique.csv', row.names = 1)
-otumat = read.csv('tests/testthat/otumat.csv', row.names = 1)
-samdat = read.csv('tests/testthat/samdat.csv', row.names = 1)
-taxmat_ambig = read.csv('tests/testthat/taxmat_ambig.csv', row.names = 1)
-taxmat_dbig = read.csv('tests/testthat/taxmat_dbig.csv', row.names = 1)
+taxmat = read.csv('taxmat_unique.csv', row.names = 1)
+otumat = read.csv('otumat.csv', row.names = 1)
+samdat = read.csv('samdat.csv', row.names = 1)
+taxmat_ambig = read.csv('taxmat_ambig.csv', row.names = 1)
+taxmat_dbig = read.csv('taxmat_dbig.csv', row.names = 1)
 
 ## Make the unique ps obj (should match itself)
 ps = phyloseq(otu_table(otumat, taxa_are_rows = TRUE),
