@@ -1,0 +1,21 @@
+,Kingdom,Phylum,Class,Order,Family,Genus,Species
+sp1,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Fenollaria,f_Fenollaria,f_Fenollaria
+sp2,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Finegoldia,f_Finegoldia,f_Finegoldia
+sp3,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp4,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Anaerococcus,f_Anaerococcus,f_Anaerococcus
+sp5,Bacteria,Firmicutes,Clostridia,Oscillospirales,Foo,Faecalibacterium,prausnitzii
+sp6,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Fenollaria,f_Fenollaria,f_Fenollaria
+sp7,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Ezakiella,f_Ezakiella,f_Ezakiella
+sp8,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,Blautia,obeum
+sp9,Bacteria,Campilobacterota,Campylobacteria,Campylobacterales,Campylobacteraceae,Campylobacter,hominis
+sp10,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,fragilis
+sp11,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp12,Bacteria,Firmicutes,Clostridia,Oscillospirales,Ruminococcaceae,Faecalibacterium,g_Faecalibacterium
+sp13,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Murdochiella,f_Murdochiella,f_Murdochiella
+sp14,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp15,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus,f_Peptoniphilus
+sp16,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacterales,Enterobacteriaceae,Escherichia-Shigella,coli
+sp17,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,[Ruminococcus] gnavus group,g_[Ruminococcus] gnavus group
+sp18,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Prevotellaceae,Prevotella,timonensis
+sp19,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides,fragilis
+sp20,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Ezakiella,f_Ezakiella,f_Ezakiella

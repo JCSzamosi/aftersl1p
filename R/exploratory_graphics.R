@@ -6,6 +6,7 @@
 #' @import phyloseq
 #' @import rlang
 #' @import pipeR
+#' @import tibble
 NULL
 
 # Objects ----------------------------------------------------------------------
@@ -89,27 +90,31 @@ dbig_genera = function(physeq){
 	nambig = paste('NAmbig',rank,sep = '')
 
 	tt = data.frame(tax_table(physeq), stringsAsFactors = FALSE)
-    tt_glom = unique(tt)
+	ranks = colnames(tt)
+	rank_n = which(ranks == rank)
+	tt_work = tt[,1:rank_n]
+    tt_glom = unique(tt_work)
 
 	tax_vect = tt_glom[,rank]
 
+	tt = (tt
+	      %>% rownames_to_column())
 	if (any(duplicated(tax_vect))){
 	    dup_nms = unique(tax_vect[duplicated(tax_vect)])
 
-	    tt_glom %>%
-	        mutate(AmbigGenus = Genus,
-	               NAmbigGenus = if_else(Genus %in% dup_nms,
-	                                     paste(Genus, ' (', Family,')',
-	                                           sep = ''),
-	                                     Genus)) -> tmp
-	    tt %>%
-	        left_join(tmp) %>%
-	        mutate(Genus = NAmbigGenus) %>%
-	        select(-NAmbigGenus) %>%
-	        mutate_if(is.factor, as.character) %>%
-	        as.matrix() -> fixed
-
-	    rownames(fixed) = rownames(tt)
+	    fixed = (tt_glom
+	        %>% mutate(AmbigGenus = Genus,
+	                   NAmbigGenus = if_else(Genus %in% dup_nms,
+	                                         paste(Genus, ' (', Family,')',
+	                                               sep = ''),
+	                                         Genus))
+	        %>% right_join(tt)
+	        %>% mutate(Genus = NAmbigGenus)
+	        %>% select(-NAmbigGenus)
+	        %>% select(-AmbigGenus, AmbigGenus)
+	        %>% column_to_rownames()
+	        %>% mutate_if(is.factor, as.character)
+	        %>% as.matrix())
 
 	    tax_table(physeq) = fixed
 
