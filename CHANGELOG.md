@@ -1,6 +1,5 @@
 * 2022-01-11 v1.0
-	* **Major bug fix** described below. Please update ASAP if you have not
-	already
+	* **Major bug fix**
 	* this package has seen minimal changes since January of 2018 when it was
 	first written; however, in April of 2020 there was a major change in the
 	functionality of the `right_join()` function in the `dplyr` package
