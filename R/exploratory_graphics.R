@@ -150,14 +150,14 @@ dbig_genera = function(physeq){
 prop_tax_row = function(taxrow,indic){
 	## taxrow: a row from a tax_table of a phyloseq object
 
-	ranks = colnames(taxrow)
+	ranks = names(taxrow)
 
 	hasNA = FALSE
 	tax = NA
 	for (i in 1:length(ranks)){
 
-	    if (!is.na(taxrow[,ranks[i]])){
-	        tax = taxrow[,ranks[i]]
+	    if (!is.na(taxrow[ranks[i]])){
+	        tax = taxrow[ranks[i]]
 	    } else {
 	        hasNA = TRUE
 	        break
@@ -175,7 +175,7 @@ prop_tax_row = function(taxrow,indic){
 		    init = tolower(substring(ranks[i-1],1,1))
 		    assn = paste(init,tax,sep = '_')
 		}
-		taxrow[,ranks[i:length(ranks)]] = assn
+		taxrow[ranks[i:length(ranks)]] = assn
 		return(taxrow)
 	}
 }
@@ -206,11 +206,13 @@ prop_tax_row = function(taxrow,indic){
 prop_tax_tab = function(taxtab, indic){
 
     ## I don't know why I can't use apply for this, but I can't.
-    for (r in 1:nrow(taxtab)){
-        taxtab[r,] = prop_tax_row(taxtab[r,], indic)
-    }
+    tt = apply(taxtab, 1, prop_tax_row, indic)
+    tt = t(tt)
+    # for (r in 1:nrow(taxtab)){
+    #     taxtab[r,] = prop_tax_row(taxtab[r,], indic)
+    # }
 
-    return(taxtab)
+    return(tt)
 }
 
 ##### prop_tax_down ------------------------------------------------------------
@@ -244,15 +246,15 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
 	# Deal with the case where the blanks aren't NAs
     tt = tax_table(physeq)
     sp = rownames(tt)
-    ifelse((endsWith(c(tt), '__') | c(tt) == ''),
+    tt = (ifelse((endsWith(c(tt), '__') | c(tt) == ''),
           	NA,
-            c(tt)) %>%
-        matrix(ncol = ncol(tt)) -> tt
+            c(tt))
+        %>% matrix(ncol = ncol(tt)))
     colnames(tt) = colnames(tax_table(physeq))
     rownames(tt) = sp
-    tax_table(physeq) = tt
 
-    tax_table(physeq) = prop_tax_tab(tax_table(physeq), indic)
+    tt = prop_tax_tab(tt, indic)
+    tax_table(physeq) = tt
 
     if(dbig){
         physeq = dbig_genera(physeq)
@@ -377,20 +379,18 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	# Set all counts < the cutoff to zero
 	otu_table(phyl_glommed)[otu_table(phyl_glommed) < cutoff] = 0
 
-	# Filter out all taxa that are zero (<cutoff) everywhere, melt, and sort
-	phyl_glommed %>%
-		filter_taxa(function(x) sum(x) > 0, prune = TRUE) -> abunds_phy
-
-	abunds_phy %>%
-	    psmelt() %>%
-		data.frame() -> abunds
+	# Melt and sort, then filter out taxa that are 0 in their sample
+	abunds = (phyl_glommed
+	    %>% psmelt()
+	    %>% data.frame()
+	    %>% filter(Abundance > 0))
 
 	# List all the metadata columns so that they are included in the data frame
-	metacols = names(abunds)[4:(match(ranks[1],names(abunds))-1)]
+	metacols = colnames(sample_data(physeq))
 	# Make an 'Other' row for each sample
-	abunds %>%
-		group_by_(.dots = metacols) %>%
-		summarize(Abundance=remain(Abundance)) -> others
+	others = (abunds
+	    %>% group_by(across(all_of(metacols)))
+	    %>% summarize(Abundance=remain(Abundance), .groups = 'drop'))
 
 	# Add in the taxonomic data columns
 	taxcols = names(abunds)[match(ranks[1],names(abunds)):ncol(abunds)]
@@ -415,7 +415,8 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	for (r in taxcols){
 	    newdf = order_taxa(newdf, r)
 	}
-
+    newdf = (newdf
+             %>% mutate_if(is.factor, as.character))
 	return(newdf)
 
 }

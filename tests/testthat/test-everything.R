@@ -68,3 +68,22 @@ test_that('prop_tax_down() works',{
     expect_equal(prop_tax_down(ps_ambig, indic = FALSE, dbig = FALSE),
                  ps_ndb)
 })
+
+# Test make_phy_df() -----------------------------------------------------------
+
+
+## Read in the data
+taxmat = read.csv('make_phy_df/taxmat.csv', row.names = 1)
+otumat = read.csv('make_phy_df/otumat_rel.csv', row.names = 1)
+samdat = read.csv('prop_tax_down/samdat.csv', row.names = 1)
+
+ps = phyloseq(otu_table(as.matrix(otumat), taxa_are_rows = TRUE),
+              tax_table(as.matrix(taxmat)),
+              sample_data(samdat))
+plain_out = read.csv('make_phy_df/phy_df_out.csv')
+otu_out = read.csv('make_phy_df/phy_df_otu_out.csv')
+tst = make_phy_df(ps, prop = FALSE)
+test_that('make_phy_df() works',{
+    expect_equal(make_phy_df(ps,prop = FALSE), plain_out)
+    expect_equal(make_phy_df(ps,rank = 'OTU', prop = FALSE), otu_out)
+})

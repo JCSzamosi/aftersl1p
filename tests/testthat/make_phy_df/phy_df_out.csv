@@ -1,0 +1,40 @@
+StudyID,Notes,RunNum,SampleID,Group,Abundance,Kingdom,Phylum,Class,Order,Family,Genus
+JPRC4,BSL,LR397,01-1005,A,0.000857632933103,Other,Other,Other,Other,Other,Other
+JPRC5,RT,LR397,01-1005,A,0.002789765049475,Other,Other,Other,Other,Other,Other
+JPRC6,HM,LR397,01-1005,A,0.001003728133067,Other,Other,Other,Other,Other,Other
+JPRC5,RT,LR397,01-1005,A,0.503596181509089,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides
+JPRC6,HM,LR397,01-1005,A,0.383997705764267,Bacteria,Firmicutes,Clostridia,Oscillospirales,Ruminococcaceae,Faecalibacterium (Ruminococcaceae)
+JPRC4,BSL,LR397,01-1005,A,0.336192109777015,Bacteria,Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes
+JPRC6,HM,LR397,01-1005,A,0.273731000860338,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,Blautia
+JPRC5,RT,LR397,01-1005,A,0.207619545791378,Bacteria,Firmicutes,Clostridia,Oscillospirales,Ruminococcaceae,Faecalibacterium (Ruminococcaceae)
+JPRC4,BSL,LR397,01-1005,A,0.168096054888508,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Finegoldia,Bar (Finegoldia)
+JPRC4,BSL,LR397,01-1005,A,0.148084619782733,Bacteria,Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota
+JPRC4,BSL,LR397,01-1005,A,0.131217838765009,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides
+JPRC6,HM,LR397,01-1005,A,0.084408756333047,Bacteria,Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes
+JPRC4,BSL,LR397,01-1005,A,0.082332761578045,Bacteria,Firmicutes,Clostridia,Oscillospirales,Ruminococcaceae,Faecalibacterium (Ruminococcaceae)
+JPRC5,RT,LR397,01-1005,A,0.080554465803583,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,Blautia
+JPRC5,RT,LR397,01-1005,A,0.07950830391003,Bacteria,Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes,p_Firmicutes
+JPRC4,BSL,LR397,01-1005,A,0.074042309891367,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus
+JPRC6,HM,LR397,01-1005,A,0.067679954115285,Bacteria,Bacteroidota,Bacteroidia,Bacteroidales,Bacteroidaceae,Bacteroides
+JPRC6,HM,LR397,01-1005,A,0.039049804034031,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Finegoldia,Bar (Finegoldia)
+JPRC6,HM,LR397,01-1005,A,0.038237262212026,Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria,k_Bacteria
+JPRC4,BSL,LR397,01-1005,A,0.03516295025729,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,Blautia
+JPRC6,HM,LR397,01-1005,A,0.034843705190708,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,[Ruminococcus] gnavus group
+JPRC5,RT,LR397,01-1005,A,0.034654112723944,Bacteria,Firmicutes,Clostridia,Lachnospirales,Lachnospiraceae,[Ruminococcus] gnavus group
+JPRC5,RT,LR397,01-1005,A,0.031820757595571,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Finegoldia,Bar (Finegoldia)
+JPRC5,RT,LR397,01-1005,A,0.031297676648795,Bacteria,Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota,p_Bacteroidota
+JPRC6,HM,LR397,01-1005,A,0.030350826880795,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus
+JPRC6,HM,LR397,01-1005,A,0.018449479017302,Bacteria,Firmicutes,Clostridia,c_Clostridia,c_Clostridia,c_Clostridia
+JPRC6,HM,LR397,01-1005,A,0.015677277506931,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned
+JPRC5,RT,LR397,01-1005,A,0.015648838324397,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Peptoniphilus,f_Peptoniphilus
+JPRC4,BSL,LR397,01-1005,A,0.012006861063465,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacterales,Enterobacteriaceae,Escherichia-Shigella
+JPRC5,RT,LR397,01-1005,A,0.007933394359444,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Anaerococcus,f_Anaerococcus
+JPRC4,BSL,LR397,01-1005,A,0.006861063464837,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales
+JPRC6,HM,LR397,01-1005,A,0.005831182487334,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Ezakiella,f_Ezakiella
+JPRC6,HM,LR397,01-1005,A,0.003584743332377,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacterales,Enterobacteriaceae,Escherichia-Shigella
+JPRC4,BSL,LR397,01-1005,A,0.003430531732419,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Fenollaria,Bar (Fenollaria)
+JPRC6,HM,LR397,01-1005,A,0.003154574132492,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,Anaerococcus,f_Anaerococcus
+JPRC5,RT,LR397,01-1005,A,0.001917963471514,Bacteria,Firmicutes,Clostridia,Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales,o_Peptostreptococcales-Tissierellales
+JPRC4,BSL,LR397,01-1005,A,0.001715265866209,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned,Unassigned
+JPRC5,RT,LR397,01-1005,A,0.001482062682533,Bacteria,Firmicutes,Clostridia,Oscillospirales,Foo,Faecalibacterium (Foo)
+JPRC5,RT,LR397,01-1005,A,0.001176932130247,Bacteria,Proteobacteria,Gammaproteobacteria,Enterobacterales,Enterobacteriaceae,Escherichia-Shigella
