@@ -415,8 +415,6 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	for (r in taxcols){
 	    newdf = order_taxa(newdf, r)
 	}
-    newdf = (newdf
-             %>% mutate_if(is.factor, as.character))
 	return(newdf)
 
 }
