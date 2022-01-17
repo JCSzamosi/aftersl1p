@@ -7,7 +7,9 @@ is lightly maintained by a single human and is provided as is, with no
 guarantees of any kind.
 
 Please see the [CHANGELOG](./CHANGELOG.md) for important updates and bug fixes,
-and make sure you are using the most recent version of this package. Any bugs or
+and make sure you are using the most recent version of this package. A major bug 
+fix was released January 17, 2022, so please make sure you are running a newer 
+version than that. Any bugs or
 feature requests can be reported via the [issues
 tab](https://github.com/JCSzamosi/aftersl1p/issues). I can make no guarantee
 about how soon updates or fixes will happen, but I will do my best to fix 
