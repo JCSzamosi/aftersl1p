@@ -28,10 +28,3 @@ test_that('dbig_genera() works',{
     expect_equal(dbig_genera(ps_ambig), ps_dbig) #check output
 })
 
-# Test long_distance_df() ------------------------------------------------------
-
-# Read in the data
-otumat = read.csv('long_distance_df/otumat.csv', row.names = 1)
-taxmat = read.csv('long_distance_df/taxmat_ambig.csv', row.names = 1)
-samdat = read.csv('long_distance_df/samdat.csv', row.names = 1)
-samdat$SampleID = rownames(samdat)
