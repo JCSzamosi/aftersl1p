@@ -34,25 +34,25 @@ dbig_genera = function(physeq){
 	tax_vect = tt_glom[,rank]
 
 	tt = (tt
-	      %>% rownames_to_column())
+	      %>% tibble::rownames_to_column())
 	if (any(duplicated(tax_vect))){
 	    dup_nms = unique(tax_vect[duplicated(tax_vect)])
 
 	    fixed = (tt_glom
-	        %>% mutate(AmbigGenus = Genus,
+	        %>% dplyr::mutate(AmbigGenus = Genus,
 	                   NAmbigGenus = if_else(Genus %in% dup_nms,
 	                                         paste(Genus, ' (', Family,')',
 	                                               sep = ''),
 	                                         Genus))
-	        %>% right_join(tt)
-	        %>% mutate(Genus = NAmbigGenus)
-	        %>% select(-NAmbigGenus)
-	        %>% select(-AmbigGenus, AmbigGenus)
-	        %>% column_to_rownames()
-	        %>% mutate_if(is.factor, as.character)
+	        %>% dplyr::right_join(tt)
+	        %>% dplyr::mutate(Genus = NAmbigGenus)
+	        %>% dplyr::select(-NAmbigGenus)
+	        %>% dplyr::select(-AmbigGenus, AmbigGenus)
+	        %>% tibble::column_to_rownames()
+	        %>% dplyr::mutate_if(is.factor, as.character)
 	        %>% as.matrix())
 
-	    tax_table(physeq) = fixed
+	    phyloseq::tax_table(physeq) = fixed
 
 	}
 
@@ -179,7 +179,7 @@ prop_tax_tab = function(taxtab, indic){
 prop_tax_down = function(physeq, indic, dbig = TRUE){
 
 	# Deal with the case where the blanks aren't NAs
-    tt = tax_table(physeq)
+    tt = phyloseq::tax_table(physeq)
     sp = rownames(tt)
     tt = (ifelse((endsWith(c(tt), '__') | c(tt) == ''),
           	NA,
@@ -189,7 +189,7 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
     rownames(tt) = sp
 
     tt = prop_tax_tab(tt, indic)
-    tax_table(physeq) = tt
+    phyloseq::tax_table(physeq) = tt
 
     if(dbig){
         physeq = dbig_genera(physeq)

@@ -37,12 +37,12 @@ make_rda_df = function(ord, physeq, axes){
     weights = round(eigs/sum(eigs), 3) * 100
 
     # Make the data frame
-    ord_df = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
+    ord_df = phyloseq::plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
     ord_long = (ord_df
-                %>% gather(AxisX, ValueX, starts_with('PC'))
-                %>% left_join(ord_df)
-                %>% gather(AxisY, ValueY, starts_with('PC'))
-                %>% mutate(AxisX = paste(AxisX, paste(weights[AxisX], '%',
+                %>% dplyr::gather(AxisX, ValueX, starts_with('PC'))
+                %>% dplyr::left_join(ord_df)
+                %>% dplyr::gather(AxisY, ValueY, starts_with('PC'))
+                %>% dplyr::mutate(AxisX = paste(AxisX, paste(weights[AxisX],'%',
                                                       sep = '')),
                            AxisY = paste(AxisY, paste(weights[AxisY], '%',
                                                       sep = ''))))
@@ -67,12 +67,12 @@ make_pcoa_df = function(ord, physeq, axes){
     weights = round(ord$values$Relative_eig, 3) * 100
 
     # Make the data frame
-    ord_df = plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
+    ord_df = phyloseq::plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
     ord_long = (ord_df
-                %>% gather(AxisX, ValueX, starts_with('Axis.'))
-                %>% left_join(ord_df)
-                %>% gather(AxisY, ValueY, starts_with('Axis.'))
-                %>% mutate(AxisX = factor(paste(AxisX,
+                %>% dplyr::gather(AxisX, ValueX, starts_with('Axis.'))
+                %>% dplyr::left_join(ord_df)
+                %>% dplyr::gather(AxisY, ValueY, starts_with('Axis.'))
+                %>% dplyr::mutate(AxisX = factor(paste(AxisX,
                                         paste(weights[axis_num(AxisX)], '%',
                                                  sep = ''))),
                            AxisY = factor(paste(AxisY,
@@ -107,11 +107,11 @@ make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
                   scree_only = FALSE, axes = 1:4){
     # Get the distance object and do the ordination
     if (dist_meth == 'jaccard'){
-        d = distance(physeq, method = dist_meth, binary = TRUE)
+        d = phyloseq::distance(physeq, method = dist_meth, binary = TRUE)
     } else {
-        d = distance(physeq, method = dist_meth)
+        d = phyloseq::distance(physeq, method = dist_meth)
     }
-    ord = ordinate(physeq, ord_meth, d)
+    ord = phyloseq::ordinate(physeq, ord_meth, d)
 
     # Scree
     if (scree_only) {

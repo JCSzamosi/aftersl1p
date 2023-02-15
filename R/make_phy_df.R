@@ -34,9 +34,9 @@ order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
 
     phy_df[,rank] = factor(phy_df[,rank])
 	phy_df %>%
-        filter(UQ(sym(rank)) != 'Other') %>%
-		group_by(UQ(sym(rank))) %>%
-		summarize(Tot = sum(UQ(sym(abund)))) %>%
+        dplyr::filter(UQ(sym(rank)) != 'Other') %>%
+		dplyr::group_by(UQ(sym(rank))) %>%
+		dplyr::summarize(Tot = sum(UQ(sym(abund)))) %>%
 		data.frame() -> total_abunds
 
 	lev_ord = levels(droplevels(total_abunds[,rank]))
@@ -107,24 +107,24 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
     if (rank == 'OTU'){
         phyl_glommed = physeq
     } else {
-        phyl_glommed = tax_glom(physeq, taxrank = rank)
+        phyl_glommed = phyloseq::tax_glom(physeq, taxrank = rank)
     }
 
 	# Set all counts < the cutoff to zero
-	otu_table(phyl_glommed)[otu_table(phyl_glommed) < cutoff] = 0
+	phyloseq::otu_table(phyl_glommed)[otu_table(phyl_glommed) < cutoff] = 0
 
 	# Melt and sort, then filter out taxa that are 0 in their sample
 	abunds = (phyl_glommed
-	    %>% psmelt()
+	    %>% phyloseq::psmelt()
 	    %>% data.frame()
-	    %>% filter(Abundance > 0))
+	    %>% dplyr::filter(Abundance > 0))
 
 	# List all the metadata columns so that they are included in the data frame
 	metacols = colnames(sample_data(physeq))
 	# Make an 'Other' row for each sample
 	others = (abunds
-	    %>% group_by(across(all_of(metacols)))
-	    %>% summarize(Abundance=remain(Abundance), .groups = 'drop'))
+	    %>% dplyr::group_by(across(all_of(metacols)))
+	    %>% dplyr::summarize(Abundance=remain(Abundance), .groups = 'drop'))
 
 	# Add in the taxonomic data columns
 	taxcols = names(abunds)[match(ranks[1],names(abunds)):ncol(abunds)]

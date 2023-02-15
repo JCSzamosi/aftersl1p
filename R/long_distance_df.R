@@ -76,14 +76,14 @@ lddf_work = function(dmat, metadat, idcol = 'X.SampleID', suff = c('1','2'),
     # Make it long
     dmat %>>%
         {data.frame(ID1 = rownames(.),.)} %>%
-        gather(ID2, Distance, 2:(ncol(dmat)+1), na.rm = TRUE) -> distlong
+        tidyr::gather(ID2, Distance, 2:(ncol(dmat)+1), na.rm = TRUE) -> distlong
 
     ids = paste(idcol,suff, sep = '')
     names(distlong)[1:2] = ids
 
     # Add the metadata columns for the first sample
     distlong %>%
-        inner_join(metadat, by = setNames(c(idcol), ids[1])) -> distlong
+        dplyr::inner_join(metadat, by = setNames(c(idcol), ids[1])) -> distlong
 
     # Add the suffix to the column names
     cn = colnames(distlong)
@@ -94,7 +94,7 @@ lddf_work = function(dmat, metadat, idcol = 'X.SampleID', suff = c('1','2'),
 
     # Add the metadata columns to the second sample
     distlong %>%
-        inner_join(metadat, by = setNames(c(idcol), ids[2])) -> distlong
+        dplyr::inner_join(metadat, by = setNames(c(idcol), ids[2])) -> distlong
 
     # Add the suffix to the column names
     cn = colnames(distlong)
@@ -170,8 +170,10 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
             dmat[!lower.tri(dmat)] = NA
         }
     } else {
-        s1 = inner_join(metadat, baseline, by = colnames(baseline))[,idcol]
-        s2 = anti_join(metadat, baseline, by = colnames(baseline))[,idcol]
+        s1 = dplyr::inner_join(metadat, baseline,
+                               by = colnames(baseline))[,idcol]
+        s2 = dplyr::anti_join(metadat, baseline,
+                              by = colnames(baseline))[,idcol]
         dmat = dmat[as.character(s1),as.character(s2)]
     }
 

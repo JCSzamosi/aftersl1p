@@ -16,8 +16,8 @@ df_glom = function(phy_df, ranks, IDcol = 'X.SampleID', rank = 'Phylum',
 
     # Set up the groups for the plotting totals
     phy_df %>%
-        group_by_at(vars(IDcol,rank)) %>%
-        mutate(TotalAbunds = sum(UQ(sym(abunds)))) %>%
+        dplyr::group_by_at(vars(IDcol,rank)) %>%
+        dplyr::mutate(TotalAbunds = sum(UQ(sym(abunds)))) %>%
         data.frame() -> glommed_df
 
     return(glommed_df)
@@ -59,11 +59,11 @@ subset_order = function(phy_df, varbs = NULL, bases = NULL, rank = 'Genus',
     # Subset and order
     ranked = phy_df
     for(i in 1:length(varbs)){
-        ranked %>% filter(UQ(sym(varbs[i])) == bases[i]) -> ranked
+        ranked %>% dplyr::filter(UQ(sym(varbs[i])) == bases[i]) -> ranked
     }
     ranked %>%
-        group_by_at(vars(c(varbs,rank))) %>%
-        summarize(MetaMean = mean(UQ(sym(abunds)))) %>%
+        dplyr::group_by_at(vars(c(varbs,rank))) %>%
+        dplyr::summarize(MetaMean = mean(UQ(sym(abunds)))) %>%
         data.frame() %>%
         order_taxa(rank, 'MetaMean', decreasing = TRUE) -> ranked
 
