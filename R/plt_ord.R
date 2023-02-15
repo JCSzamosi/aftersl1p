@@ -39,9 +39,9 @@ make_rda_df = function(ord, physeq, axes){
     # Make the data frame
     ord_df = phyloseq::plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
     ord_long = (ord_df
-                %>% dplyr::gather(AxisX, ValueX, starts_with('PC'))
+                %>% tidyr::gather(AxisX, ValueX, starts_with('PC'))
                 %>% dplyr::left_join(ord_df)
-                %>% dplyr::gather(AxisY, ValueY, starts_with('PC'))
+                %>% tidyr::gather(AxisY, ValueY, starts_with('PC'))
                 %>% dplyr::mutate(AxisX = paste(AxisX, paste(weights[AxisX],'%',
                                                       sep = '')),
                            AxisY = paste(AxisY, paste(weights[AxisY], '%',
@@ -69,9 +69,9 @@ make_pcoa_df = function(ord, physeq, axes){
     # Make the data frame
     ord_df = phyloseq::plot_ordination(physeq, ord, axes = axes, justDF = TRUE)
     ord_long = (ord_df
-                %>% dplyr::gather(AxisX, ValueX, starts_with('Axis.'))
+                %>% tidyr::gather(AxisX, ValueX, starts_with('Axis.'))
                 %>% dplyr::left_join(ord_df)
-                %>% dplyr::gather(AxisY, ValueY, starts_with('Axis.'))
+                %>% tidyr::gather(AxisY, ValueY, starts_with('Axis.'))
                 %>% dplyr::mutate(AxisX = factor(paste(AxisX,
                                         paste(weights[axis_num(AxisX)], '%',
                                                  sep = ''))),

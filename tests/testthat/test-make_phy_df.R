@@ -2,17 +2,30 @@
 
 test_that('make_phy_df() works',{
     ## Read in the data
+
+    ### Taxa matrix (no ambiguous genera)
     taxmat = read.csv('make_phy_df/taxmat.csv', row.names = 1)
+
+    ### Taxa matrix (some identical genera are in different families)
     taxmat_ambig = read.csv('make_phy_df/taxmat_ambig.csv', row.names = 1)
+
+    ### The OTU matrix used throughout this test
     otumat = read.csv('make_phy_df/otumat_rel.csv', row.names = 1)
+
+    ### The sample data (mapfile) used throughout this test
     samdat = read.csv('prop_tax_down/samdat.csv', row.names = 1)
 
+    ## Make the non-ambig phyloseq object
     ps = phyloseq(otu_table(as.matrix(otumat), taxa_are_rows = TRUE),
                   tax_table(as.matrix(taxmat)),
                   sample_data(samdat))
+
+    ## Make the ambiguous phyloseq object
     ps_amb = phyloseq(otu_table(as.matrix(otumat), taxa_are_rows = TRUE),
                       tax_table(as.matrix(taxmat_ambig)),
                       sample_data(samdat))
+
+    ## Read in the expected, disambiguated `make_phy_df()` output
     plain_out = read.csv('make_phy_df/phy_df_out.csv')
     ranks = c('Kingdom', 'Phylum', 'Class', 'Order', 'Family','Genus')
     for (r in ranks){
