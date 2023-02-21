@@ -1,56 +1,3 @@
-#### Create a data frame for taxa bar chat plots -------------------------------
-
-##### remain -------------------------------------------------------------------
-
-#' Calculate the difference between included taxa and 100% for the 'Other'
-#' section of a phyloseq data frame.
-#'
-#' @section Value: a numeric vector
-#'
-#' @param x A numeric vector
-#' @param tot The desired total. Default is 1.
-remain = function(x, tot = 1){
-    tot-sum(x)
-}
-
-##### order_taxa ---------------------------------------------------------------
-
-#' Order Taxon Name Factors
-#'
-#' \code{order_taxa} reorders the taxon names in a taxon column (e.g. 'Class' or
-#' 'Phylum') by the taxon's mean abundance (but always makes sure to put Other
-#' first).
-#'
-#' @section Value: A data frame that is identical to the one given, but with the
-#'   specified column re-ordered by its mean abundance
-#'
-#' @param phy_df A data frame of a phyloseq object, as produced by
-#'   \code{\link{psmelt}} or \code{\link{make_phy_df}}.
-#' @param rank The name of the column to be re-ordered
-#' @param abund The name of the abundances column. Defaults to 'Abundance'
-#' @param decreasing Specifies whether the taxon order should be based on
-#'   decreasing or increasing abundance. Defaults to FALSE.
-order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
-
-    phy_df[,rank] = factor(phy_df[,rank])
-	phy_df %>%
-        dplyr::filter(UQ(sym(rank)) != 'Other') %>%
-		dplyr::group_by(UQ(sym(rank))) %>%
-		dplyr::summarize(Tot = sum(UQ(sym(abund)))) %>%
-		data.frame() -> total_abunds
-
-	lev_ord = levels(droplevels(total_abunds[,rank]))
-	if (decreasing){
-	    lev_ord = lev_ord[order(-total_abunds$Tot)]
-	} else{
-	    lev_ord = lev_ord[order(total_abunds$Tot)]
-	}
-
-	phy_df[,rank] = factor(phy_df[,rank], levels = c('Other',lev_ord))
-
-    return(phy_df)
-}
-
 ##### make_phy_df --------------------------------------------------------------
 
 #' Generate a Data Frame for Taxon Bar Charts
@@ -153,4 +100,56 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 
 }
 
+
+
+##### remain -------------------------------------------------------------------
+
+#' Calculate the difference between included taxa and 100% for the 'Other'
+#' section of a phyloseq data frame.
+#'
+#' @section Value: a numeric vector
+#'
+#' @param x A numeric vector
+#' @param tot The desired total. Default is 1.
+remain = function(x, tot = 1){
+    tot-sum(x)
+}
+
+##### order_taxa ---------------------------------------------------------------
+
+#' Order Taxon Name Factors
+#'
+#' \code{order_taxa} reorders the taxon names in a taxon column (e.g. 'Class' or
+#' 'Phylum') by the taxon's mean abundance (but always makes sure to put Other
+#' first).
+#'
+#' @section Value: A data frame that is identical to the one given, but with the
+#'   specified column re-ordered by its mean abundance
+#'
+#' @param phy_df A data frame of a phyloseq object, as produced by
+#'   \code{\link{psmelt}} or \code{\link{make_phy_df}}.
+#' @param rank The name of the column to be re-ordered
+#' @param abund The name of the abundances column. Defaults to 'Abundance'
+#' @param decreasing Specifies whether the taxon order should be based on
+#'   decreasing or increasing abundance. Defaults to FALSE.
+order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
+
+    phy_df[,rank] = factor(phy_df[,rank])
+	phy_df %>%
+        dplyr::filter(UQ(sym(rank)) != 'Other') %>%
+		dplyr::group_by(UQ(sym(rank))) %>%
+		dplyr::summarize(Tot = sum(UQ(sym(abund)))) %>%
+		data.frame() -> total_abunds
+
+	lev_ord = levels(droplevels(total_abunds[,rank]))
+	if (decreasing){
+	    lev_ord = lev_ord[order(-total_abunds$Tot)]
+	} else{
+	    lev_ord = lev_ord[order(total_abunds$Tot)]
+	}
+
+	phy_df[,rank] = factor(phy_df[,rank], levels = c('Other',lev_ord))
+
+    return(phy_df)
+}
 

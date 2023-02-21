@@ -66,11 +66,17 @@ test_that('prop_tax_down() works without and indic',{
 
 test_that('dbig_genera() works',{
     ## Read in the data
-    taxmat = read.csv('dbig_genera/taxmat_unique.csv', row.names = 2)
+
+    ### The taxa table with no ambiguous genera
+    taxmat = read.csv('dbig_genera/taxmat_unique.csv', row.names = 1)
+    ### The taxa table with ambiguous genera
+    taxmat_ambig = read.csv('dbig_genera/taxmat_ambig.csv', row.names = 1)
+    ### The taxa table with disambiguated genera
+    taxmat_dbig = read.csv('dbig_genera/taxmat_dbig.csv', row.names = 1)
+
+    ### The OTU and sample data (map) files
     otumat = read.csv('dbig_genera/otumat.csv', row.names = 1)
     samdat = read.csv('dbig_genera/samdat.csv', row.names = 1)
-    taxmat_ambig = read.csv('dbig_genera/taxmat_ambig.csv', row.names = 1)
-    taxmat_dbig = read.csv('dbig_genera/taxmat_dbig.csv', row.names = 1)
 
     ## Make the unique ps obj (should match itself)
     ps = phyloseq(otu_table(otumat, taxa_are_rows = TRUE),
