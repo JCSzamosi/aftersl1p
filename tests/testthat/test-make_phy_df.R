@@ -27,12 +27,15 @@ test_that('make_phy_df() works',{
 
     ## Read in the expected, disambiguated `make_phy_df()` output
     plain_out = read.csv('make_phy_df/phy_df_out.csv')
+
+    ### Ideally re-write this test so it doesn't rely on `order_taxa()` working
+    ### correctly
     ranks = c('Kingdom', 'Phylum', 'Class', 'Order', 'Family','Genus')
     for (r in ranks){
         plain_out = order_taxa(plain_out, r)
     }
     otu_out = read.csv('make_phy_df/phy_df_otu_out.csv')
-    ranks = c(ranks,'Species', 'AmbigGenus', 'OTU')
+    ranks = c(ranks,'Species', 'OTU')
     for (r in ranks){
         otu_out = order_taxa(otu_out, r)
     }

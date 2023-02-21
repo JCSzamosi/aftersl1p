@@ -40,7 +40,7 @@ dbig_genera = function(physeq){
 
 	    fixed = (tt_glom
 	        %>% dplyr::mutate(AmbigGenus = Genus,
-	                   NAmbigGenus = if_else(Genus %in% dup_nms,
+	                   NAmbigGenus = dplyr::if_else(Genus %in% dup_nms,
 	                                         paste(Genus, ' (', Family,')',
 	                                               sep = ''),
 	                                         Genus))
