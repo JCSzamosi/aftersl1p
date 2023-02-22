@@ -22,26 +22,23 @@
 #'   enough colours to accommodate all your taxa at the appropriate rank. If you
 #'   don't provide one, there are a few internal vectors that have 21, 31, 60,
 #'   or 70 colours that the function will try to use.
-#' @param sample The name of the sample column in the data frame.
-#' @param abund The name of the abundance column in the data frame.
-#' @param legloc Location of the legend. Can be 'right' (default), 'bottom', or
-#'   'none' (absent)
-#' @param yscale Can be either 'lin' or 'sqrt'. The 'sqrt' plot can look weird.
-#' @param means If \code{TRUE}, sets \code{position = fill} in the
+#' @param sample \code{'X.SampleID'} The name of the sample column in the data
+#'   frame.
+#' @param abund \code{'Abundance'} The name of the abundance column in the data
+#'   frame.
+#' @param legloc \code{'right'} Location of the legend. Can be 'right'
+#'   (default), 'bottom', or 'none' (absent)
+#' @param yscale \code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
+#'   look weird.
+#' @param means \code{FALSE} If \code{TRUE}, sets \code{position = fill} in the
 #'   \code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
 #'   your \code{sample = } parameter is not actually sample names, but rather
-#'   larger categories, to produce means.
+#'   larger categories, to produce a plot of category means.
 #' @export
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
 					 legloc = 'right', yscale = 'lin', means = FALSE){
-	## taxa_df:	The data frame produced by taxa_other_df()
-	## rank: The taxonomic rank to plot by
-	## colours:	A character vector with the right number of colours. If you
-	## don't provide one it uses my 21-colour vector, which might not be enough
-	## left NULL, the bars will be ordered alphabetically by sample ID.
-	## sample: the name of the sample ID column.
-	## abund: the name of the abundance column
+    # Fed by make_phy_df()
 
 	# Check the inputs
 	if (!(sample %in% names(taxa_df))){

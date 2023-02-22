@@ -35,11 +35,11 @@ test_that('make_phy_df() works',{
         plain_out = order_taxa(plain_out, r)
     }
     otu_out = read.csv('make_phy_df/phy_df_otu_out.csv')
-    ranks = c(ranks,'Species', 'OTU')
+    ranks = c(ranks,'Species', 'AmbigGenus', 'OTU')
     for (r in ranks){
         otu_out = order_taxa(otu_out, r)
     }
-tst = make_phy_df(ps, prop = FALSE)
+    tst = make_phy_df(ps, prop = FALSE)
     expect_equal(make_phy_df(ps,prop = FALSE), plain_out)
     expect_equal(make_phy_df(ps,rank = 'OTU', prop = FALSE), otu_out)
     expect_equal(make_phy_df(ps_amb, rank = 'Genus', prop = TRUE), plain_out)
