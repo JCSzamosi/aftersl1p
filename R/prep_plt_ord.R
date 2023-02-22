@@ -1,22 +1,75 @@
-### Prep functions for plt_ord()
-### Make the data frame --------------------------------------------------------
-#### axis_num ------------------------------------------------------------------
+## make_ord_df --------------------------------------------------------------
 
-#' Get the axis number
-#' Take a character vector of the form 'Axis.N' where N is a number and return
-#' a numeric vector of N in the same order
-#' @param AxisX The character vector of axes. Must only contain values of the
-#' form 'Axis.N'
-axis_num = function(AxisX){
-    AxisX %>%
-        strsplit('\\.') %>%
-        unlist() -> tmp
-    axes = as.numeric(tmp[seq(2,length(tmp),2)])
+#' Make a data frame of the ordination
+#'
+#' Take a phyloseq object and generate a data frame of the distance-based
+#' ordination of the samples for plotting. This function has been tested with
+#' ordination methods 'PCoA' and 'RDA'. I can't make any promises if you use a
+#' different ordination method.
+#'
+#' @param physeq A phyloseq object with an OTU table and sample data. The table
+#'   should be normalized (rarefied, relative abundance, some kind of log-ratio
+#'   transformation) so that the distance metrics will be meaningful. Make sure
+#'   that the transformation you have used is appropriate for the distance
+#'   method you choose.
+#' @param dist_meth The distance method to be use. Must be one of the methods
+#'   accepted by the \code{phyloseq::distance()} function. Default is 'bray'. If
+#'   'jaccard' is used, adds the \code{binary = TRUE} argument. If you have
+#'   taken a clr transform of your data and want Aitchison distances, choose
+#'   \code{'euclidean'}. Currently, tree-based methods like \code{'unifrac'} and
+#'   \code{'wunifrac'} are not supported.
+#' @param ord_meth The ordination method. Must be one of the methods accepted by
+#'   the \code{phyloseq::ordinate()} function. Default is 'PCoA'. Make sure the
+#'   ordination method you choose is appropriate for your distance method.
+#' @param scree_only If \code{TRUE}, this function will print the scree plot of
+#'   the requested ordination and then exit. Good for deciding how many axes you
+#'   care about. Default is \code{FALSE}.
+#' @param axes A vector of integers indicating which ordination axes to include
+#'   in the data frame. Defaults to \code{1:4}.
+#' @export
+make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
+                  scree_only = FALSE, axes = 1:4){
+    # Get the distance object and do the ordination
+    if (dist_meth == 'jaccard'){
+        d = phyloseq::distance(physeq, method = dist_meth, binary = TRUE)
+    } else {
+        d = phyloseq::distance(physeq, method = dist_meth)
+    }
+    ord = phyloseq::ordinate(physeq, ord_meth, d)
 
-    return(axes)
+    # Scree
+    if (scree_only) {
+        print(phyloseq::plot_scree(ord))
+        return()
+    }
+
+    if (ord_meth == 'PCoA'){
+        ord_long = make_pcoa_df(ord, physeq, axes)
+    } else if (ord_meth == 'RDA'){
+        ord_long = make_rda_df(ord, physeq, axes)
+    } else {
+        ord_long = tryCatch(make_pcoa_df(ord, physeq, axes))
+        if (is.data.frame(ord_long)){
+            warn(paste('Data frame produced, but untested with this',
+                        'ordination method. Double check before plotting.'))
+        } else {
+            ord_long = tryCatch(make_rda_df(ord, physeq, axes))
+            if (is.data.frame(ord_long)) {
+                warn(paste('Data frame produced, but untested with this',
+                            'ordination method. Double check before plotting.'))
+            } else {
+                stop(paste('Data frame could not be produced. Try \'PCoA\'',
+                           'or \'RDA\' ordination methods.'))
+            }
+        }
+
+        return(ord_long)
+    }
+
+    return(ord_long)
+
 }
-
-#### make_rda_df----------------------------------------------------------------
+## make_rda_df----------------------------------------------------------------
 
 #' Make a data frame of the ordination if the ordination method is RDA. Not
 #' exported.
@@ -48,7 +101,7 @@ make_rda_df = function(ord, physeq, axes){
     return(ord_long)
 }
 
-#### make_pcoa_df---------------------------------------------------------------
+## make_pcoa_df---------------------------------------------------------------
 
 #' Make a data frame of the ordination if the ordination method is PCoA. Not
 #' exported
@@ -79,64 +132,19 @@ make_pcoa_df = function(ord, physeq, axes){
     return(ord_long)
 }
 
-#### make_ord_df --------------------------------------------------------------
 
-#' Make a data frame of the ordination
-#'
-#' Take a phyloseq object and generate a data frame of the distance-based
-#' ordination of the samples for plotting. This function has been tested with
-#' ordination methods 'PCoA' and 'RDA'. I can't make any promises if you use a
-#' different ordination method.
-#'
-#' @param physeq A phyloseq object with an OTU table and sample data. The table
-#'   should be rarefied (or relative abundance) so that the distance metrics
-#'   will be meaningful.
-#' @param dist_meth The distance method to be use. Must be one of the methods
-#'   accepted by the \code{phyloseq::distance()} function. Default is 'bray'. If
-#'   'jaccard' is used, adds the \code{binary = TRUE} argument.
-#' @param ord_meth The ordination method. Must be one of the methods accepted by
-#'   the \code{phyloseq::ordinate()} function. Default is 'PCoA'.
-#' @param scree_only If \code{TRUE}, this function will print the scree plot of
-#'   the requested ordination and then exit. Good for deciding how many axes you
-#'   care about. Default is \code{FALSE}.
-#' @param axes A vector of integers indicating which ordination axes to include
-#'   in the data frame. Defaults to \code{1:4}.
-make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
-                  scree_only = FALSE, axes = 1:4){
-    # Get the distance object and do the ordination
-    if (dist_meth == 'jaccard'){
-        d = phyloseq::distance(physeq, method = dist_meth, binary = TRUE)
-    } else {
-        d = phyloseq::distance(physeq, method = dist_meth)
-    }
-    ord = phyloseq::ordinate(physeq, ord_meth, d)
+## axis_num ------------------------------------------------------------------
 
-    # Scree
-    if (scree_only) {
-        print(phyloseq::plot_scree(ord))
-        return()
-    }
+#' Get the axis number
+#' Take a character vector of the form 'Axis.N' where N is a number and return
+#' a numeric vector of N in the same order
+#' @param AxisX The character vector of axes. Must only contain values of the
+#' form 'Axis.N'
+axis_num = function(AxisX){
+    AxisX %>%
+        strsplit('\\.') %>%
+        unlist() -> tmp
+    axes = as.numeric(tmp[seq(2,length(tmp),2)])
 
-    if (ord_meth == 'PCoA'){
-        ord_long = make_pcoa_df(ord, physeq, axes)
-    } else if (ord_meth == 'RDA'){
-        ord_long = make_rda_df(ord, physeq, axes)
-    } else {
-        ord_long = tryCatch(make_pcoa_df(ord, physeq, axes))
-        if (is.data.frame(ord_long)){
-            warn('Data frame produced, but untested with this ordination method. Double check before plotting.')
-        } else {
-            ord_long = tryCatch(make_rda_df(ord, physeq, axes))
-            if (is.data.frame(ord_long)) {
-                warn('Data frame produced, but untested with this ordination method. Double check before plotting.')
-            } else {
-                stop('Data frame could not be produced. Try \'PCoA\' or \'RDA\' ordination methods.')
-            }
-        }
-
-        return(ord_long)
-    }
-
-    return(ord_long)
-
+    return(axes)
 }

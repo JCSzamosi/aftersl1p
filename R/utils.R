@@ -32,6 +32,7 @@ order_levs = function(f1,...){
 
 #' Rotate the x tick labels 90 degrees and position them correctly.
 #'
+#' @export
 rotate_ticks = function(){
     theme(axis.text.x = element_text(size = 10,
                                      angle = 90,
