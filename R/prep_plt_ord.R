@@ -93,10 +93,12 @@ make_rda_df = function(ord, physeq, axes){
                 %>% tidyr::gather(AxisX, ValueX, starts_with('PC'))
                 %>% dplyr::left_join(ord_df)
                 %>% tidyr::gather(AxisY, ValueY, starts_with('PC'))
-                %>% dplyr::mutate(AxisX = paste(AxisX, paste(weights[AxisX],'%',
-                                                      sep = '')),
-                           AxisY = paste(AxisY, paste(weights[AxisY], '%',
-                                                      sep = ''))))
+                %>% dplyr::mutate(AxisX = factor(paste(AxisX,
+                                                       paste(weights[AxisX],'%',
+                                                      sep = ''))),
+                           AxisY = factor(paste(AxisY,
+                                                paste(weights[AxisY], '%',
+                                                      sep = '')))))
 
     return(ord_long)
 }
