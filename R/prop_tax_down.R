@@ -33,7 +33,7 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
           	NA,
             c(tt))
         %>% matrix(ncol = ncol(tt)))
-    colnames(tt) = colnames(tax_table(physeq))
+    colnames(tt) = colnames(phyloseq::tax_table(physeq))
     rownames(tt) = sp
 
     tt = prop_tax_tab(tt, indic)
@@ -72,7 +72,7 @@ dbig_genera = function(physeq){
 	ambig = paste('Ambig',rank,sep = '')
 	nambig = paste('NAmbig',rank,sep = '')
 
-	tt = data.frame(tax_table(physeq), stringsAsFactors = FALSE)
+	tt = data.frame(phyloseq::tax_table(physeq), stringsAsFactors = FALSE)
 	ranks = colnames(tt)
 	rank_n = which(ranks == rank)
 	tt_work = tt[,1:rank_n]

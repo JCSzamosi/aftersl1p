@@ -37,10 +37,10 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 
 
     # Check that its relab
-    if (!count & any(otu_table(physeq) > 1)){
+    if (!count & any(phyloseq::otu_table(physeq) > 1)){
         stop('physeq must be a relative abundance table. You have counts > 1.')
     }
-    ranks = colnames(tax_table(physeq))
+    ranks = colnames(phyloseq::tax_table(physeq))
     if (rank == 'OTU'){
         ranks = c(ranks, rank)
     }
@@ -58,7 +58,7 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
     }
 
 	# Set all counts < the cutoff to zero
-	phyloseq::otu_table(phyl_glommed)[otu_table(phyl_glommed) < cutoff] = 0
+	phyloseq::otu_table(phyl_glommed)[phyloseq::otu_table(phyl_glommed) < cutoff] = 0
 
 	# Melt and sort, then filter out taxa that are 0 in their sample
 	abunds = (phyl_glommed
@@ -67,7 +67,7 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	    %>% dplyr::filter(Abundance > 0))
 
 	# List all the metadata columns so that they are included in the data frame
-	metacols = colnames(sample_data(physeq))
+	metacols = colnames(phyloseq::sample_data(physeq))
 	# Make an 'Other' row for each sample
 	others = (abunds
 	    %>% dplyr::group_by(across(all_of(metacols)))

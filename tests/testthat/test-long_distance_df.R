@@ -7,10 +7,11 @@ test_that('long_distance_df works with no baseline',{
     samdat = read.csv('long_distance_df/samdat.csv', row.names = 1)
     rownames(samdat) = samdat$StudyID
 
-    ps = phyloseq(otu_table(as.matrix(otumat), taxa_are_rows = TRUE),
-                  tax_table(as.matrix(taxmat)),
-                  sample_data(samdat))
-    dmat = distance(ps, method = 'bray')
+    ps = phyloseq::phyloseq(phyloseq::otu_table(as.matrix(otumat),
+                                                taxa_are_rows = TRUE),
+                  phyloseq::tax_table(as.matrix(taxmat)),
+                  phyloseq::sample_data(samdat))
+    dmat = phyloseq::distance(ps, method = 'bray')
 
     lddf = read.csv('long_distance_df/lddf_nobase.csv', row.names = 1)
 
@@ -24,10 +25,11 @@ test_that('long_distance_df works with a baseline',{
     samdat = read.csv('long_distance_df/samdat.csv', row.names = 1)
     rownames(samdat) = samdat$StudyID
 
-    ps = phyloseq(otu_table(as.matrix(otumat), taxa_are_rows = TRUE),
-                  tax_table(as.matrix(taxmat)),
-                  sample_data(samdat))
-    dmat = distance(ps, method = 'bray')
+    ps = phyloseq::phyloseq(phyloseq::otu_table(as.matrix(otumat),
+                                                taxa_are_rows = TRUE),
+                  phyloseq::tax_table(as.matrix(taxmat)),
+                  phyloseq::sample_data(samdat))
+    dmat = phyloseq::distance(ps, method = 'bray')
 
     # Create single-column baseline df
     bs1 = data.frame(Notes = 'BSL')
@@ -42,10 +44,10 @@ test_that('long_distance_df works with a baseline',{
     lddf_bs2 = read.csv('long_distance_df/lddf_base_2col_1bsamp.csv',
                         row.names = 1)
 
-    expect_equal(long_distance_df(dmat, metadat, idcol = 'StudyID',
+    expect_equal(long_distance_df(dmat, samdat, idcol = 'StudyID',
                                   baseline = bs1),
                  lddf_bs1) # One column baseline, many baseline values
-    expect_equal(long_distance_df(dmat, metadat, idcol = 'StudyID',
+    expect_equal(long_distance_df(dmat, samdat, idcol = 'StudyID',
                                   baseline = bs2),
                  lddf_bs2) # Two columns baseline, one baseline value
 })

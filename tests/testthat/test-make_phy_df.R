@@ -16,14 +16,16 @@ test_that('make_phy_df() works',{
     samdat = read.csv('prop_tax_down/samdat.csv', row.names = 1)
 
     ## Make the non-ambig phyloseq object
-    ps = phyloseq(otu_table(as.matrix(otumat), taxa_are_rows = TRUE),
-                  tax_table(as.matrix(taxmat)),
-                  sample_data(samdat))
+    ps = phyloseq::phyloseq(phyloseq::otu_table(as.matrix(otumat),
+                                                taxa_are_rows = TRUE),
+                  phyloseq::tax_table(as.matrix(taxmat)),
+                  phyloseq::sample_data(samdat))
 
     ## Make the ambiguous phyloseq object
-    ps_amb = phyloseq(otu_table(as.matrix(otumat), taxa_are_rows = TRUE),
-                      tax_table(as.matrix(taxmat_ambig)),
-                      sample_data(samdat))
+    ps_amb = phyloseq::phyloseq(phyloseq::otu_table(as.matrix(otumat),
+                                                    taxa_are_rows = TRUE),
+                      phyloseq::tax_table(as.matrix(taxmat_ambig)),
+                      phyloseq::sample_data(samdat))
 
     ## Read in the expected, disambiguated `make_phy_df()` output
     plain_out = read.csv('make_phy_df/phy_df_out.csv')

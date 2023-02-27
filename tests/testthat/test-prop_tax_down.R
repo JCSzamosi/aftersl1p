@@ -32,25 +32,25 @@ test_that('prop_tax_down() works without and indic',{
                              row.names = 1)
 
     ## Make the unique ps obj
-    ps = phyloseq(otu_table(otumat, taxa_are_rows = TRUE),
-                  tax_table(as.matrix(taxmat)),
-                  sample_data(samdat))
+    ps = phyloseq::phyloseq(phyloseq::otu_table(otumat, taxa_are_rows = TRUE),
+                  phyloseq::tax_table(as.matrix(taxmat)),
+                  phyloseq::sample_data(samdat))
 
     ## Make the propped ps obj (should match prop_tax_down(ps))
     ps_propped = ps
-    tax_table(ps_propped) = tax_table(as.matrix(taxmat_propped))
+    phyloseq::tax_table(ps_propped) = phyloseq::tax_table(as.matrix(taxmat_propped))
 
     ## Make the ambig ps obj
     ps_ambig = ps
-    tax_table(ps_ambig) = tax_table(as.matrix(taxmat_ambig))
+    phyloseq::tax_table(ps_ambig) = phyloseq::tax_table(as.matrix(taxmat_ambig))
 
     # Make the dbigged ps obj
     ps_dbig = ps
-    tax_table(ps_dbig) = tax_table(as.matrix(taxmat_pr_dbg))
+    phyloseq::tax_table(ps_dbig) = phyloseq::tax_table(as.matrix(taxmat_pr_dbg))
 
     ## Make the non-dbigged ps obj
     ps_ndb = ps
-    tax_table(ps_ndb) = tax_table(as.matrix(taxmat_pr_ndb))
+    phyloseq::tax_table(ps_ndb) = phyloseq::tax_table(as.matrix(taxmat_pr_ndb))
 
     expect_equal(prop_tax_down(ps, indic = FALSE),
                  ps_propped) # propagate only (nothing to disambiguate)
@@ -79,17 +79,17 @@ test_that('dbig_genera() works',{
     samdat = read.csv('dbig_genera/samdat.csv', row.names = 1)
 
     ## Make the unique ps obj (should match itself)
-    ps = phyloseq(otu_table(otumat, taxa_are_rows = TRUE),
-                  tax_table(as.matrix(taxmat)),
-                  sample_data(samdat))
+    ps = phyloseq::phyloseq(phyloseq::otu_table(otumat, taxa_are_rows = TRUE),
+                  phyloseq::tax_table(as.matrix(taxmat)),
+                  phyloseq::sample_data(samdat))
 
     ## Make the ambig ps obj
     ps_ambig = ps
-    tax_table(ps_ambig) = tax_table(as.matrix(taxmat_ambig))
+    phyloseq::tax_table(ps_ambig) = phyloseq::tax_table(as.matrix(taxmat_ambig))
 
     ## Make the disambiguated ps obj (should match ambig)
     ps_dbig = ps
-    tax_table(ps_dbig) = tax_table(as.matrix(taxmat_dbig))
+    phyloseq::tax_table(ps_dbig) = phyloseq::tax_table(as.matrix(taxmat_dbig))
 
     expect_equal(dbig_genera(ps), ps) #nothing to do, output should match input
     expect_equal(dbig_genera(ps_ambig), ps_dbig) #check output
