@@ -24,7 +24,7 @@ test_that('make_ord_df() works with bray, pcoa', {
     # Read in the expected result
     good_bray = read.csv('prep_plt_ord/bray_df.csv', row.names = 1)
     good_bray = (good_bray
-                 %>% mutate(AxisX = factor(AxisX),
+                 %>% dplyr::mutate(AxisX = factor(AxisX),
                             AxisY = factor(AxisY)))
 
     # Read in the data
@@ -45,7 +45,7 @@ test_that('make_ord_df() works with euclid, rda', {
     # Read in the expected result
     good_aitch = read.csv('prep_plt_ord/aitch_df.csv', row.names = 1)
     good_aitch= (good_aitch
-                 %>% mutate(AxisX = factor(AxisX),
+                 %>% dplyr::mutate(AxisX = factor(AxisX),
                             AxisY = factor(AxisY)))
 
     # Read in the data
@@ -64,6 +64,35 @@ test_that('make_ord_df() works with euclid, rda', {
 
 })
 
-test_that('make_ord_df() does something sensible when method is unknown', {
+test_that('make_ord_df() does something sensible when dist method is unknown', {
+    # Read in the data
+    load('./prep_plt_ord/dat_rel_filt.RData')
 
+    expect_warning(make_ord_df(dat_rel_filt, dist_meth = 'jsd'),
+                   regexp = paste('This function has only been tested with jaccard,',
+                   'bray, and euclid distance methods. Other methods may',
+                   'work but you are responsible for making sure what',
+                   'you\'re doing is sensible.'))
+})
+
+test_that('make_ord_df() does something sensible when ord method is unknown', {
+    # Read in the data
+    load('./prep_plt_ord/dat_rel_filt.RData')
+
+    expect_error(make_ord_df(dat_rel_filt, ord_meth = 'DCA'),
+         regexp = paste('This function currently only works with PCoA and RDA',
+                   'ordination methods. Pull requests are welcome.'))
+})
+
+test_that(paste('make_ord_df() errors correctly when RDA is used with',
+                    'non-euclidean distance'),{
+
+    # Read in the data
+    load('./prep_plt_ord/dat_rel_filt.RData')
+
+    expect_error(make_ord_df(dat_rel_filt, dist_meth = 'bray', ord_meth = 'RDA'),
+      regexp = paste('RDA ordination is not sensible with non-metric distance',
+                'metrics. For now only euclidean distance is accepted with',
+                'RDA, but pull requests are welcome for other metric',
+                'distance metrics which you may wish to implement and test.'))
 })

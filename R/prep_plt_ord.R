@@ -29,6 +29,25 @@
 #' @export
 make_ord_df = function(physeq, dist_meth = 'bray', ord_meth = 'PCoA',
                   scree_only = FALSE, axes = 1:4){
+
+    # Check if dist and ord methods are known/tested
+    if (!(dist_meth %in% c('jaccard','bray','euclidean'))){
+        warn(paste('This function has only been tested with jaccard,',
+                   'bray, and euclid distance methods. Other methods may',
+                   'work but you are responsible for making sure what',
+                   'you\'re doing is sensible.'))
+    }
+    if (!(ord_meth %in% c('PCoA','RDA'))){
+        stop(paste('This function currently only works with PCoA and RDA',
+                   'ordination methods. Pull requests are welcome.'))
+    }
+
+    if (ord_meth == 'RDA' & dist_meth != 'euclidean'){
+        stop(paste('RDA ordination is not sensible with non-metric distance',
+                   'metrics. For now only euclidean distance is accepted with',
+                   'RDA, but pull requests are welcome for other metric',
+                   'distance metrics which you may wish to implement and test.'))
+    }
     # Get the distance object and do the ordination
     if (dist_meth == 'jaccard'){
         d = phyloseq::distance(physeq, method = dist_meth, binary = TRUE)

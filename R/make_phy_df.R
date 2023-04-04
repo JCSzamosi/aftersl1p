@@ -58,7 +58,8 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
     }
 
 	# Set all counts < the cutoff to zero
-	phyloseq::otu_table(phyl_glommed)[phyloseq::otu_table(phyl_glommed) < cutoff] = 0
+	phyloseq::otu_table(phyl_glommed)[phyloseq::otu_table(phyl_glommed) <
+	                                      cutoff] = 0
 
 	# Melt and sort, then filter out taxa that are 0 in their sample
 	abunds = (phyl_glommed
@@ -83,7 +84,12 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	    others[taxcols] = 'Other'
 
 	    # Combine the 'Other' data frame with the original
-	    newdf = abunds[,metacols]
+	    if (length(metacols) > 1){
+	        newdf = abunds[,metacols]
+	    } else {
+	        newdf = data.frame(abunds[,metacols])
+	        colnames(newdf) = metacols
+	    }
 	    newdf$Abundance = abunds$Abundance
 	    newdf[,taxcols] = abunds[,taxcols]
 	    newdf = rbind(as.data.frame(others),

@@ -54,26 +54,11 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	}
 
 	# Pick colours
+	num = length(unique(taxa_df[,rank]))
 	if (is.null(colours)){
-		num = length(unique(taxa_df[,rank]))
-		if (num <= 22){
-			colours = c('grey69',rev(cols_21[1:(num-1)]))
-		} else if (num <= 31) {
-			colours = c('grey69',rev(cols_31[1:(num-1)]))
-		} else if (num <= 61) {
-			colours = c('grey69',rev(cols_60[1:(num-1)]))
-		} else if (num <= 71) {
-			colours = c('grey69',rev(cols_70[1:(num-1)]))
-		} else {
-			stop('I can\'t handle more than 71 ranks. Please provide a colour vector.')
-		}
-		# colours = case_when(
-							#num <= 22 ~ c('grey69',cols_21),
-							#num <= 32 ~ c('grey69',cols_31),
-							#num <= 61 ~ c('grey69',cols_60),
-							#num > 61 ~ c('grey69',cols_70))
+        n = num/length(tax_colours)
+        colours = c('grey69',rev(rep(tax_colours, ceiling(n))[1:num-1]))
 	} else if (is.null(names(colours))) {
-	    num = length(unique(taxa_df[,rank]))
 		colours = c('grey69',rev(colours[1:(num-1)]))
 	}
 
