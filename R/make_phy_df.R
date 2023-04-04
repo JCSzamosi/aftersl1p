@@ -60,6 +60,12 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	# Set all counts < the cutoff to zero
 	phyloseq::otu_table(phyl_glommed)[phyloseq::otu_table(phyl_glommed) <
 	                                      cutoff] = 0
+    # Check for sample_data() and create it with sample names if it's missing
+	if (is_null(physeq@sam_data)){
+	    samdat = data.frame('X.SampleID' = sample_names(physeq))
+	    rownames(samdat) = sample_names(physeq)
+	    sample_data(physeq) = samdat
+	}
 
 	# Melt and sort, then filter out taxa that are 0 in their sample
 	abunds = (phyl_glommed
