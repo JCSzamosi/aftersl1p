@@ -1,16 +1,16 @@
 Package: AfterSl1p
 Type: Package
 Title: Generate Summary Graphics and Basic Analysis of 16s Data
-Version: 0.0.0.9000
+Version: 0.0.1
 Author: J. C. Szamosi and Shahrokh Shekarriz
 Authors@R: c(person("JC", "Szamosi", email = "szamosjc@mcmaster.ca",
                   role = c('aut','cre')), 
            person('Shahrokh', 'Shekarriz', 
                   email = 'shekas3@mcmaster.ca',
-                  role = c('aut','cre')))
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+                  role = c('aut')))
+Description: A package of convenience functions to visualize microbiome data.
+    It uses phyloseq and tidyverse/ggplot2 tools. Mostly just a collection of
+    functions I have found useful over the years.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
@@ -20,8 +20,11 @@ Imports:
     dplyr (>= 0.7.2),
     ggplot2 (>= 2.2.1),
     phyloseq (>= 1.19.1),
-    rlang (>= 0.1.2)
-RoxygenNote: 7.1.1
+    pipeR,
+    rlang (>= 0.1.2),
+    tibble,
+    tidyr
+RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

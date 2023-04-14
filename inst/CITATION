@@ -1,0 +1,9 @@
+citHeader("To cite AfterSl1p in publications use:")
+
+citEntry(
+  entry    = "Manual",
+  title    = "AfterSl1p",
+  author   = "Jake Szamosi, Shahrokh Shekarriz",
+  year     = 2023,
+  url      = "https://github.com/JCSzamosi/aftersl1p"
+)
