@@ -1,3 +1,11 @@
+* 2023-04-14 v1.0.1
+	* The multiple colour vectors have been replaced with a single object,
+	`tax_colours`, which will cycle if there are more than 30 taxa. Having more
+	than 30 distinguishable colours is not possible anyway.
+	* Mostly under-the hood reorganization: Functions have been moved to their
+	own .R files or grouped into files with their internal helpers
+	* A test suite using `testthat` has been introduced to catch future problems
+
 * 2022-01-11 v1.0
 	* **Major bug fix**
 	* this package has seen minimal changes since January of 2018 when it was
