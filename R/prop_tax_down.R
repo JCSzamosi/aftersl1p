@@ -26,11 +26,9 @@
 #' @export
 prop_tax_down = function(physeq, indic, dbig = TRUE){
 
-    print('db1')
 	# Deal with the case where the blanks aren't NAs
     tt = phyloseq::tax_table(physeq)
     sp = rownames(tt)
-    print('db2')
     tt = (ifelse((endsWith(c(tt), '__') | c(tt) == ''),
           	NA,
             c(tt))
@@ -38,11 +36,9 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
     colnames(tt) = colnames(phyloseq::tax_table(physeq))
     rownames(tt) = sp
 
-    print('db3')
     tt = prop_tax_tab(tt, indic)
     phyloseq::tax_table(physeq) = tt
 
-    print('db4')
     if(dbig){
         physeq = dbig_genera(physeq)
     }
