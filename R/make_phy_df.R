@@ -62,9 +62,9 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
 	                                      cutoff] = 0
     # Check for sample_data() and create it with sample names if it's missing
 	if (is_null(physeq@sam_data)){
-	    samdat = data.frame('X.SampleID' = sample_names(physeq))
-	    rownames(samdat) = sample_names(physeq)
-	    sample_data(physeq) = samdat
+	    samdat = data.frame('Sample' = phyloseq::sample_names(physeq))
+	    rownames(samdat) = phyloseq::sample_names(physeq)
+	    phyloseq::sample_data(physeq) = samdat
 	}
 
 	# Melt and sort, then filter out taxa that are 0 in their sample

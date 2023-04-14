@@ -49,7 +49,7 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
 
     return(physeq)
 }
-##### dbig_taxa --------------------------------------------------------------
+##### dbig_genera ------------------------------------------------------------
 
 #' Disambiguate taxa
 #'
@@ -95,7 +95,7 @@ dbig_genera = function(physeq){
 	                                         paste(Genus, ' (', Family,')',
 	                                               sep = ''),
 	                                         Genus))
-	        %>% dplyr::right_join(tt)
+	        %>% dplyr::right_join(tt, multiple = 'all')
 	        %>% dplyr::mutate(Genus = NAmbigGenus)
 	        %>% dplyr::select(-NAmbigGenus)
 	        %>% dplyr::select(-AmbigGenus, AmbigGenus)

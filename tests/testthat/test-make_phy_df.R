@@ -47,7 +47,7 @@ test_that('make_phy_df() works when all slots are filled',{
     expect_equal(make_phy_df(ps_amb, rank = 'Genus', prop = TRUE), plain_out)
 })
 
-test_that('make_phy_df() works there is no sample_data',{
+test_that('make_phy_df() works when there is no sample_data',{
 
     ## Read in the data
 
@@ -79,6 +79,10 @@ test_that('make_phy_df() works there is no sample_data',{
     for (r in ranks){
         otu_out = order_taxa(otu_out, r)
     }
+
+    plain_out = (plain_out
+                 %>% dplyr::select(StudyID, Abundance:Genus)
+                 %>% dplyr::rename(Sample = StudyID))
     tst = make_phy_df(ps, prop = FALSE)
     expect_equal(make_phy_df(ps,prop = FALSE), plain_out)
 })
