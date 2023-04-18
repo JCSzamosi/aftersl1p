@@ -35,10 +35,13 @@
 #'   \code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
 #'   your \code{sample = } parameter is not actually sample names, but rather
 #'   larger categories, to produce a plot of category means.
+#' @param rotate_ticks \code{FALSE} If \code{TRUE} x-axis tickmark text is
+#'   rotated 90 degrees and read bottom-to-top.
 #' @export
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
-					 legloc = 'right', yscale = 'lin', means = FALSE){
+					 legloc = 'right', yscale = 'lin', means = FALSE,
+					 rotate_ticks = FALSE){
     # Fed by make_phy_df()
 
 	# Check the inputs
@@ -77,30 +80,39 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	    colours = colours[levels(taxa_df[,rank])]
 	}
 
+	# Generate the plot
 	indiv = ggplot2::ggplot(taxa_df,
 	                        ggplot2::aes(x = .data[[sample]],
 	                                            y = .data[[abund]],
 	                                            fill = .data[[rank]],
 	                                            colour = .data[[rank]])) +
+	    ggplot2::theme_bw() +
+	    # adjust the title and axis text
 	    ggplot2::theme(axis.title.x = ggplot2::element_blank(),
-			axis.text.x = ggplot2::element_text(size = 10,
-			                                    angle = 90,
-			                                    hjust = 1,
-			                                    vjust = 0.5)) +
+	                   # position the legend
+	                   legend.position = legloc) +
+	    # use the right colours
 	    ggplot2::scale_fill_manual(values = colours,
 	                      guide = ggplot2::guide_legend(reverse = TRUE)) +
 	    ggplot2::scale_colour_manual(values = colours,
 	                        guide = ggplot2::guide_legend(reverse = TRUE)) +
-	    ggplot2::ylab(paste("Relative Abundance (",rank,")\n",sep='')) +
-	    ggplot2::theme_bw() +
-	    ggplot2::theme(legend.position = legloc)
+	    # label the axis
+	    ggplot2::ylab(paste("Relative Abundance (",rank,")\n",sep=''))
 	if (means){
+	    # use mean abundance across a group
 	    indiv = indiv + ggplot2::geom_bar(stat = 'identity', position = 'fill')
 	} else {
+	    # individual samples
 	    indiv = indiv + ggplot2::geom_bar(stat = "identity")
 	}
 
+	# rotate the ticks
+	if (rotate_ticks){
+	    indiv = indiv + rotate_ticks()
+	}
 	if (yscale == 'sqrt') {
+	    # square-root transform the y-axis. You probably don't want this. It should
+	    # be deprecated.
 		indiv = indiv + ggplot2::scale_y_sqrt()
 	}
 
