@@ -26,8 +26,9 @@
 #'   frame.
 #' @param abund \code{'Abundance'} The name of the abundance column in the data
 #'   frame.
-#' @param legloc \code{'right'} Location of the legend. Can be 'right'
-#'   (default), 'bottom', or 'none' (absent)
+#' @param legloc \code{'right'} Location of the legend. Passed directly to
+#'   \code{ggplot2::theme(legend.position = legloc)} and can be any of "none",
+#'   "left", "right", "top", or "bottom".
 #' @param yscale \code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
 #'   look weird.
 #' @param means \code{FALSE} If \code{TRUE}, sets \code{position = fill} in the
@@ -90,7 +91,9 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	                      guide = ggplot2::guide_legend(reverse = TRUE)) +
 	    ggplot2::scale_colour_manual(values = colours,
 	                        guide = ggplot2::guide_legend(reverse = TRUE)) +
-	    ggplot2::ylab(paste("Relative Abundance (",rank,")\n",sep=''))
+	    ggplot2::ylab(paste("Relative Abundance (",rank,")\n",sep='')) +
+	    ggplot2::theme_bw() +
+	    ggplot2::theme(legend.position = legloc)
 	if (means){
 	    indiv = indiv + ggplot2::geom_bar(stat = 'identity', position = 'fill')
 	} else {
@@ -101,12 +104,6 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 		indiv = indiv + ggplot2::scale_y_sqrt()
 	}
 
-	if (legloc == 'bottom'){
-	    indiv = indiv + ggplot2::theme(legend.position = 'bottom')
-	} else if (legloc == 'none') {
-	    indiv = indiv + ggplot2::guides(fill = FALSE, colour = FALSE)
-	}
-	indiv + ggplot2::theme_bw()
 
 	return(indiv)
 }
