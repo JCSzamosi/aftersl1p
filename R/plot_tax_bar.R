@@ -76,34 +76,37 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	    colours = colours[levels(taxa_df[,rank])]
 	}
 
-	indiv = ggplot(taxa_df, aes_string(x = sample, y = abund, fill = rank,
-									   colour = rank)) +
-	    theme(axis.title.x = element_blank(),
-			axis.text.x = element_text(size = 10,
-									   angle = 90,
-									   hjust = 1,
-									   vjust = 0.5)) +
-	    scale_fill_manual(values = colours,
-	                      guide = guide_legend(reverse = TRUE)) +
-	    scale_colour_manual(values = colours,
-	                        guide = guide_legend(reverse = TRUE)) +
-	    ylab(paste("Relative Abundance (",rank,")\n",sep=''))
+	indiv = ggplot2::ggplot(taxa_df,
+	                        ggplot2::aes(x = .data[[sample]],
+	                                            y = .data[[abund]],
+	                                            fill = .data[[rank]],
+	                                            colour = .data[[rank]])) +
+	    ggplot2::theme(axis.title.x = ggplot2::element_blank(),
+			axis.text.x = ggplot2::element_text(size = 10,
+			                                    angle = 90,
+			                                    hjust = 1,
+			                                    vjust = 0.5)) +
+	    ggplot2::scale_fill_manual(values = colours,
+	                      guide = ggplot2::guide_legend(reverse = TRUE)) +
+	    ggplot2::scale_colour_manual(values = colours,
+	                        guide = ggplot2::guide_legend(reverse = TRUE)) +
+	    ggplot2::ylab(paste("Relative Abundance (",rank,")\n",sep=''))
 	if (means){
-	    indiv = indiv + geom_bar(stat = 'identity', position = 'fill')
+	    indiv = indiv + ggplot2::geom_bar(stat = 'identity', position = 'fill')
 	} else {
-	    indiv = indiv + geom_bar(stat = "identity")
+	    indiv = indiv + ggplot2::geom_bar(stat = "identity")
 	}
 
 	if (yscale == 'sqrt') {
-		indiv = indiv + scale_y_sqrt()
+		indiv = indiv + ggplot2::scale_y_sqrt()
 	}
 
 	if (legloc == 'bottom'){
-	    indiv = indiv + theme(legend.position = 'bottom')
+	    indiv = indiv + ggplot2::theme(legend.position = 'bottom')
 	} else if (legloc == 'none') {
-	    indiv = indiv + guides(fill = FALSE, colour = FALSE)
+	    indiv = indiv + ggplot2::guides(fill = FALSE, colour = FALSE)
 	}
-	indiv + theme_bw()
+	indiv + ggplot2::theme_bw()
 
 	return(indiv)
 }
