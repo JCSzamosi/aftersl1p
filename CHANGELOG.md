@@ -1,3 +1,11 @@
+* CURRENT BRANCH
+	* in `plot_tax_bar()` 
+		* the `legloc` argument is now passed directly to
+		`ggplot2::theme(legend.position)` and can take any value that can take.
+		* added a `rotate_ticks` argument. FALSE by default (default behaviour
+		is unchanged). If TRUE, the tick text on the x-axis is rotated 90
+		degrees and reads down to up.
+
 * 2023-04-14 v0.0.1 (was v1.0.1)
 	* The multiple colour vectors have been replaced with a single object,
 	`tax_colours`, which will cycle if there are more than 30 taxa. Having more
