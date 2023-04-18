@@ -1,7 +1,7 @@
 Package: AfterSl1p
 Type: Package
 Title: Generate Summary Graphics and Basic Analysis of 16s Data
-Version: 0.0.1
+Version: 0.0.1.9000
 Author: J. C. Szamosi and Shahrokh Shekarriz
 Authors@R: c(person("JC", "Szamosi", email = "szamosjc@mcmaster.ca",
                   role = c('aut','cre')), 
