@@ -79,10 +79,6 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
     return(lddf)
 }
 
-
-
-## Functions to generate distance bar charts -----------------------------------
-
 ### lddf_check -----------------------------------------------------------------
 
 #' Check the inputs of \code{long_distance_df()}
@@ -131,11 +127,13 @@ lddf_check = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 
 #' Does the actual gathering and spreading without testing assumptions
 #'
-#' \code{lddf_work} Does the actual gathering, spreading, and joining associated
-#' with making the lddf, but without checking if the distance matrix is sensible
-#' or removing diagonals and repeats. This is for when you know what you're
-#' doing and have trimmed your distance matrix down to only what you know you
-#' need. Good for permutation tests.
+#' \code{lddf_work} Used internally by \code{long_distance_df()}. I recommend
+#' you use that function unless you really know what you're doing. This function
+#' does the actual gathering, spreading, and joining associated with making the
+#' lddf, but without checking if the distance matrix is sensible or removing
+#' diagonals and repeats. Use this function if you know exactly what you want
+#' and have trimmed your distance matrix down to only what you know you need.
+#' Good for permutation tests.
 #'
 #' @param dmat A distance matrix or other diagonal matrix object with sample
 #'   names as row and column names.
