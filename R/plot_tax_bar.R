@@ -41,7 +41,7 @@
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
 					 legloc = 'right', yscale = 'lin', means = FALSE,
-					 rotate_ticks = FALSE){
+					 rotate_ticks = FALSE, leglen = NULL){
     # Fed by make_phy_df()
 
 	# Check the inputs
@@ -56,7 +56,6 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	if (!(yscale %in% c('lin','log','sqrt'))){
 		stop('yscale argument must be one of \'lin\', \'log\', or \'sqrt\'')
 	}
-
 	# Pick colours
 	num = length(unique(taxa_df[,rank]))
 	if (is.null(colours)){
@@ -65,6 +64,19 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	} else if (is.null(names(colours))) {
 		colours = c('grey69',rev(colours[1:(num-1)]))
 	}
+
+	# Check legend length
+	if (is.null(leglen)){
+	    leglen = num
+	} else if (!is.numeric(leglen)) {
+	    stop(paste("leglen must be an integer"))
+	} else if (leglen > num){
+	    warn(paste("leglen is greater than the number of unique taxa.",
+	                "showing all taxa."))
+	} else if (leglen == 0){
+        legloc = 'none'
+        leglen = num
+    }
 
 	# Make sure the x axis is categorical
 	taxa_df[,sample] = factor(taxa_df[,sample])
@@ -110,6 +122,14 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	if (rotate_ticks){
 	    indiv = indiv + rotate_ticks()
 	}
+
+	# limit the legend length
+	if (legloc != 'none' & leglen != num){
+	    brks = c(levels(taxa_df[,rank])[1:(num-1)], 'Other')
+	    indiv = indiv + ggplot2::scale_fill_discrete(breaks = brks)
+	    indiv = indiv + ggplot2::scale_colour_discrete(breaks = brks)
+	}
+
 	if (yscale == 'sqrt') {
 	    # square-root transform the y-axis. You probably don't want this. It should
 	    # be deprecated.
