@@ -41,7 +41,7 @@
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
 					 legloc = 'right', yscale = 'lin', means = FALSE,
-					 rotate_ticks = FALSE, leglen = NULL){
+					 r_ticks = FALSE, leglen = NULL){
     # Fed by make_phy_df()
 
 	# Check the inputs
@@ -92,6 +92,7 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	    colours = colours[levels(taxa_df[,rank])]
 	}
 
+	brks = c('Other', rev(rev(levels(taxa_df[,rank]))[1:(leglen-1)]))
 	# Generate the plot
 	indiv = ggplot2::ggplot(taxa_df,
 	                        ggplot2::aes(x = .data[[sample]],
@@ -105,9 +106,11 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	                   legend.position = legloc) +
 	    # use the right colours
 	    ggplot2::scale_fill_manual(values = colours,
-	                      guide = ggplot2::guide_legend(reverse = TRUE)) +
+	                               breaks = brks,
+	                           guide = ggplot2::guide_legend(reverse = TRUE)) +
 	    ggplot2::scale_colour_manual(values = colours,
-	                        guide = ggplot2::guide_legend(reverse = TRUE)) +
+	                                 breaks = brks,
+	                            guide = ggplot2::guide_legend(reverse = TRUE)) +
 	    # label the axis
 	    ggplot2::ylab(paste("Relative Abundance (",rank,")\n",sep=''))
 	if (means){
