@@ -4,3 +4,4 @@
 ^NAMESPACE-old$
 ^CHANGELOG\.md$
 ^data-raw$
+^benchmark/*

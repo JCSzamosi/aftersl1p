@@ -7,17 +7,26 @@
 plt_ord(ord_long, colour = NULL, shape = NULL, size = 1, pt_alph = 0.7)
 }
 \arguments{
-\item{ord_long}{The ordination data frame produced by \code{make_ord_df}}
+\item{ord_long}{The ordination data frame produced by
+\code{\link{make_ord_df}}}
 
 \item{colour}{The name of the column to use to colour the points.}
 
 \item{shape}{The name of the coloumn governing the shape of the points.}
 
-\item{size}{The size of the points. Passed to the \code{geom_point()} size
-argument and defaults to 1.}
+\item{size}{The size of the points. Passed to the
+\code{\link[ggplot2]{geom_point}} size argument and defaults to 1.}
 
 \item{pt_alph}{The transparency of the points. Default is 0.7}
 }
 \description{
 Make a multi-axis PCoA plot from the data frame
 }
+\section{Details}{
+
+}
+
+\section{Value}{
+
+}
+

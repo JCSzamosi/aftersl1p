@@ -13,7 +13,7 @@ plot_tax_bar(
   legloc = "right",
   yscale = "lin",
   means = FALSE,
-  rotate_ticks = FALSE,
+  r_ticks = FALSE,
   leglen = NULL
 )
 }
@@ -41,15 +41,15 @@ frame.}
 look weird.}
 
 \item{means}{\code{FALSE} If \code{TRUE}, sets \code{position = fill} in the
-\code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
-your \code{sample = } parameter is not actually sample names, but rather
-larger categories, to produce a plot of category means.}
-
-\item{rotate_ticks}{\code{FALSE} If \code{TRUE} x-axis tickmark text is
-rotated 90 degrees and read bottom-to-top.}
+\code{\link[ggplot2]{geom_bar}} to constrain the abundances to sum to 1.
+Good to use if your \code{sample = } parameter is not actually sample
+names, but rather larger categories, to produce a plot of category means.}
 
 \item{tax_df}{The data frame used for plotting. Unless you really know what
 you're doing, use the data frame output by \code{\link{make_phy_df}}.}
+
+\item{rotate_ticks}{\code{FALSE} If \code{TRUE} x-axis tickmark text is
+rotated 90 degrees and read bottom-to-top.}
 }
 \description{
 \code{plot_tax_bar()} creates a taxa bar chart from the data frame generated

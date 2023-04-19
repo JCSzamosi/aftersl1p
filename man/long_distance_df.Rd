@@ -53,9 +53,9 @@ metadata values.}
 \description{
 \code{long_distance_df} creates a long data frame of all the pairwise
 distances from a sample distance matrix (e.g. the output of
-\code{\link{phyloseq::distance}}) with all the metadata listed for each sample.
-Allows for easy within- and among-group boxplots, or whatever other
-comparisons are of interest.
+\code{\link[phyloseq]{distance}}) with all the metadata listed for
+each sample. Allows for easy within- and among-group boxplots, or whatever
+other comparisons are of interest.
 }
 \section{Value}{
  A data frame \eqn{N(N-1)} (or \eqn{N^2} if \code{diag = TRUE}

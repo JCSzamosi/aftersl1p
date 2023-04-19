@@ -32,9 +32,9 @@
 #' @param yscale \code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
 #'   look weird.
 #' @param means \code{FALSE} If \code{TRUE}, sets \code{position = fill} in the
-#'   \code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
-#'   your \code{sample = } parameter is not actually sample names, but rather
-#'   larger categories, to produce a plot of category means.
+#'   \code{\link[ggplot2]{geom_bar}} to constrain the abundances to sum to 1.
+#'   Good to use if your \code{sample = } parameter is not actually sample
+#'   names, but rather larger categories, to produce a plot of category means.
 #' @param rotate_ticks \code{FALSE} If \code{TRUE} x-axis tickmark text is
 #'   rotated 90 degrees and read bottom-to-top.
 #' @export
