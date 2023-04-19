@@ -35,7 +35,7 @@
 #'   \code{\link[ggplot2]{geom_bar}} to constrain the abundances to sum to 1.
 #'   Good to use if your \code{sample = } parameter is not actually sample
 #'   names, but rather larger categories, to produce a plot of category means.
-#' @param rotate_ticks \code{FALSE} If \code{TRUE} x-axis tickmark text is
+#' @param r_ticks \code{FALSE} If \code{TRUE} x-axis tickmark text is
 #'   rotated 90 degrees and read bottom-to-top.
 #' @export
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
@@ -61,8 +61,10 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	if (is.null(colours)){
         n = num/length(tax_colours)
         colours = c('grey69',rev(rep(tax_colours, ceiling(n))[1:num-1]))
+        names(colours) = levels(taxa_df[,rank])
 	} else if (is.null(names(colours))) {
 		colours = c('grey69',rev(colours[1:(num-1)]))
+		names(colours) = levels(taxa_df[,rank])
 	}
 
 	# Check legend length
@@ -73,9 +75,14 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	} else if (leglen > num){
 	    warn(paste("leglen is greater than the number of unique taxa.",
 	                "showing all taxa."))
+	    leglen = num
 	} else if (leglen == 0){
         legloc = 'none'
         leglen = num
+	} else if (leglen < 0){
+        warn(paste('leglen must not be negative. treating it like 0.'))
+	    legloc = 'none'
+	    leglen = num
     }
 
 	# Make sure the x axis is categorical
@@ -122,15 +129,8 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	}
 
 	# rotate the ticks
-	if (rotate_ticks){
+	if (r_ticks){
 	    indiv = indiv + rotate_ticks()
-	}
-
-	# limit the legend length
-	if (legloc != 'none' & leglen != num){
-	    brks = c(levels(taxa_df[,rank])[1:(num-1)], 'Other')
-	    indiv = indiv + ggplot2::scale_fill_discrete(breaks = brks)
-	    indiv = indiv + ggplot2::scale_colour_discrete(breaks = brks)
 	}
 
 	if (yscale == 'sqrt') {
