@@ -12,7 +12,9 @@ plot_tax_bar(
   abund = "Abundance",
   legloc = "right",
   yscale = "lin",
-  means = FALSE
+  means = FALSE,
+  rotate_ticks = FALSE,
+  leglen = NULL
 )
 }
 \arguments{
@@ -31,8 +33,9 @@ frame.}
 \item{abund}{\code{'Abundance'} The name of the abundance column in the data
 frame.}
 
-\item{legloc}{\code{'right'} Location of the legend. Can be 'right'
-(default), 'bottom', or 'none' (absent)}
+\item{legloc}{\code{'right'} Location of the legend. Passed directly to
+\code{ggplot2::theme(legend.position = legloc)} and can be any of "none",
+"left", "right", "top", or "bottom".}
 
 \item{yscale}{\code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
 look weird.}
@@ -41,6 +44,9 @@ look weird.}
 \code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
 your \code{sample = } parameter is not actually sample names, but rather
 larger categories, to produce a plot of category means.}
+
+\item{rotate_ticks}{\code{FALSE} If \code{TRUE} x-axis tickmark text is
+rotated 90 degrees and read bottom-to-top.}
 
 \item{tax_df}{The data frame used for plotting. Unless you really know what
 you're doing, use the data frame output by \code{\link{make_phy_df}}.}
