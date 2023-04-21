@@ -19,7 +19,9 @@ make_rda_df(ord, physeq, axes)
 Make a data frame of the ordination if the ordination method is RDA. Not
 exported.
 }
-\section{}{
-NA
+\section{Description}{
+ Take a phyloseq object and generate a data frame of the
+  distance-based ordination of the samples for plotting when the ordination
+  method was RDA. Used internally by \code{\link{make_ord_df}}.
 }
 
