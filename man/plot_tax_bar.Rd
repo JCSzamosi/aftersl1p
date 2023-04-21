@@ -35,7 +35,8 @@ frame.}
 
 \item{legloc}{\code{'right'} Location of the legend. Passed directly to
 \code{ggplot2::theme(legend.position = legloc)} and can be any of "none",
-"left", "right", "top", or "bottom".}
+"left", "right", "top", or "bottom". If it is anything else,
+\code{\link[ggplot2]{theme}} will default to "none".}
 
 \item{yscale}{\code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
 look weird.}
@@ -45,11 +46,11 @@ look weird.}
 Good to use if your \code{sample = } parameter is not actually sample
 names, but rather larger categories, to produce a plot of category means.}
 
+\item{r_ticks}{\code{FALSE} If \code{TRUE} x-axis tickmark text is rotated 90
+degrees and read bottom-to-top.}
+
 \item{tax_df}{The data frame used for plotting. Unless you really know what
 you're doing, use the data frame output by \code{\link{make_phy_df}}.}
-
-\item{rotate_ticks}{\code{FALSE} If \code{TRUE} x-axis tickmark text is
-rotated 90 degrees and read bottom-to-top.}
 }
 \description{
 \code{plot_tax_bar()} creates a taxa bar chart from the data frame generated

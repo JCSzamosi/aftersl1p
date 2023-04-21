@@ -28,15 +28,16 @@
 #'   frame.
 #' @param legloc \code{'right'} Location of the legend. Passed directly to
 #'   \code{ggplot2::theme(legend.position = legloc)} and can be any of "none",
-#'   "left", "right", "top", or "bottom".
+#'   "left", "right", "top", or "bottom". If it is anything else,
+#'   \code{\link[ggplot2]{theme}} will default to "none".
 #' @param yscale \code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
 #'   look weird.
 #' @param means \code{FALSE} If \code{TRUE}, sets \code{position = fill} in the
 #'   \code{\link[ggplot2]{geom_bar}} to constrain the abundances to sum to 1.
 #'   Good to use if your \code{sample = } parameter is not actually sample
 #'   names, but rather larger categories, to produce a plot of category means.
-#' @param r_ticks \code{FALSE} If \code{TRUE} x-axis tickmark text is
-#'   rotated 90 degrees and read bottom-to-top.
+#' @param r_ticks \code{FALSE} If \code{TRUE} x-axis tickmark text is rotated 90
+#'   degrees and read bottom-to-top.
 #' @export
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
