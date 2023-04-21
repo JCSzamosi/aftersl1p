@@ -64,8 +64,17 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
         colours = c('grey69',rev(rep(tax_colours, ceiling(n))[1:num-1]))
         names(colours) = levels(taxa_df[,rank])
 	} else if (is.null(names(colours))) {
+	    if (length(colours) < (n_distinct(taxa_df[,rank])-1)){
+	        warn(paste('The supplied colour vector is shorter than the number',
+	                   'of distinct taxa.'))
+	    }
 		colours = c('grey69',rev(colours[1:(num-1)]))
 		names(colours) = levels(taxa_df[,rank])
+	} else {
+	    if (length(colours) < n_distinct(taxa_df[,rank])){
+	        warn(paste('The supplied colour vector is shorter than the number',
+	                   'of distinct taxa.'))
+	    }
 	}
 
 	# Check legend length
@@ -84,7 +93,16 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
         warn(paste('leglen must not be negative. treating it like 0.'))
 	    legloc = 'none'
 	    leglen = num
-    }
+	}
+
+	# Check for means
+	mn_chk = (taxa_df
+	          %>% group_by({{ sample }}, {{ rank  }})
+	          %>% summarize(.chksms = sum(Abundance, na.rm = TRUE)))
+	if (any(mn_chk$.chksms > 1)){
+	    warn(paste('Your per-sample abundances sum to >1. Did you mean to',
+	               'specify \'means = TRUE\'?'))
+	}
 
 	# Make sure the x axis is categorical
 	taxa_df[,sample] = factor(taxa_df[,sample])
