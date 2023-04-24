@@ -90,16 +90,17 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
         legloc = 'none'
         leglen = num
 	} else if (leglen < 0){
-        warn(paste('leglen must not be negative. treating it like 0.'))
+        warn(paste('leglen can not be negative. treating it like 0.'))
 	    legloc = 'none'
 	    leglen = num
 	}
 
 	# Check for means
 	mn_chk = (taxa_df
-	          %>% group_by({{ sample }}, {{ rank  }})
+	          %>% group_by(.[,sample])
 	          %>% summarize(.chksms = sum(Abundance, na.rm = TRUE)))
-	if (any(mn_chk$.chksms > 1)){
+	tol = 1e-5
+	if (any(mn_chk$.chksms - 1 > tol) & !means){
 	    warn(paste('Your per-sample abundances sum to >1. Did you mean to',
 	               'specify \'means = TRUE\'?'))
 	}

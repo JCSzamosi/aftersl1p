@@ -1,0 +1,374 @@
+Test Plotting
+=============
+
+## Import and clea data
+
+```{r}
+# Import Data
+
+library(tidyverse)
+theme_set(theme_bw())
+library(phyloseq)
+devtools::load_all('~/Projects/Mine/aftersl1p/')
+
+load('~/Projects/Mine/aftersl1p/benchmark/data.RData')
+
+seqs = rownames(asv_tab)
+all(seqs == rownames(tax_tab))
+rownames(asv_tab) = rownames(tax_tab) = NULL
+
+rownames(map_tab) = map_tab$SampleID
+
+setdiff(colnames(asv_tab), rownames(map_tab))
+asv_tab = as.matrix(asv_tab)
+tax_tab = as.matrix(tax_tab)
+dat = phyloseq(otu_table(asv_tab, taxa_are_rows = TRUE),
+               tax_table(tax_tab),
+               sample_data(map_tab))
+
+# Clean Data
+dat
+dat = prop_tax_down(dat, indic = FALSE)
+dat_rel = transform_sample_counts(dat, function(x) x/sum(x))
+keep = taxa_sums(dat)/nsamples(dat) >= 100
+dat_filt = prune_taxa(keep, dat)
+dat_rel_filt = prune_taxa(keep, dat_rel)
+```
+
+## Taxa Bar Charts
+
+* ~~All taxonomic ranks~~
+* ~~leglen options:~~
+    * ~~NULL~~
+    * ~~&gt; n_taxa~~
+    * ~~0 &lt; leglen < n_taxa~~
+    * ~~0~~
+    * ~~< 0~~
+    * ~~not a number~~
+* legloc options:
+    * ~~top~~
+    * ~~bottom~~
+    * ~~right~~
+    * ~~left~~
+    * ~~none~~
+    * ~~bad~~
+* provide own colour vector
+    * ~~named (good)~~
+    * ~~named (bad)~~
+    * ~~named (too short)~~
+    * ~~unnamed (long enough)~~
+    * ~~unnamed (not long enough)~~
+* ~~rotate ticks~~
+* ~~means~~
+
+### All taxonomic ranks
+
+#### Kingdom
+
+```{r}
+king_df = make_phy_df(dat_rel_filt, 'Kingdom', prop = FALSE)
+king_plt = plot_tax_bar(king_df, 'Kingdom', sample = 'SampleID')
+king_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/king_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Phylum
+
+```{r}
+phy_df = make_phy_df(dat_rel_filt, 'Phylum', prop = FALSE)
+phy_plt = plot_tax_bar(phy_df, 'Phylum', sample = 'SampleID')
+phy_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/phy_plt.pdf',
+       width = 10, height = 5)
+
+plot_tax_bar(phy_df, 'Kingdom', sample = 'SampleID')
+```
+
+#### Class
+
+```{r}
+class_df = make_phy_df(dat_rel_filt, 'Class', prop = FALSE)
+class_plt = plot_tax_bar(class_df, 'Class', sample = 'SampleID')
+class_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/class_plt.pdf',
+       width = 10, height = 5)
+plot_tax_bar(class_df, 'Phylum', sample = 'SampleID')
+plot_tax_bar(class_df, 'Kingdom', sample = 'SampleID')
+```
+
+#### Order
+
+```{r}
+ord_df = make_phy_df(dat_rel_filt, 'Order', prop = FALSE)
+ord_plt = plot_tax_bar(ord_df, 'Order', sample = 'SampleID')
+ord_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/ord_plt.pdf',
+       width = 10, height = 5)
+plot_tax_bar(ord_df, 'Class', sample = 'SampleID')
+plot_tax_bar(ord_df, 'Phylum', sample = 'SampleID')
+plot_tax_bar(ord_df, 'Kingdom', sample = 'SampleID')
+```
+
+#### Family
+
+```{r}
+fam_df = make_phy_df(dat_rel_filt, 'Family', prop = FALSE)
+fam_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID')
+fam_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/fam_plt.pdf',
+       width = 10, height = 5)
+plot_tax_bar(fam_df, 'Order', sample = 'SampleID')
+plot_tax_bar(fam_df, 'Class', sample = 'SampleID')
+plot_tax_bar(fam_df, 'Phylum', sample = 'SampleID')
+plot_tax_bar(fam_df, 'Kingdom', sample = 'SampleID')
+```
+
+#### Genus
+
+```{r}
+gen_df = make_phy_df(dat_rel_filt, 'Genus', prop = FALSE)
+gen_plt = plot_tax_bar(gen_df, 'Genus', sample = 'SampleID')
+gen_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/gen_plt.pdf',
+       width = 10, height = 5)
+plot_tax_bar(gen_df, 'Family', sample = 'SampleID')
+plot_tax_bar(gen_df, 'Order', sample = 'SampleID')
+plot_tax_bar(gen_df, 'Class', sample = 'SampleID')
+plot_tax_bar(gen_df, 'Phylum', sample = 'SampleID')
+plot_tax_bar(gen_df, 'Kingdom', sample = 'SampleID')
+```
+
+#### Species
+
+```{r}
+spec_df = make_phy_df(dat_rel_filt, 'Species', prop = FALSE)
+spec_plt = plot_tax_bar(spec_df, 'Species', sample = 'SampleID')
+spec_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/spec_plt.pdf',
+       width = 10, height = 5)
+plot_tax_bar(spec_df, 'Genus', sample = 'SampleID')
+plot_tax_bar(spec_df, 'Family', sample = 'SampleID')
+plot_tax_bar(spec_df, 'Order', sample = 'SampleID')
+plot_tax_bar(spec_df, 'Class', sample = 'SampleID')
+plot_tax_bar(spec_df, 'Phylum', sample = 'SampleID')
+plot_tax_bar(spec_df, 'Kingdom', sample = 'SampleID')
+```
+
+
+### Leglen Options
+
+#### NULL
+
+```{r}
+null_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', leglen = NULL)
+null_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/null_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### > n_taxa
+
+```{r}
+too_big_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', 
+                           leglen = n_distinct(fam_df$Family) + 2)
+too_big_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/too_big_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### 0 < leglen < n_taxa
+
+```{r}
+sml_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', 
+                           leglen = round(n_distinct(fam_df$Family)/2))
+sml_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/sml_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### 0
+
+```{r}
+zero_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', 
+                           leglen = 0)
+zero_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/zero_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### < 0
+
+```{r}
+ltz_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', 
+                           leglen = -1)
+ltz_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/ltz_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### not a number
+
+This raises an error. Test is via `testthat`
+
+
+### Legloc Options
+
+#### Top
+
+```{r}
+top_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', leglen = 10,
+                       legloc = 'top')
+top_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/top_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Bottom
+
+```{r}
+bot_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', leglen = 10,
+                       legloc = 'bottom')
+bot_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/bot_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Right
+
+```{r}
+right_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', leglen = 10,
+                       legloc = 'right')
+right_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/right_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Left
+
+```{r}
+left_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', leglen = 10,
+                       legloc = 'left')
+left_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/left_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### None
+
+```{r}
+none_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', leglen = 10,
+                       legloc = 'none')
+none_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/none_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Bad
+
+```{r}
+bad_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', leglen = 10,
+                       legloc = 3)
+bad_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/bad_plt.pdf',
+       width = 10, height = 5)
+```
+
+### Colour Vectors
+
+```{r}
+cols = c("#E41A1C","#377EB8","#4DAF4A","#984EA3","#FF7F00","#FFFF33","#A65628",
+         "#F781BF")
+```
+
+#### Named (good)
+
+```{r}
+nmcols = cols
+names(nmcols) = c('Other',
+                  rev(levels(class_df$Class)[-1]))
+nm_gd_plt = plot_tax_bar(class_df, 'Class', colours = nmcols, 
+                         sample = 'SampleID')
+nm_gd_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/nm_gd_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Named (bad)
+
+This raises an error. Test is via `testthat`.
+
+#### Named (too short)
+
+This raises an error. Test is via `testthat`.
+
+#### Unnamed (long enough)
+
+```{r}
+un_col_plt = plot_tax_bar(class_df, 'Class', colours = cols, 
+                          sample = 'SampleID')
+un_col_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/un_col_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Unnamed (not long enough)
+
+```{r}
+unbd_col_plt = plot_tax_bar(class_df, 'Class', colours = cols[1:3], 
+                          sample = 'SampleID')
+unbd_col_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/unbd_col_plt.pdf',
+       width = 10, height = 5)
+```
+
+### Rotate ticks
+
+```{r}
+rot_plt = plot_tax_bar(fam_df, 'Family', sample = 'SampleID', r_ticks = TRUE)
+rot_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/rot_plt.pdf',
+       width = 10, height = 5)
+```
+
+### Means
+
+#### Means (good)
+
+```{r}
+mn_plt = plot_tax_bar(fam_df, 'Family', sample = 'Source', means = TRUE)
+mn_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/mn_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Means (good, different ns)
+
+```{r}
+mn_dn_plt = plot_tax_bar(filter(fam_df, SampleID != 'SHCM34'), 'Family',
+                         sample = 'Source', means = TRUE)
+mn_dn_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/mn_dn_plt.pdf',
+       width = 10, height = 5)
+```
+
+
+#### Means (forget)
+
+```{r}
+mn_frgt_plt = plot_tax_bar(fam_df, 'Family', sample = 'Source')
+mn_frgt_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/mn_frgt_plt.pdf',
+       width = 10, height = 5)
+```
+
+#### Means (forget, different ns)
+
+```{r}
+mn_dn_frgt_plt = plot_tax_bar(filter(fam_df, SampleID != 'SHCM34'), 'Family',
+                              sample = 'Source')
+mn_dn_frgt_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/mn_dn_frgt_plt.pdf',
+       width = 10, height = 5)
+```
+
