@@ -3,7 +3,7 @@
 #' A vector of colours for use with taxa bar charts.
 #'
 #' @section Details: There are 30 colours, and grey will be added by the
-#'   \code{\link{plot_tax_bar}} function for the "Other" category. If a plot
+#'   [plot_tax_bar()] function for the "Other" category. If a plot
 #'   calls for more than 30 colours, this will just recycle. That is usually
 #'   fine because low-abundance stuff can't be seen anyway, but if you have a
 #'   situation where you have more than 30 things that actually need to be

@@ -1,9 +1,9 @@
 ##### prop_tax_down ------------------------------------------------------------
 
-#' Propagate taxon information down an entire \code{tax_table} in a phylose
+#' Propagate taxon information down an entire `tax_table` in a phylose
 #' object
 #'
-#' \code{prop_tax_down} Takes the taxon assignment from the lowest assigned
+#' `prop_tax_down` Takes the taxon assignment from the lowest assigned
 #' level in an OTU's assignment and fills it in to all the lower, unresolved
 #' fields.
 #'
@@ -15,12 +15,12 @@
 #'   fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
 #'   by ggplot and other functions.
 #'
-#' @section Value: A phyloseq object whose \code{tax_table} has had NAs replaced
+#' @section Value: A phyloseq object whose `tax_table` has had NAs replaced
 #'   with the higher level taxon assignments.
 #'
-#' @param physeq a phyloseq object with a filled \code{tax_table} slot.
+#' @param physeq a phyloseq object with a filled `tax_table` slot.
 #' @param indic a flag to indicate if the taxon names have level indicators. If
-#'   FALSE, they are added. Just gets passed to \code{\link{prop_tax_tab}}.
+#'   FALSE, they are added. Just gets passed to [prop_tax_tab()].
 #' @param dbig a flag to indicate whether genus names that exist in multiple
 #'   families should be disambiguated by appending the family name.
 #' @export
@@ -52,7 +52,7 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
 #' Check for any taxa that have the same name but are in different higher-level
 #' classifications, and append the family name
 #'
-#' @section Details: \code{dbig_genera} takes a phyloseq object with a
+#' @section Details: `dbig_genera` takes a phyloseq object with a
 #'   taxonomy table, disamibugates the genera by appending family names to any
 #'   genus names that are found in multiple families in this data set, and
 #'   returns the object with an update tax_table() object. The input phyloseq
@@ -108,9 +108,9 @@ dbig_genera = function(physeq){
 
 ##### prop_tax_tab -------------------------------------------------------------
 
-#' Propagate taxon information down an entire \code{tax_table} object
+#' Propagate taxon information down an entire `tax_table` object
 #'
-#' \code{prop_tax_tab} Takes the taxon assignment from the lowest assigned level
+#' `prop_tax_tab` Takes the taxon assignment from the lowest assigned level
 #' in an OTU's assignment and fills it in to all the lower, unresolved fields.
 #'
 #' @section Details: Often taxon cannot be assigned all the way down to genus
@@ -121,12 +121,12 @@ dbig_genera = function(physeq){
 #'   fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
 #'   by ggplot and other functions.
 #'
-#' @section Value: A \code{tax_table} object with NAs replaced with higher-level
+#' @section Value: A `tax_table` object with NAs replaced with higher-level
 #'   taxon assignment
 #'
-#' @param taxtab a \code{tax_table} object
+#' @param taxtab a `tax_table` object
 #' @param indic a flag to indicate if the taxon names have level indicators. If
-#'   FALSE, they are added. Just gets passed to \code{\link{prop_tax_row}}.
+#'   FALSE, they are added. Just gets passed to [prop_tax_row()].
 #'
 #' @keywords internal
 prop_tax_tab = function(taxtab, indic){
@@ -144,9 +144,9 @@ prop_tax_tab = function(taxtab, indic){
 
 ##### prop_tax_row -------------------------------------------------------------
 
-#' Propagate taxon information in a single row of a \code{tax_table} object.
+#' Propagate taxon information in a single row of a `tax_table` object.
 #'
-#' \code{prop_tax_row} Takes the taxon assignment from the lowest assigned level
+#' `prop_tax_row` Takes the taxon assignment from the lowest assigned level
 #' in an OTU's assignment and fills it in to all the lower, unresolved fields.
 #'
 #' @section Details: Often taxon cannot be assigned all the way down to genus
@@ -157,7 +157,7 @@ prop_tax_tab = function(taxtab, indic){
 #'   fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
 #'   by ggplot and other functions.
 #'
-#' @section Value: A single row \code{tax_table} object to with NAs replaced
+#' @section Value: A single row `tax_table` object to with NAs replaced
 #'   with higher-level taxon assignments
 #'
 #' @param taxrow A single row in a taxon table

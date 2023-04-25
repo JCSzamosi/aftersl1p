@@ -2,8 +2,8 @@
 
 #' Create a Taxa Bar Chart
 #'
-#' \code{plot_tax_bar()} creates a taxa bar chart from the data frame generated
-#' by \code{\link{make_phy_df}}.
+#' `plot_tax_bar()` creates a taxa bar chart from the data frame generated
+#' by [make_phy_df()].
 #'
 #' @section Details: This function generates a ggplot object that is a
 #'   first-pass, reasonable attempt at a taxon bar chart. The taxa are ordered
@@ -14,36 +14,41 @@
 #' @section Value: A ggplot object.
 #'
 #' @param tax_df The data frame used for plotting. Unless you really know what
-#'   you're doing, use the data frame output by \code{\link{make_phy_df}}.
+#'   you're doing, use the data frame output by [make_phy_df()].
 #' @param rank The taxonomic rank at which to view the data. Must be one of
 #'   'Genus', 'Family', 'Order', 'Class', 'Phylum'. May not be a lower rank than
-#'   the rank given to \code{\link{make_phy_df}}.
+#'   the rank given to [make_phy_df()].
 #' @param colours A character vector of colour names or hex values. Must have
 #'   enough colours to accommodate all your taxa at the appropriate rank. If you
 #'   don't provide one, there are a few internal vectors that have 21, 31, 60,
 #'   or 70 colours that the function will try to use.
-#' @param sample \code{'X.SampleID'} The name of the sample column in the data
+#' @param sample `'X.SampleID'` The name of the sample column in the data
 #'   frame.
-#' @param abund \code{'Abundance'} The name of the abundance column in the data
+#' @param abund `'Abundance'` The name of the abundance column in the data
 #'   frame.
-#' @param legloc \code{'right'} Location of the legend. Passed directly to
-#'   \code{ggplot2::theme(legend.position = legloc)} and can be any of "none",
+#' @param legloc `'right'` Location of the legend. Passed directly to
+#'   `ggplot2::theme(legend.position = legloc)` and can be any of "none",
 #'   "left", "right", "top", or "bottom". If it is anything else,
-#'   \code{\link[ggplot2]{theme}} will default to "none".
-#' @param yscale \code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
-#'   look weird.
-#' @param means \code{FALSE} If \code{TRUE}, sets \code{position = fill} in the
-#'   \code{\link[ggplot2]{geom_bar}} to constrain the abundances to sum to 1.
-#'   Good to use if your \code{sample = } parameter is not actually sample
+#'   [ggplot2::theme()] will default to "none".
+#' @param yscale `r lifecycle::badge("deprecated")` This function no longer
+#'   supports y-axis scales other than linear.
+#' @param means `FALSE` If `TRUE`, sets `position = fill` in the
+#'   [ggplot2::geom_bar()] to constrain the abundances to sum to 1.
+#'   Good to use if your `sample = ` parameter is not actually sample
 #'   names, but rather larger categories, to produce a plot of category means.
-#' @param r_ticks \code{FALSE} If \code{TRUE} x-axis tickmark text is rotated 90
+#' @param r_ticks `FALSE` If `TRUE` x-axis tickmark text is rotated 90
 #'   degrees and read bottom-to-top.
 #' @export
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
-					 legloc = 'right', yscale = 'lin', means = FALSE,
-					 r_ticks = FALSE, leglen = NULL){
-    # Fed by make_phy_df()
+					 legloc = 'right', yscale = 'lin',
+					 means = FALSE, r_ticks = FALSE, leglen = NULL){
+   # Lifecycle Management
+    if (yscale != 'lin'){
+        lifecycle::deprecate_warn('0.0.1', 'plot_tax_bar(yscale)',
+                        details = paste('The ability to set non-linear y-axis',
+                                        'scaling will be removed soon.'))
+    }
 
 	# Check the inputs
 	if (!(sample %in% names(taxa_df))){

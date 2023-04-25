@@ -20,14 +20,14 @@ that the transformation you have used is appropriate for the distance
 method you choose.}
 
 \item{dist_meth}{The distance method to be use. Must be one of the methods
-accepted by the \code{\link[phyloseq]{distance}} function. Default is
+accepted by the \code{\link[phyloseq:distance]{phyloseq::distance()}} function. Default is
 'bray'. If 'jaccard' is used, adds the \code{binary = TRUE} argument. If
 you have taken a clr transform of your data and want Aitchison distances,
 choose \code{'euclidean'}. Currently, tree-based methods like
 \code{'unifrac'} and \code{'wunifrac'} are not supported.}
 
 \item{ord_meth}{The ordination method. Must be one of the methods accepted by
-the \code{\link[phyloseq]{ordinate}} function. Default is 'PCoA'. Make sure
+the \code{\link[phyloseq:ordinate]{phyloseq::ordinate()}} function. Default is 'PCoA'. Make sure
 the ordination method you choose is appropriate for your distance method.}
 
 \item{scree_only}{If \code{TRUE}, this function will print the scree plot of

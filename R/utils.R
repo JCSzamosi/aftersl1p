@@ -2,7 +2,7 @@
 
 #' Order the levels of one factor by the values of another
 #'
-#' \code{order_levs()} takes two factors, the first of which has values that are
+#' `order_levs()` takes two factors, the first of which has values that are
 #' nested within the values of the second, and orders the levels of the first
 #' factor such that they are clustered within the second factor.
 #'
@@ -10,8 +10,8 @@
 #'   re-ordered.
 #'
 #' @param f1 The factor to re-order. Levels of this factor must be nested within
-#'   \code{f2}
-#' @param f2 The factor to use when re-ordering \code{f1}.
+#'   `f2`
+#' @param f2 The factor to use when re-ordering `f1`.
 #' @export
 order_levs = function(f1,...){
 

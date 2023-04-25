@@ -8,7 +8,7 @@ order_taxa(phy_df, rank, abund = "Abundance", decreasing = FALSE)
 }
 \arguments{
 \item{phy_df}{A data frame of a phyloseq object, as produced by
-\code{\link[phyloseq]{psmelt}} or \code{\link{make_phy_df}}.}
+\code{\link[phyloseq:psmelt]{phyloseq::psmelt()}} or \code{\link[=make_phy_df]{make_phy_df()}}.}
 
 \item{rank}{The name of the column to be re-ordered}
 
@@ -24,6 +24,6 @@ first).
 }
 \section{Value}{
  A data frame that is identical to the one given, but with the
-  specified column re-ordered by its mean abundance
+specified column re-ordered by its mean abundance
 }
 

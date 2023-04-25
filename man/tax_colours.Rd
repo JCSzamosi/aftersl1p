@@ -15,13 +15,13 @@ A vector of colours for use with taxa bar charts.
 }
 \section{Details}{
  There are 30 colours, and grey will be added by the
-  \code{\link{plot_tax_bar}} function for the "Other" category. If a plot
-  calls for more than 30 colours, this will just recycle. That is usually
-  fine because low-abundance stuff can't be seen anyway, but if you have a
-  situation where you have more than 30 things that actually need to be
-  distinguished, you'll need to provide your own vector. Also, if you are in
-  that situation, try to find another way to do what you are doing. People
-  cannot generally distinguish anywhere near 30 colours on a single plot.
+\code{\link[=plot_tax_bar]{plot_tax_bar()}} function for the "Other" category. If a plot
+calls for more than 30 colours, this will just recycle. That is usually
+fine because low-abundance stuff can't be seen anyway, but if you have a
+situation where you have more than 30 things that actually need to be
+distinguished, you'll need to provide your own vector. Also, if you are in
+that situation, try to find another way to do what you are doing. People
+cannot generally distinguish anywhere near 30 colours on a single plot.
 }
 
 \keyword{datasets}

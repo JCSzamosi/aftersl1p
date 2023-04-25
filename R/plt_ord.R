@@ -10,11 +10,11 @@
 #' @section Value:
 #'
 #' @param ord_long The ordination data frame produced by
-#'   \code{\link{make_ord_df}}
+#'   [make_ord_df()]
 #' @param colour The name of the column to use to colour the points.
 #' @param shape The name of the coloumn governing the shape of the points.
 #' @param size The size of the points. Passed to the
-#'   \code{\link[ggplot2]{geom_point}} size argument and defaults to 1.
+#'   [ggplot2::geom_point()] size argument and defaults to 1.
 #' @param pt_alph The transparency of the points. Default is 0.7
 #' @export
 plt_ord = function(ord_long, colour = NULL, shape = NULL, size = 1,
