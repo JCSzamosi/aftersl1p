@@ -300,7 +300,14 @@ This raises an error. Test is via `testthat`.
 
 #### Named (too short)
 
-This raises an error. Test is via `testthat`.
+```{r}
+nmbd_col_plt = plot_tax_bar(class_df, 'Class', colours = nmcols[1:3],
+                            sample = 'SampleID')
+nmbd_col_plt
+ggsave('~/Projects/Mine/aftersl1p/benchmark/nmbd_col_plt.pdf',
+       width = 10, height = 5)
+```
+
 
 #### Unnamed (long enough)
 

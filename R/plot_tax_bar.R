@@ -57,6 +57,9 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	if (!(yscale %in% c('lin','log','sqrt'))){
 		stop('yscale argument must be one of \'lin\', \'log\', or \'sqrt\'')
 	}
+    if (!(rank %in% names(taxa_df))){
+        stop('rank argument must be one of the columns in your data frame')
+    }
 	# Pick colours
 	num = length(unique(taxa_df[,rank]))
 	if (is.null(colours)){
@@ -64,14 +67,14 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
         colours = c('grey69',rev(rep(tax_colours, ceiling(n))[1:num-1]))
         names(colours) = levels(taxa_df[,rank])
 	} else if (is.null(names(colours))) {
-	    if (length(colours) < (n_distinct(taxa_df[,rank])-1)){
+	    if (length(colours) < (dplyr::n_distinct(taxa_df[,rank])-1)){
 	        warn(paste('The supplied colour vector is shorter than the number',
 	                   'of distinct taxa.'))
 	    }
 		colours = c('grey69',rev(colours[1:(num-1)]))
 		names(colours) = levels(taxa_df[,rank])
 	} else {
-	    if (length(colours) < n_distinct(taxa_df[,rank])){
+	    if (length(colours) < dplyr::n_distinct(taxa_df[,rank])){
 	        warn(paste('The supplied colour vector is shorter than the number',
 	                   'of distinct taxa.'))
 	    }
@@ -97,8 +100,8 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 
 	# Check for means
 	mn_chk = (taxa_df
-	          %>% group_by(.[,sample])
-	          %>% summarize(.chksms = sum(Abundance, na.rm = TRUE)))
+	          %>% dplyr::group_by(.[,sample])
+	          %>% dplyr::summarize(.chksms = sum(Abundance, na.rm = TRUE)))
 	tol = 1e-5
 	if (any(mn_chk$.chksms - 1 > tol) & !means){
 	    warn(paste('Your per-sample abundances sum to >1. Did you mean to',
@@ -111,9 +114,14 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 	# If the colour vector is named, make sure it is ordered like the factor
 	# it's colouring
 	if (!is.null(names(colours))) {
-	    taxa_df[,rank] = droplevels(taxa_df[,rank])
-	    if (!all(levels(taxa_df[,rank]) %in% names(colours))){
-	        stop('The colour vector names need to match the rank levels')
+	    if ((length(colours) < dplyr::n_distinct(taxa_df[,rank])) &
+	        all(names(colours) %in% droplevels(taxa_df[,rank]))){
+	        NULL
+	    } else {
+	        taxa_df[,rank] = droplevels(taxa_df[,rank])
+	        if (!all(levels(taxa_df[,rank]) %in% names(colours))){
+	            stop('The colour vector names need to match the rank levels')
+	        }
 	    }
 
 	    colours = colours[levels(taxa_df[,rank])]
