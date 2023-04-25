@@ -7,4 +7,3 @@
 test_data/*
 ring_dir
 private
-*.~lock*

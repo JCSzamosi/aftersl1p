@@ -16,17 +16,17 @@ classifications, and append the family name
 }
 \section{Details}{
  \code{dbig_genera} takes a phyloseq object with a
-  taxonomy table, disamibugates the genera by appending family names to any
-  genus names that are found in multiple families in this data set, and
-  returns the object with an update tax_table() object. The input phyloseq
-  object must have 'Genus' and 'Family' columns in its tax_table object. The
-  output object with have the disambiguated names in the 'Genus' column and
-  will have a new column called 'AmbigGenus' where the old genus names can be
-  found.
+taxonomy table, disamibugates the genera by appending family names to any
+genus names that are found in multiple families in this data set, and
+returns the object with an update tax_table() object. The input phyloseq
+object must have 'Genus' and 'Family' columns in its tax_table object. The
+output object with have the disambiguated names in the 'Genus' column and
+will have a new column called 'AmbigGenus' where the old genus names can be
+found.
 }
 
 \section{Value}{
  A phyloseq object with an updated Genus column and a column
-  called AmbigGenus containing the old Genus names.
+called AmbigGenus containing the old Genus names.
 }
 

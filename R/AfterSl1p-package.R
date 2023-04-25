@@ -2,8 +2,9 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @import rlang
-#' @import pipeR
 #' @import ggplot2
+#' @import pipeR
+#' @import rlang
+#' @importFrom lifecycle deprecated
 ## usethis namespace: end
 NULL

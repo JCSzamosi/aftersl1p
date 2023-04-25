@@ -44,7 +44,7 @@ existing metadata column names.}
 column names in the metadat data frame, and whose rows contain a subset of
 the possible values/combinations. If this parameter is used, all the
 samples whose metadata matches a row in this data frame will end up in
-Sample1 and the rest will end up in Sample2. This means you will _not_ get
+Sample1 and the rest will end up in Sample2. This means you will \emph{not} get
 all the pairs, because the samples in Sample1 will not get compared to each
 other, and neither will the samples in Sample2. If this parameter is not
 used, the upper triangle of the distance matrix is used, without regard for
@@ -53,15 +53,15 @@ metadata values.}
 \description{
 \code{long_distance_df} creates a long data frame of all the pairwise
 distances from a sample distance matrix (e.g. the output of
-\code{\link{phyloseq::distance}}) with all the metadata listed for each sample.
-Allows for easy within- and among-group boxplots, or whatever other
-comparisons are of interest.
+\code{\link[phyloseq:distance]{phyloseq::distance()}}) with all the metadata listed for
+each sample. Allows for easy within- and among-group boxplots, or whatever
+other comparisons are of interest.
 }
 \section{Value}{
  A data frame \eqn{N(N-1)} (or \eqn{N^2} if \code{diag = TRUE}
-  is set) rows (where N is the number of samples) with sample IDs, metadata,
-  and pairwise distances listed for each pair of samples. Sample ID and
-  metadata columns have '1' or '2' appended to them so the user can tell
-  which column belongs to which sample.
+is set) rows (where N is the number of samples) with sample IDs, metadata,
+and pairwise distances listed for each pair of samples. Sample ID and
+metadata columns have '1' or '2' appended to them so the user can tell
+which column belongs to which sample.
 }
 

@@ -19,6 +19,6 @@ factor such that they are clustered within the second factor.
 }
 \section{Value}{
  A factor that has the same levels as f1, but that has been
-  re-ordered.
+re-ordered.
 }
 
