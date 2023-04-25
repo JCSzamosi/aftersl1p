@@ -1,10 +1,29 @@
-* CURRENT BRANCH
+* 2023-04-25 v0.0.1.9001 (development update)
 	* in `plot_tax_bar()` 
 		* the `legloc` argument is now passed directly to
 		`ggplot2::theme(legend.position)` and can take any value that can take.
-		* added a `rotate_ticks` argument. FALSE by default (default behaviour
+		* added a `r_ticks` argument. FALSE by default (default behaviour
 		is unchanged). If TRUE, the tick text on the x-axis is rotated 90
 		degrees and reads down to up.
+		* introduced improved functionality when a custom colour vector is used,
+		with and without names
+		* introduce a `leglen` option to allow the user to limit how many taxa
+		are displayed in the legend without removing any taxa from the plot.
+		* soft-deprecate the `yscale` argument. Will stop supporting non-linear
+		y-axes soon
+		* improve error when the `rank` argument is missing from the input dat
+		frame
+		* introduce a warning when the per-sample abundaces sum to greater than
+		1 but the `mean` argument is not set to `TRUE`.
+		* prep the function so I can stop exporting the whole `ggplot2`
+		namespace
+	* introduce lifecycle management with the `lifecycle()` package
+	* start using roxygen2md to use Markdown in documentation.
+	* introduce the `benchmark` folder which contains "good" plotting outputs
+	against which new versions of the package can be tested. Created a .Rmd
+	file in that folder which tests `plot_tax_bar()`.
+	* remove the files that held the old colour vectors
+
 
 * 2023-04-14 v0.0.1 (was v1.0.1)
 	* The multiple colour vectors have been replaced with a single object,
