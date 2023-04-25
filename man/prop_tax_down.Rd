@@ -11,7 +11,7 @@ prop_tax_down(physeq, indic, dbig = TRUE)
 \item{physeq}{a phyloseq object with a filled \code{tax_table} slot.}
 
 \item{indic}{a flag to indicate if the taxon names have level indicators. If
-FALSE, they are added. Just gets passed to \code{\link{prop_tax_tab}}.}
+FALSE, they are added. Just gets passed to \code{\link[=prop_tax_tab]{prop_tax_tab()}}.}
 
 \item{dbig}{a flag to indicate whether genus names that exist in multiple
 families should be disambiguated by appending the family name.}
@@ -23,16 +23,16 @@ fields.
 }
 \section{Details}{
  Often taxon cannot be assigned all the way down to genus
-  from the limited information available from a given variable region of 16S
-  (or other marker gene). If an OTU has been assigned to Order
-  Enterobacteriales, but the Family and genus cannot be resolved, then the
-  Family and Genus fields are left blank by QIIME. This function fills those
-  fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
-  by ggplot and other functions.
+from the limited information available from a given variable region of 16S
+(or other marker gene). If an OTU has been assigned to Order
+Enterobacteriales, but the Family and genus cannot be resolved, then the
+Family and Genus fields are left blank by QIIME. This function fills those
+fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
+by ggplot and other functions.
 }
 
 \section{Value}{
  A phyloseq object whose \code{tax_table} has had NAs replaced
-  with the higher level taxon assignments.
+with the higher level taxon assignments.
 }
 
