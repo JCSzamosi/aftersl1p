@@ -131,7 +131,7 @@ remain = function(x, tot = 1){
 
 #' Order Taxon Name Factors
 #'
-#' `order_taxa` reorders the taxon names in a taxon column (e.g. 'Class' or
+#' `order_taxa()` reorders the taxon names in a taxon column (e.g. 'Class' or
 #' 'Phylum') by the taxon's mean abundance (but always makes sure to put Other
 #' first).
 #'
@@ -147,11 +147,11 @@ remain = function(x, tot = 1){
 order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
 
     phy_df[,rank] = factor(phy_df[,rank])
-	phy_df %>%
-        dplyr::filter(UQ(sym(rank)) != 'Other') %>%
-		dplyr::group_by(UQ(sym(rank))) %>%
-		dplyr::summarize(Tot = sum(UQ(sym(abund)))) %>%
-		data.frame() -> total_abunds
+    total_abunds = (phy_df
+                    %>% dplyr::filter(.data[[rank]] != 'Other')
+                    %>% dplyr::group_by(.data[[rank]])
+                    %>%	dplyr::summarize(Tot = .data[[abund]])
+                    %>%	data.frame())
 
 	lev_ord = levels(droplevels(total_abunds[,rank]))
 	if (decreasing){
