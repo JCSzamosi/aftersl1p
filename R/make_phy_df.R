@@ -25,7 +25,7 @@
 #' @param indic a flag to indicate if the taxon names have level indicators. If
 #'   FALSE, they are added.
 #' @param prop Specifies whether taxa need to be propogated down the taxonomy
-#'   table (default, `TRUE`) or if this has already been done.
+#'   table (default is `TRUE`) or if this has already been done.
 #' @param count If `FALSE` (default) the function will expect a relative
 #'   abundance table and create an 'Other' category for taxa below the cutoff
 #'   (and will raise an error if the table is not relative abundance). If TRUE,
@@ -41,7 +41,7 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
         stop('physeq must be a relative abundance table. You have counts > 1.')
     }
     ranks = colnames(phyloseq::tax_table(physeq))
-    if (rank == 'OTU'){
+    if ((rank == 'OTU') & !('OTU' %in% ranks)) {
         ranks = c(ranks, rank)
     }
 

@@ -36,6 +36,11 @@ prop_tax_down = function(physeq, indic, dbig = TRUE){
     colnames(tt) = colnames(phyloseq::tax_table(physeq))
     rownames(tt) = sp
 
+    # If there are no unspecified taxa, stop
+    if (!any(is.na(tt))){
+        return(physeq)
+    }
+
     tt = prop_tax_tab(tt, indic)
     phyloseq::tax_table(physeq) = tt
 
