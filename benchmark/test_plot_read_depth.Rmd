@@ -1,0 +1,117 @@
+Test plot_read_depth()
+======================
+
+## Import and clean data
+
+```{r}
+# Import Data
+
+library(tidyverse)
+theme_set(theme_bw())
+library(phyloseq)
+devtools::load_all()
+
+load('data.RData')
+
+seqs = rownames(asv_tab)
+all(seqs == rownames(tax_tab))
+rownames(asv_tab) = rownames(tax_tab) = NULL
+head(map_tab)
+map_tab = (map_tab
+           %>% mutate(ContVar = c(13.6, 8.3, 2.8, 15.5, 10, 6.6, 13.0, 11.5)))
+rownames(map_tab) = map_tab$SampleID
+
+setdiff(colnames(asv_tab), rownames(map_tab))
+asv_tab = as.matrix(asv_tab)
+tax_tab = as.matrix(tax_tab)
+dat = phyloseq(otu_table(asv_tab, taxa_are_rows = TRUE),
+               tax_table(tax_tab),
+               sample_data(map_tab))
+
+# Clean Data
+dat
+dat = prop_tax_down(dat, indic = FALSE)
+dat_rel = transform_sample_counts(dat, function(x) x/sum(x))
+keep = taxa_sums(dat)/nsamples(dat) >= 100
+dat_filt = prune_taxa(keep, dat)
+dat_rel_filt = prune_taxa(keep, dat_rel)
+
+col_vect = c("#E41A1C","#377EB8","#4DAF4A","#984EA3","#FF7F00")
+```
+
+
+
+## Tests
+
+### All Defaults
+
+```{r}
+plt_read_depth(dat_filt)
+```
+
+### xvar
+
+```{r}
+devtools::load_all()
+plt_read_depth(dat_filt, xvar = 'Source')
+```
+
+### cvar continuous, colour default
+
+```{r}
+plt_read_depth(dat_filt, cvar = 'ContVar')
+```
+
+### cvar categorical, colour default
+
+#### with xvar
+
+```{r}
+undebug(plt_read_depth)
+plt_read_depth(dat_filt, cvar = 'Source', xvar = 'SampleID')
+plt_read_depth(dat_filt, cvar = 'Source', xvar = 'Source')
+```
+
+#### without xvar
+
+```{r}
+plt_read_depth(dat_filt, cvar = 'SampleID')
+```
+
+
+### 1 colour specified, no cvar
+
+```{r}
+plt_read_depth(dat_filt, clrs = col_vect[1])
+```
+
+### >1 colour specified, no cvar
+
+```{r}
+devtools::load_all()
+plt_read_depth(dat_filt, clrs = col_vect)
+```
+
+### cvar continuous, bad colours
+
+Raises an error. See `testthat` tests
+
+### cvar continuous, high and low
+
+```{r}
+devtools::load_all()
+col_hl = col_vect[1:2]
+names(col_hl) = c('low','high')
+plt_read_depth(dat_filt, cvar = 'ContVar', clrs = col_hl)
+```
+
+### cvar categorical, unnamed colour vector
+
+```{r}
+devtools::load_all()
+plt_read_depth(dat_filt, cvar = 'SampleID', clrs = col_vect)
+```
+
+### cvar categorical, bad colour vector names
+
+### cvar categorical, names colour vector
