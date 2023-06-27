@@ -31,69 +31,15 @@ plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
     sample_sum_df = data.frame(Total = sample_sums(physeq),
                                sample_data(physeq))
 
-    # Are cvar and xvar columns?
-    if (!is.null(xvar) & !(xvar %in% colnames(sample_sum_df))){
-        stop(paste('"xvar" must be one of the columns in sample_data(physeq).'))
-    }
+	prd_check(sample_sum_df, cvar, xvar)
 
-    if (!is.null(cvar) & !(cvar %in% colnames(sample_sum_df))){
-        stop(paste('"cvar" must be one of the columns in sample_data(physeq).'))
-
-    # Deal with the colour vector
-    }
-
-    if (is.null(cvar) & !is.null(clrs)){
-        if (length(cvar) > 1){
-            warn(paste('With no cvar specified, only the first colour in "clrs"',
-                       'will be used.'))
-            clrs = clrs[1]
-        }
-    } else if (!is.null(cvar)){
-        # Built-in colour vector
-        if (is.null(clrs)){
-            # Categorical
-            if (!is.numeric(sample_sum_df[[cvar]])){
-                n = n_distinct(sample_sum_df[[cvar]])
-                nx = ceiling(n/length(tax_colours))
-                clrs = rep(tax_colours, nx)
-            } # continuous requires no action
-        # User-specified colour vector
-        } else {
-            # Categorical
-            if (!is.numeric(sample_sum_df[[cvar]])){
-                if (is.null(names(clrs))){
-                    NULL
-                    # nothing to do here. use it as is
-                } else if (!all(unique(sample_sum_df) %in% names(clrs))){
-                    stop(paste('If "clrs" is named, its names must contain',
-                               'all the values in the "cvar" column'))
-                }
-                # if we get this far, the colour vector is fine.
-
-            # Continuous
-            } else {
-                if (is.null(names(clrs)) ||
-                    !all(c('high','low') %in% names(cvar))){
-                    stop(paste('With a continuous "cvar", the provided colour',
-                              'vector "clr" must have names "high" and "low".'))
-                }
-                # if we get this far, the colour vector is fine.
-            }
-        }
-    }
-
-
-
-
-    }
-
-    # Does clrs go with cvar?
-
+	# Deal with the colour vector
+	clrs = prd_clrs(cvar, clrs)
 
 
     # Construct the plot foundation with or without a grouping variable
     if (is.null(xvar)){
-        depth_plot = ggplot(sample_sum_df, aes(x = 'All samples',y = Total))
+        depth_plot = ggplot(sample_sum_df, aes(y = Total))
     } else {
         depth_plot = ggplot(sample_sum_df, aes(x = .data[[xvar]], y = Total))
     }
@@ -104,47 +50,117 @@ plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
         # And no specified colour
         if (is.null(clrs)){
             depth_plot = depth_plot + geom_jitter(width = 0.2)
-            # And colour is too long
-        } else if (length(clrs) > 1){
-            warn(paste('With no cvar specified, only the first colour in "clrs"',
-                       'will be used.'))
-            depth_plot = depth_plot + geom_jitter(width = 0.2, colour = clrs[1])
-            # And colour is specified
+        # And colour is specified
         } else {
             depth_plot = depth_plot + geom_jitter(width = 0.2, colour = clrs)
         }
-        # colouring variable is specified and continuous
+    # colouring variable is specified and continuous
     } else if (is.numeric(sample_sum_df[[cvar]])) {
         depth_plot = depth_plot + geom_jitter(width = 0.2,
                                               aes(colour = .data[[cvar]]))
         # if clrs not specified, do nothing. defaults will do.
         if (is.null(clrs)){
             NULL
-            # if clrs is specified, check that it is correctly named
-        } else if (all(c('low','high') %in% names(clrs))){
+        # if clrs is specified, use it
+        } else {
             depth_plot = depth_plot + scale_colour_gradient(low = clrs['low'],
                                                             high = clrs['high'])
-            # if clrs is mis-specified, stop
-        } else {
-            stop(paste('The colour vector does not conform to specifications.',
-                       'See ?plt_read_depth for more information.'))
         }
-     # if colouring variable is specified but not continuous, check if clrs is specified
-    } else if (is.null(clrs)){
-        depth_plot = depth_plot + geom_jitter(width = 0.2,
-                                              aes(colour = .data[[cvar]])) +
-            scale_colour_manual(values = tax_colours)
-
-    # If the colour vector is unnamed, just use it
-    } else if (is.null(names(clrs))){
+    # if colouring variable is specified and categorical
+    } else {
         depth_plot = depth_plot + geom_jitter(width = 0.2,
                                               aes(colour = .data[[cvar]])) +
             scale_colour_manual(values = clrs)
     }
+
     if (!lin){
         depth_plot = depth_plot + scale_y_log10()
     }
     return(depth_plot)
+}
+
+#### prd_check() ---------------------------------------------------------------
+
+#' Check inputs for plt_read_depth()
+#'
+#' Checks the inputs of `plt_read_depth()`
+#' @param sample_sum_df data frame of sample sums and sample data
+#' @param cvar,xvar passed through from `plt_read_depth()`
+
+prd_check = function(sample_sum_df, cvar, xvar){
+    # Are cvar and xvar columns?
+    if (!is.null(xvar) & !(xvar %in% colnames(sample_sum_df))){
+        stop(paste('"xvar" must be one of the columns in sample_data(physeq).'))
+    }
+
+    if (!is.null(cvar) & !(cvar %in% colnames(sample_sum_df))){
+        stop(paste('"cvar" must be one of the columns in sample_data(physeq).'))
+    }
+}
+
+#### prd_clrs() ----------------------------------------------------------------
+
+#' Deal w colour vector for plt_read_depth()
+#'
+#' @param cvar,clrs passed through from `plt_read_depth()`
+prd_clrs = function(cvar, clrs){
+	# cvar unset, clrs set
+    if (is.null(cvar) & !is.null(clrs)){
+        if (length(clrs) > 1){
+            warn(paste('With no cvar specified, only the first colour in "clrs"',
+                       'will be used.'))
+            clrs = clrs[1]
+			return(clrs)
+        }
+    } else if (!is.null(cvar)){
+        # Built-in colour vector
+        if (is.null(clrs)){
+            # Categorical
+            if (is.factor(sample_sum_df[[cvar]]) ||
+				is.character(sample_sum_df[[cvar]])){
+                n = n_distinct(sample_sum_df[[cvar]])
+                nx = ceiling(n/length(tax_colours))
+                clrs = rep(tax_colours, nx)
+				return(clrs)
+
+			# continuous requires no action
+            } else {
+				return(clrs)
+			}
+        # User-specified colour vector
+        } else {
+            # Categorical
+            if (is.factor(sample_sum_df[[cvar]]) ||
+				is.character(sample_sum_df[[cvar]])){
+                if (is.null(names(clrs))){
+                    return(clrs)
+                    # nothing to do here. use it as is
+
+                } else if (!all(unique(sample_sum_df) %in% names(clrs))){
+                    stop(paste('If "clrs" is named, its names must contain',
+                               'all the values in the "cvar" column'))
+                }
+                # if we get this far, the colour vector is fine.
+
+				return(clrs)
+
+            # Continuous
+            } else {
+                if (is.null(names(clrs)) ||
+                    !all(c('high','low') %in% names(cvar))){
+                    stop(paste('With a continuous "cvar", the provided colour',
+                              'vector "clr" must have names "high" and "low".'))
+                } else {
+                	# if we get this far, the colour vector is fine.
+					return(clrs)
+				}
+				return(clrs)
+            }
+			return(clrs)
+        }
+		return(clrs)
+    }
+	return(clrs)
 }
 
 #### plot_read_depth -----------------------------------------------------------
