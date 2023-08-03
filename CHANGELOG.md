@@ -1,3 +1,20 @@
+* 2023-08-03 v0.0.1.9002 (development update)
+	* **BREAKING CHANGES**
+		* Completely re-writes `plot_read_depth()`. 
+			* allows users to plot read depth with a variable on the X axis and
+			a colour parameter
+			* users can access the old function with `plt_read_depth()`
+			temporarily, but this will be removed before the next full release.
+		* `rank_abund()` is broken and is no longer exported. Please file a bug
+		report if you were using this function.
+	* exports `order_taxa()`, by request 
+	* makes `prop_tax_down()` slightly more efficient by checking up front if
+	there is nothing to do.
+	* deprecates `order_levs()` because it isn't used anywhere. Its intended
+	function is performed by `order_taxa()`.
+	* introduces visual and automatic testing of the new `plot_read_depth()`
+	function.
+
 * 2023-04-25 v0.0.1.9001 (development update)
 	* in `plot_tax_bar()` 
 		* the `legloc` argument is now passed directly to

@@ -18,7 +18,7 @@ order_taxa(phy_df, rank, abund = "Abundance", decreasing = FALSE)
 decreasing or increasing abundance. Defaults to FALSE.}
 }
 \description{
-\code{order_taxa} reorders the taxon names in a taxon column (e.g. 'Class' or
+\code{order_taxa()} reorders the taxon names in a taxon column (e.g. 'Class' or
 'Phylum') by the taxon's mean abundance (but always makes sure to put Other
 first).
 }

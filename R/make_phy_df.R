@@ -25,7 +25,7 @@
 #' @param indic a flag to indicate if the taxon names have level indicators. If
 #'   FALSE, they are added.
 #' @param prop Specifies whether taxa need to be propogated down the taxonomy
-#'   table (default, `TRUE`) or if this has already been done.
+#'   table (default is `TRUE`) or if this has already been done.
 #' @param count If `FALSE` (default) the function will expect a relative
 #'   abundance table and create an 'Other' category for taxa below the cutoff
 #'   (and will raise an error if the table is not relative abundance). If TRUE,
@@ -41,7 +41,7 @@ make_phy_df = function(physeq, rank = 'Genus', cutoff = 0.001, indic = FALSE,
         stop('physeq must be a relative abundance table. You have counts > 1.')
     }
     ranks = colnames(phyloseq::tax_table(physeq))
-    if (rank == 'OTU'){
+    if ((rank == 'OTU') & !('OTU' %in% ranks)) {
         ranks = c(ranks, rank)
     }
 
@@ -131,7 +131,7 @@ remain = function(x, tot = 1){
 
 #' Order Taxon Name Factors
 #'
-#' `order_taxa` reorders the taxon names in a taxon column (e.g. 'Class' or
+#' `order_taxa()` reorders the taxon names in a taxon column (e.g. 'Class' or
 #' 'Phylum') by the taxon's mean abundance (but always makes sure to put Other
 #' first).
 #'
@@ -144,14 +144,15 @@ remain = function(x, tot = 1){
 #' @param abund The name of the abundances column. Defaults to 'Abundance'
 #' @param decreasing Specifies whether the taxon order should be based on
 #'   decreasing or increasing abundance. Defaults to FALSE.
+#' @export
 order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
 
     phy_df[,rank] = factor(phy_df[,rank])
-	phy_df %>%
-        dplyr::filter(UQ(sym(rank)) != 'Other') %>%
-		dplyr::group_by(UQ(sym(rank))) %>%
-		dplyr::summarize(Tot = sum(UQ(sym(abund)))) %>%
-		data.frame() -> total_abunds
+    total_abunds = (phy_df
+                    %>% dplyr::filter(.data[[rank]] != 'Other')
+                    %>% dplyr::group_by(.data[[rank]])
+                    %>%	dplyr::summarize(Tot = sum(.data[[abund]]))
+                    %>%	data.frame())
 
 	lev_ord = levels(droplevels(total_abunds[,rank]))
 	if (decreasing){

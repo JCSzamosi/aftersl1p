@@ -1,7 +1,7 @@
-Test Plotting
-=============
+Test plot_tax_bar()
+===================
 
-## Import and clea data
+## Import and clean data
 
 ```{r}
 # Import Data

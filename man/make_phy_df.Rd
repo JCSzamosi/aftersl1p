@@ -27,7 +27,7 @@ If you don't want anything grouped into 'Other', set this to 0. Default is
 FALSE, they are added.}
 
 \item{prop}{Specifies whether taxa need to be propogated down the taxonomy
-table (default, \code{TRUE}) or if this has already been done.}
+table (default is \code{TRUE}) or if this has already been done.}
 
 \item{count}{If \code{FALSE} (default) the function will expect a relative
 abundance table and create an 'Other' category for taxa below the cutoff
