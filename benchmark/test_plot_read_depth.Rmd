@@ -11,7 +11,7 @@ theme_set(theme_bw())
 library(phyloseq)
 devtools::load_all()
 
-load('data.RData')
+load('~/Projects/Mine/aftersl1p/benchmark/data.RData')
 
 seqs = rownames(asv_tab)
 all(seqs == rownames(tax_tab))
@@ -36,7 +36,8 @@ keep = taxa_sums(dat)/nsamples(dat) >= 100
 dat_filt = prune_taxa(keep, dat)
 dat_rel_filt = prune_taxa(keep, dat_rel)
 
-col_vect = c("#E41A1C","#377EB8","#4DAF4A","#984EA3","#FF7F00")
+col_vect = c("#E41A1C","#377EB8","#4DAF4A","#984EA3","#FF7F00", 'dodgerblue2',
+             'goldenrod3', 'pink')
 ```
 
 
@@ -52,7 +53,6 @@ plt_read_depth(dat_filt)
 ### xvar
 
 ```{r}
-devtools::load_all()
 plt_read_depth(dat_filt, xvar = 'Source')
 ```
 
@@ -67,7 +67,6 @@ plt_read_depth(dat_filt, cvar = 'ContVar')
 #### with xvar
 
 ```{r}
-undebug(plt_read_depth)
 plt_read_depth(dat_filt, cvar = 'Source', xvar = 'SampleID')
 plt_read_depth(dat_filt, cvar = 'Source', xvar = 'Source')
 ```
@@ -99,9 +98,9 @@ Raises an error. See `testthat` tests
 ### cvar continuous, high and low
 
 ```{r}
-devtools::load_all()
 col_hl = col_vect[1:2]
 names(col_hl) = c('low','high')
+col_hl 
 plt_read_depth(dat_filt, cvar = 'ContVar', clrs = col_hl)
 ```
 

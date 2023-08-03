@@ -150,7 +150,7 @@ order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
     total_abunds = (phy_df
                     %>% dplyr::filter(.data[[rank]] != 'Other')
                     %>% dplyr::group_by(.data[[rank]])
-                    %>%	dplyr::summarize(Tot = .data[[abund]])
+                    %>%	dplyr::summarize(Tot = sum(.data[[abund]]))
                     %>%	data.frame())
 
 	lev_ord = levels(droplevels(total_abunds[,rank]))

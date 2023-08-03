@@ -24,7 +24,7 @@
 #'   The vector must have names "low" and "high". If `cvar` is NOT set, you may
 #'   use this parameter to provide a single colour name or hex code that will be
 #'   applied to all points.
-#'
+#' @export
 plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
                           clrs = NULL){
     # Check inputs
@@ -34,12 +34,12 @@ plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
 	prd_check(sample_sum_df, cvar, xvar)
 
 	# Deal with the colour vector
-	clrs = prd_clrs(cvar, clrs)
+	clrs = prd_clrs(sample_sum_df, cvar, clrs)
 
 
     # Construct the plot foundation with or without a grouping variable
     if (is.null(xvar)){
-        depth_plot = ggplot(sample_sum_df, aes(y = Total))
+        depth_plot = ggplot(sample_sum_df, aes(x = 'All', y = Total))
     } else {
         depth_plot = ggplot(sample_sum_df, aes(x = .data[[xvar]], y = Total))
     }
@@ -89,11 +89,11 @@ plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
 
 prd_check = function(sample_sum_df, cvar, xvar){
     # Are cvar and xvar columns?
-    if (!is.null(xvar) & !(xvar %in% colnames(sample_sum_df))){
+    if (!is.null(xvar) && !(xvar %in% colnames(sample_sum_df))){
         stop(paste('"xvar" must be one of the columns in sample_data(physeq).'))
     }
 
-    if (!is.null(cvar) & !(cvar %in% colnames(sample_sum_df))){
+    if (!is.null(cvar) && !(cvar %in% colnames(sample_sum_df))){
         stop(paste('"cvar" must be one of the columns in sample_data(physeq).'))
     }
 }
@@ -103,7 +103,7 @@ prd_check = function(sample_sum_df, cvar, xvar){
 #' Deal w colour vector for plt_read_depth()
 #'
 #' @param cvar,clrs passed through from `plt_read_depth()`
-prd_clrs = function(cvar, clrs){
+prd_clrs = function(sample_sum_df, cvar, clrs){
 	# cvar unset, clrs set
     if (is.null(cvar) & !is.null(clrs)){
         if (length(clrs) > 1){
@@ -130,7 +130,7 @@ prd_clrs = function(cvar, clrs){
         # User-specified colour vector
         } else {
             # Categorical
-            if (is.factor(sample_sum_df[[cvar]]) ||
+            if (is.factor(sample_sum_df[[cvar]]) |
 				is.character(sample_sum_df[[cvar]])){
                 if (is.null(names(clrs))){
                     return(clrs)
@@ -146,10 +146,10 @@ prd_clrs = function(cvar, clrs){
 
             # Continuous
             } else {
-                if (is.null(names(clrs)) ||
-                    !all(c('high','low') %in% names(cvar))){
+                if (is.null(names(clrs)) |
+                    !all(c('high','low') %in% names(clrs))){
                     stop(paste('With a continuous "cvar", the provided colour',
-                              'vector "clr" must have names "high" and "low".'))
+                             'vector "clrs" must have names "high" and "low".'))
                 } else {
                 	# if we get this far, the colour vector is fine.
 					return(clrs)
