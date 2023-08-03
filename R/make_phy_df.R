@@ -144,6 +144,7 @@ remain = function(x, tot = 1){
 #' @param abund The name of the abundances column. Defaults to 'Abundance'
 #' @param decreasing Specifies whether the taxon order should be based on
 #'   decreasing or increasing abundance. Defaults to FALSE.
+#' @export
 order_taxa = function(phy_df, rank, abund = 'Abundance', decreasing = FALSE){
 
     phy_df[,rank] = factor(phy_df[,rank])

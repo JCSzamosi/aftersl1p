@@ -23,7 +23,7 @@
 #' @param rank (`'Genus'`) The rank to base the ordering on. Must be a column in
 #'   `phy_df`
 #' @param IDcol (`'X.SampleID'`) The column name of the sample IDs
-#' @export
+#' 
 rank_abund = function(phy_df, gvars = NULL, bases = NULL, abunds = 'Abundance',
                       rank = 'Genus', IDcol){
     # Set up the groups for the plotting totals

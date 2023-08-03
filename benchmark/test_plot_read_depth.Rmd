@@ -47,19 +47,19 @@ col_vect = c("#E41A1C","#377EB8","#4DAF4A","#984EA3","#FF7F00", 'dodgerblue2',
 ### All Defaults
 
 ```{r}
-plt_read_depth(dat_filt)
+plot_read_depth(dat_filt)
 ```
 
 ### xvar
 
 ```{r}
-plt_read_depth(dat_filt, xvar = 'Source')
+plot_read_depth(dat_filt, xvar = 'Source')
 ```
 
 ### cvar continuous, colour default
 
 ```{r}
-plt_read_depth(dat_filt, cvar = 'ContVar')
+plot_read_depth(dat_filt, cvar = 'ContVar')
 ```
 
 ### cvar categorical, colour default
@@ -67,28 +67,27 @@ plt_read_depth(dat_filt, cvar = 'ContVar')
 #### with xvar
 
 ```{r}
-plt_read_depth(dat_filt, cvar = 'Source', xvar = 'SampleID')
-plt_read_depth(dat_filt, cvar = 'Source', xvar = 'Source')
+plot_read_depth(dat_filt, cvar = 'Source', xvar = 'SampleID')
+plot_read_depth(dat_filt, cvar = 'Source', xvar = 'Source')
 ```
 
 #### without xvar
 
 ```{r}
-plt_read_depth(dat_filt, cvar = 'SampleID')
+plot_read_depth(dat_filt, cvar = 'SampleID')
 ```
 
 
 ### 1 colour specified, no cvar
 
 ```{r}
-plt_read_depth(dat_filt, clrs = col_vect[1])
+plot_read_depth(dat_filt, clrs = col_vect[1])
 ```
 
 ### >1 colour specified, no cvar
 
 ```{r}
-devtools::load_all()
-plt_read_depth(dat_filt, clrs = col_vect)
+plot_read_depth(dat_filt, clrs = col_vect)
 ```
 
 ### cvar continuous, bad colours
@@ -101,14 +100,13 @@ Raises an error. See `testthat` tests
 col_hl = col_vect[1:2]
 names(col_hl) = c('low','high')
 col_hl 
-plt_read_depth(dat_filt, cvar = 'ContVar', clrs = col_hl)
+plot_read_depth(dat_filt, cvar = 'ContVar', clrs = col_hl)
 ```
 
 ### cvar categorical, unnamed colour vector
 
 ```{r}
-devtools::load_all()
-plt_read_depth(dat_filt, cvar = 'SampleID', clrs = col_vect)
+plot_read_depth(dat_filt, cvar = 'SampleID', clrs = col_vect)
 ```
 
 ### cvar categorical, bad colour vector names

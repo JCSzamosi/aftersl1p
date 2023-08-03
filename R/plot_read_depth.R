@@ -1,4 +1,4 @@
-#### plt_read_depth ------------------------------------------------------------
+#### plot_read_depth ------------------------------------------------------------
 
 #' View read depth
 #'
@@ -25,11 +25,11 @@
 #'   use this parameter to provide a single colour name or hex code that will be
 #'   applied to all points.
 #' @export
-plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
+plot_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
                           clrs = NULL){
     # Check inputs
-    sample_sum_df = data.frame(Total = sample_sums(physeq),
-                               sample_data(physeq))
+    sample_sum_df = data.frame(Total = phyloseq::sample_sums(physeq),
+                               phyloseq::sample_data(physeq))
 
 	prd_check(sample_sum_df, cvar, xvar)
 
@@ -39,9 +39,11 @@ plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
 
     # Construct the plot foundation with or without a grouping variable
     if (is.null(xvar)){
-        depth_plot = ggplot(sample_sum_df, aes(x = 'All', y = Total))
+        depth_plot = ggplot2::ggplot(sample_sum_df,
+                                     ggplot2::aes(x = 'All', y = Total))
     } else {
-        depth_plot = ggplot(sample_sum_df, aes(x = .data[[xvar]], y = Total))
+        depth_plot = ggplot2::ggplot(sample_sum_df,
+                                     ggplot2::aes(x = .data[[xvar]], y = Total))
     }
 
     # Add the jittered points, taking colour into account
@@ -49,43 +51,45 @@ plt_read_depth = function(physeq, xvar = NULL, lin = FALSE, cvar = NULL,
     if (is.null(cvar)){
         # And no specified colour
         if (is.null(clrs)){
-            depth_plot = depth_plot + geom_jitter(width = 0.2)
+            depth_plot = depth_plot + ggplot2::geom_jitter(width = 0.2)
         # And colour is specified
         } else {
-            depth_plot = depth_plot + geom_jitter(width = 0.2, colour = clrs)
+            depth_plot = depth_plot + ggplot2::geom_jitter(width = 0.2,
+                                                           colour = clrs)
         }
     # colouring variable is specified and continuous
     } else if (is.numeric(sample_sum_df[[cvar]])) {
-        depth_plot = depth_plot + geom_jitter(width = 0.2,
-                                              aes(colour = .data[[cvar]]))
+        depth_plot = depth_plot + ggplot2::geom_jitter(width = 0.2,
+                                        ggplot2::aes(colour = .data[[cvar]]))
         # if clrs not specified, do nothing. defaults will do.
         if (is.null(clrs)){
             NULL
         # if clrs is specified, use it
         } else {
-            depth_plot = depth_plot + scale_colour_gradient(low = clrs['low'],
-                                                            high = clrs['high'])
+            depth_plot = depth_plot +
+                ggplot2::scale_colour_gradient(low = clrs['low'],
+                                               high = clrs['high'])
         }
     # if colouring variable is specified and categorical
     } else {
-        depth_plot = depth_plot + geom_jitter(width = 0.2,
+        depth_plot = depth_plot + ggplot2::geom_jitter(width = 0.2,
                                               aes(colour = .data[[cvar]])) +
-            scale_colour_manual(values = clrs)
+            ggplot2::scale_colour_manual(values = clrs)
     }
 
     if (!lin){
-        depth_plot = depth_plot + scale_y_log10()
+        depth_plot = depth_plot + ggplot2::scale_y_log10()
     }
     return(depth_plot)
 }
 
 #### prd_check() ---------------------------------------------------------------
 
-#' Check inputs for plt_read_depth()
+#' Check inputs for plot_read_depth()
 #'
-#' Checks the inputs of `plt_read_depth()`
+#' Checks the inputs of `plot_read_depth()`
 #' @param sample_sum_df data frame of sample sums and sample data
-#' @param cvar,xvar passed through from `plt_read_depth()`
+#' @param cvar,xvar passed through from `plot_read_depth()`
 
 prd_check = function(sample_sum_df, cvar, xvar){
     # Are cvar and xvar columns?
@@ -100,9 +104,9 @@ prd_check = function(sample_sum_df, cvar, xvar){
 
 #### prd_clrs() ----------------------------------------------------------------
 
-#' Deal w colour vector for plt_read_depth()
+#' Deal w colour vector for plot_read_depth()
 #'
-#' @param cvar,clrs passed through from `plt_read_depth()`
+#' @param cvar,clrs passed through from `plot_read_depth()`
 prd_clrs = function(sample_sum_df, cvar, clrs){
 	# cvar unset, clrs set
     if (is.null(cvar) & !is.null(clrs)){
@@ -118,7 +122,7 @@ prd_clrs = function(sample_sum_df, cvar, clrs){
             # Categorical
             if (is.factor(sample_sum_df[[cvar]]) ||
 				is.character(sample_sum_df[[cvar]])){
-                n = n_distinct(sample_sum_df[[cvar]])
+                n = dplyr::n_distinct(sample_sum_df[[cvar]])
                 nx = ceiling(n/length(tax_colours))
                 clrs = rep(tax_colours, nx)
 				return(clrs)
@@ -163,22 +167,30 @@ prd_clrs = function(sample_sum_df, cvar, clrs){
 	return(clrs)
 }
 
-#### plot_read_depth -----------------------------------------------------------
+#### plt_read_depth -----------------------------------------------------------
 
 #' Plot read depth
 #'
-#' Creates a read depth histogram.
+#' @describeIn
+#' `r lifecycle::badge("deprecated")`
+#'
+#' Creates a read depth histogram. Deprecated in favour of `plot_read_depth()`
 #' @param physeq A phyloseq object
 #' @export
-plot_read_depth = function(physeq){
-    sample_sum_df = data.frame(Total = sample_sums(physeq),
-                               sample_data(physeq))
-    depth_plot = ggplot(sample_sum_df, aes(x = Total)) +
-        geom_histogram(colour = 'black', fill = 'grey57') +
-        scale_x_log10() +
-        xlab('Log10 read depth') +
-        ylab('Number of samples') +
-        ggtitle('Distribution of read depths') +
-        theme_bw()
+plt_read_depth = function(physeq){
+    lifecycle::deprecate_soft('0.0.1.9002', 'plt_read_depth()',
+                              'plot_read_depth()',
+                              details = paste("This is the old version of",
+                                              "plot_read_depth(), and will be",
+                                              "removed soon."))
+    sample_sum_df = data.frame(Total = phyloseq::sample_sums(physeq),
+                               phyloseq::sample_data(physeq))
+    depth_plot = ggplot2::ggplot(sample_sum_df, aes(x = Total)) +
+        ggplot2::geom_histogram(colour = 'black', fill = 'grey57') +
+        ggplot2::scale_x_log10() +
+        ggplot2::xlab('Log10 read depth') +
+        ggplot2::ylab('Number of samples') +
+        ggplot2::ggtitle('Distribution of read depths') +
+        ggplot2::theme_bw()
     return(depth_plot)
 }

@@ -13,6 +13,13 @@ order_levs(f1, ...)
 \item{f2}{The factor to use when re-ordering \code{f1}.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This function will be deprecated because it is just recapitulating
+functionality provided by \code{ggplot2::facet_grid()}. If you are using this
+function and don't want it it go away, please get in touch and let me know
+what you're using it for.
+
 \code{order_levs()} takes two factors, the first of which has values that are
 nested within the values of the second, and orders the levels of the first
 factor such that they are clustered within the second factor.

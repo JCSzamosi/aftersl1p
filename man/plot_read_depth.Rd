@@ -2,13 +2,42 @@
 % Please edit documentation in R/plot_read_depth.R
 \name{plot_read_depth}
 \alias{plot_read_depth}
-\title{Plot read depth}
+\title{View read depth}
 \usage{
-plot_read_depth(physeq)
+plot_read_depth(physeq, xvar = NULL, lin = FALSE, cvar = NULL, clrs = NULL)
 }
 \arguments{
 \item{physeq}{A phyloseq object}
+
+\item{xvar}{\code{NULL} A variable (column name) from \code{sample_data(physeq)} by
+which to group samples on the x-axis. Must be categorical. If \code{NULL}, no
+grouping will be performed.}
+
+\item{lin}{\code{FALSE} If \code{TRUE}, the y-axis will be on a linear scale. By
+default it is log-scaled.}
+
+\item{cvar}{\code{NULL} A variable (column name) from \code{sample_data(physeq)} by
+which the points should be coloured. If \code{NULL}, all points will be black.
+May be continuous or categorical. See the \code{clrs} argument if you want to
+specify your colours.}
+
+\item{clrs}{\code{NULL} If the \code{cvar} parameter is set and this is unset, colours
+will be taken from \link{tax_colours} if \code{cvar} is categorical and use
+\link{ggplot2}'s default (blue) if \code{cvar} is continuous. If \code{cvar} is
+categorical, you may provide a named colour vector to use instead of
+\link{tax_colours} and if it is continuous you may provide a two-colour vector.
+The vector must have names "low" and "high". If \code{cvar} is NOT set, you may
+use this parameter to provide a single colour name or hex code that will be
+applied to all points.}
 }
 \description{
-Creates a read depth histogram.
+View read depth
 }
+\section{Details}{
+ Creates a read depth boxplot
+}
+
+\section{Value}{
+ A \link{ggplot2} object
+}
+
