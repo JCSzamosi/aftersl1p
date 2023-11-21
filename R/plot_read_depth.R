@@ -178,7 +178,7 @@ prd_clrs = function(sample_sum_df, cvar, clrs){
 #' @param physeq A phyloseq object
 #' @export
 plt_read_depth = function(physeq){
-    lifecycle::deprecate_soft('0.0.1.9002', 'plt_read_depth()',
+    lifecycle::deprecate_soft('0.1.0.', 'plt_read_depth()',
                               'plot_read_depth()',
                               details = paste("This is the old version of",
                                               "plot_read_depth(), and will be",

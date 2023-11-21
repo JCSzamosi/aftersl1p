@@ -1,12 +1,12 @@
-* 2023-08-03 v0.0.1.9002 (development update)
+* 2023-11-21 v0.1.0
 	* **BREAKING CHANGES**
-		* Completely re-writes `plot_read_depth()`. 
+		* **Completely re-writes `plot_read_depth()`.** 
 			* allows users to plot read depth with a variable on the X axis and
 			a colour parameter
 			* users can access the old function with `plt_read_depth()`
 			temporarily, but this will be removed before the next full release.
-		* `rank_abund()` is broken and is no longer exported. Please file a bug
-		report if you were using this function.
+		* **`rank_abund()` is broken and is no longer exported.** Please file a
+		bug report if you were using this function.
 	* exports `order_taxa()`, by request 
 	* makes `prop_tax_down()` slightly more efficient by checking up front if
 	there is nothing to do.
@@ -14,8 +14,6 @@
 	function is performed by `order_taxa()`.
 	* introduces visual and automatic testing of the new `plot_read_depth()`
 	function.
-
-* 2023-04-25 v0.0.1.9001 (development update)
 	* in `plot_tax_bar()` 
 		* the `legloc` argument is now passed directly to
 		`ggplot2::theme(legend.position)` and can take any value that can take.

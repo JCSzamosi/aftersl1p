@@ -21,7 +21,7 @@
 #' @param f2 The factor to use when re-ordering `f1`.
 #' @export
 order_levs = function(f1,...){
-    lifecycle::deprecate_warn('0.0.2', 'order_levs()')
+    lifecycle::deprecate_warn('0.1.0', 'order_levs()')
 
     # if (is.numeric(f2)){
     #     ord = order(...)

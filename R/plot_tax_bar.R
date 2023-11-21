@@ -45,7 +45,7 @@ plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 means = FALSE, r_ticks = FALSE, leglen = NULL){
    # Lifecycle Management
     if (yscale != 'lin'){
-        lifecycle::deprecate_warn('0.0.1', 'plot_tax_bar(yscale)',
+        lifecycle::deprecate_warn('0.1.0', 'plot_tax_bar(yscale)',
                         details = paste('The ability to set non-linear y-axis',
                                         'scaling will be removed soon.'))
     }
