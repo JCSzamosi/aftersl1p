@@ -10,7 +10,7 @@ prop_tax_tab(taxtab, indic)
 \item{taxtab}{a \code{tax_table} object}
 
 \item{indic}{a flag to indicate if the taxon names have level indicators. If
-FALSE, they are added. Just gets passed to \code{\link{prop_tax_row}}.}
+FALSE, they are added. Just gets passed to \code{\link[=prop_tax_row]{prop_tax_row()}}.}
 }
 \description{
 \code{prop_tax_tab} Takes the taxon assignment from the lowest assigned level
@@ -18,17 +18,17 @@ in an OTU's assignment and fills it in to all the lower, unresolved fields.
 }
 \section{Details}{
  Often taxon cannot be assigned all the way down to genus
-  from the limited information available from a given variable region of 16S
-  (or other marker gene). If an OTU has been assigned to Order
-  Enterobacteriales, but the Family and genus cannot be resolved, then the
-  Family and Genus fields are left blank by QIIME. This function fills those
-  fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
-  by ggplot and other functions.
+from the limited information available from a given variable region of 16S
+(or other marker gene). If an OTU has been assigned to Order
+Enterobacteriales, but the Family and genus cannot be resolved, then the
+Family and Genus fields are left blank by QIIME. This function fills those
+fields with the string 'o_Enterobacteriales', so they are not parsed as NAs
+by ggplot and other functions.
 }
 
 \section{Value}{
  A \code{tax_table} object with NAs replaced with higher-level
-  taxon assignment
+taxon assignment
 }
 
 \keyword{internal}

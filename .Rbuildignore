@@ -4,3 +4,5 @@
 ^NAMESPACE-old$
 ^CHANGELOG\.md$
 ^data-raw$
+^benchmark/*
+^ignore_me.R$

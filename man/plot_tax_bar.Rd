@@ -12,13 +12,15 @@ plot_tax_bar(
   abund = "Abundance",
   legloc = "right",
   yscale = "lin",
-  means = FALSE
+  means = FALSE,
+  r_ticks = FALSE,
+  leglen = NULL
 )
 }
 \arguments{
 \item{rank}{The taxonomic rank at which to view the data. Must be one of
 'Genus', 'Family', 'Order', 'Class', 'Phylum'. May not be a lower rank than
-the rank given to \code{\link{make_phy_df}}.}
+the rank given to \code{\link[=make_phy_df]{make_phy_df()}}.}
 
 \item{colours}{A character vector of colour names or hex values. Must have
 enough colours to accommodate all your taxa at the appropriate rank. If you
@@ -31,30 +33,35 @@ frame.}
 \item{abund}{\code{'Abundance'} The name of the abundance column in the data
 frame.}
 
-\item{legloc}{\code{'right'} Location of the legend. Can be 'right'
-(default), 'bottom', or 'none' (absent)}
+\item{legloc}{\code{'right'} Location of the legend. Passed directly to
+\code{ggplot2::theme(legend.position = legloc)} and can be any of "none",
+"left", "right", "top", or "bottom". If it is anything else,
+\code{\link[ggplot2:theme]{ggplot2::theme()}} will default to "none".}
 
-\item{yscale}{\code{'lin'} Can be either 'lin' or 'sqrt'. The 'sqrt' plot can
-look weird.}
+\item{yscale}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This function no longer
+supports y-axis scales other than linear.}
 
 \item{means}{\code{FALSE} If \code{TRUE}, sets \code{position = fill} in the
-\code{geom_bar()} to constrain the abundances to sum to 1. Good to use if
-your \code{sample = } parameter is not actually sample names, but rather
-larger categories, to produce a plot of category means.}
+\code{\link[ggplot2:geom_bar]{ggplot2::geom_bar()}} to constrain the abundances to sum to 1.
+Good to use if your \verb{sample = } parameter is not actually sample
+names, but rather larger categories, to produce a plot of category means.}
+
+\item{r_ticks}{\code{FALSE} If \code{TRUE} x-axis tickmark text is rotated 90
+degrees and read bottom-to-top.}
 
 \item{tax_df}{The data frame used for plotting. Unless you really know what
-you're doing, use the data frame output by \code{\link{make_phy_df}}.}
+you're doing, use the data frame output by \code{\link[=make_phy_df]{make_phy_df()}}.}
 }
 \description{
 \code{plot_tax_bar()} creates a taxa bar chart from the data frame generated
-by \code{\link{make_phy_df}}.
+by \code{\link[=make_phy_df]{make_phy_df()}}.
 }
 \section{Details}{
  This function generates a ggplot object that is a
-  first-pass, reasonable attempt at a taxon bar chart. The taxa are ordered
-  by mean abundance and the 'Other' category is at the top. Because it's a
-  regular ggplot object, you can add more geoms or facet it or manipulate it
-  however you like using ggplot functions.
+first-pass, reasonable attempt at a taxon bar chart. The taxa are ordered
+by mean abundance and the 'Other' category is at the top. Because it's a
+regular ggplot object, you can add more geoms or facet it or manipulate it
+however you like using ggplot functions.
 }
 
 \section{Value}{

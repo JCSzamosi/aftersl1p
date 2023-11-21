@@ -1,7 +1,7 @@
 Package: AfterSl1p
 Type: Package
 Title: Generate Summary Graphics and Basic Analysis of 16s Data
-Version: 0.0.1
+Version: 0.1.0
 Author: J. C. Szamosi and Shahrokh Shekarriz
 Authors@R: c(person("JC", "Szamosi", email = "szamosjc@mcmaster.ca",
                   role = c('aut','cre')), 
@@ -19,6 +19,7 @@ Depends:
 Imports:
     dplyr (>= 0.7.2),
     ggplot2 (>= 2.2.1),
+    lifecycle,
     phyloseq (>= 1.19.1),
     pipeR,
     rlang (>= 0.1.2),
@@ -28,3 +29,4 @@ RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)

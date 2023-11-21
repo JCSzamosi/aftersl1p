@@ -3,13 +3,13 @@
 #' Create a long data frame of among-sample distances
 #'
 #'
-#' \code{long_distance_df} creates a long data frame of all the pairwise
+#' `long_distance_df` creates a long data frame of all the pairwise
 #' distances from a sample distance matrix (e.g. the output of
-#' \code{\link{phyloseq::distance}}) with all the metadata listed for each sample.
-#' Allows for easy within- and among-group boxplots, or whatever other
-#' comparisons are of interest.
+#' [phyloseq::distance()]) with all the metadata listed for
+#' each sample. Allows for easy within- and among-group boxplots, or whatever
+#' other comparisons are of interest.
 #'
-#' @section Value: A data frame \eqn{N(N-1)} (or \eqn{N^2} if \code{diag = TRUE}
+#' @section Value: A data frame \eqn{N(N-1)} (or \eqn{N^2} if `diag = TRUE`
 #'   is set) rows (where N is the number of samples) with sample IDs, metadata,
 #'   and pairwise distances listed for each pair of samples. Sample ID and
 #'   metadata columns have '1' or '2' appended to them so the user can tell
@@ -18,22 +18,22 @@
 #'   names as row and column names.
 #' @param metadat A data frame or data frame-like object with the data set's
 #'   metadata
-#' @param idcol (\code{'X.SampleID'}.) A string. The column in \code{metadat}
+#' @param idcol (`'X.SampleID'`.) A string. The column in `metadat`
 #'   that holds the sample names. Sample names should match the row/column namse
 #'   of the distance matrix. If there are samples in the metadata data frame
 #'   that are missing from the distance matrix, they will be excluded with a
 #'   warning. If there are samples in the distance matrix that are missing from
 #'   the metadata, you will get an error.
-#' @param diag (\code{FALSE}.) Logical. Whether the diagonal elements (zeros in
+#' @param diag (`FALSE`.) Logical. Whether the diagonal elements (zeros in
 #'   a distance matrix) should be included in the long data frame. Defaults to
-#'   \code{FALSE} because we almost never want them.
-#' @param suff (\code{c('1','2')}.) A character vector of length 2. The suffixes
+#'   `FALSE` because we almost never want them.
+#' @param suff (`c('1','2')`.) A character vector of length 2. The suffixes
 #'   to be appended to the metadata column names in the output. The two elements
 #'   must not be identical.
-#' @param distcol (\code{'Distance'}.) A string. The desired column name for the
+#' @param distcol (`'Distance'`.) A string. The desired column name for the
 #'   distance column in your long data frame. Only here to avoid clashes with
 #'   existing metadata column names.
-#' @param baseline (\code{'NULL'}). A dataframe whose column names must also be
+#' @param baseline (`'NULL'`). A dataframe whose column names must also be
 #'   column names in the metadat data frame, and whose rows contain a subset of
 #'   the possible values/combinations. If this parameter is used, all the
 #'   samples whose metadata matches a row in this data frame will end up in
@@ -79,13 +79,9 @@ long_distance_df = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
     return(lddf)
 }
 
-
-
-## Functions to generate distance bar charts -----------------------------------
-
 ### lddf_check -----------------------------------------------------------------
 
-#' Check the inputs of \code{long_distance_df()}
+#' Check the inputs of `long_distance_df()`
 #'
 #' For internal use only
 lddf_check = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
@@ -131,26 +127,28 @@ lddf_check = function(dmat, metadat, idcol = 'X.SampleID', diag = FALSE,
 
 #' Does the actual gathering and spreading without testing assumptions
 #'
-#' \code{lddf_work} Does the actual gathering, spreading, and joining associated
-#' with making the lddf, but without checking if the distance matrix is sensible
-#' or removing diagonals and repeats. This is for when you know what you're
-#' doing and have trimmed your distance matrix down to only what you know you
-#' need. Good for permutation tests.
+#' `lddf_work` Used internally by `long_distance_df()`. I recommend
+#' you use that function unless you really know what you're doing. This function
+#' does the actual gathering, spreading, and joining associated with making the
+#' lddf, but without checking if the distance matrix is sensible or removing
+#' diagonals and repeats. Use this function if you know exactly what you want
+#' and have trimmed your distance matrix down to only what you know you need.
+#' Good for permutation tests.
 #'
 #' @param dmat A distance matrix or other diagonal matrix object with sample
 #'   names as row and column names.
 #' @param metadat A data frame or data frame-like object with the data set's
 #'   metadata
-#' @param idcol (\code{'X.SampleID'}.) A string. The column in \code{metadat}
+#' @param idcol (`'X.SampleID'`.) A string. The column in `metadat`
 #'   that holds the sample names. Sample names should match the row/column namse
 #'   of the distance matrix. If there are samples in the metadata data frame
 #'   that are missing from the distance matrix, they will be excluded with a
 #'   warning. If there are samples in the distance matrix that are missing from
 #'   the metadata, you will get an error.
-#' @param suff (\code{c('1','2')}.) A character vector of length 2. The suffixes
+#' @param suff (`c('1','2')`.) A character vector of length 2. The suffixes
 #'   to be appended to the metadata column names in the output. The two elements
 #'   must not be identical.
-#' @param distcol (\code{'Distance'}.) A string. The desired column name for the
+#' @param distcol (`'Distance'`.) A string. The desired column name for the
 #'   distance column in your long data frame. Only here to avoid clashes with
 #'   existing metadata column names.
 lddf_work = function(dmat, metadat, idcol = 'X.SampleID', suff = c('1','2'),

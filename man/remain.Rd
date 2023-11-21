@@ -2,7 +2,7 @@
 % Please edit documentation in R/make_phy_df.R
 \name{remain}
 \alias{remain}
-\title{Calculate the difference between included taxa and 100% for the 'Other'
+\title{Calculate the difference between included taxa and 100\% for the 'Other'
 section of a phyloseq data frame.}
 \usage{
 remain(x, tot = 1)
@@ -13,7 +13,7 @@ remain(x, tot = 1)
 \item{tot}{The desired total. Default is 1.}
 }
 \description{
-Calculate the difference between included taxa and 100% for the 'Other'
+Calculate the difference between included taxa and 100\% for the 'Other'
 section of a phyloseq data frame.
 }
 \section{Value}{
