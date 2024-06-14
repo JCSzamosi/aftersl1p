@@ -6,5 +6,6 @@
 #' @import pipeR
 #' @import rlang
 #' @importFrom lifecycle deprecated
+#' @importFrom magrittr %>%
 ## usethis namespace: end
 NULL
