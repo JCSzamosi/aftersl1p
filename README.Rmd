@@ -53,7 +53,7 @@ You can also install the latest, development version with
 
 ```r
 # install.packages("devtools")
-devtools::install_github("JCSzamosi/aftersl1p@v0.0.1.9001")
+devtools::install_github("JCSzamosi/aftersl1p@*release")
 ```
 
 N.B.: The value after the @ in the development version will change frequently,
