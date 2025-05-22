@@ -38,6 +38,11 @@
 #'   names, but rather larger categories, to produce a plot of category means.
 #' @param r_ticks `FALSE` If `TRUE` x-axis tickmark text is rotated 90
 #'   degrees and read bottom-to-top.
+#' @param leglen `NULL` A non-negative integer that limits the number of taxa to
+#'   show in the legend. Doesn't limit the number of taxa shown in the plot,
+#'   just in the legend. You can reduce the number of taxa shown in the plot by
+#'   increasing the cutoff value in [make_phy_df()]. If `leglen` is 0, no legend
+#'   will be shown.
 #' @export
 plot_tax_bar = function(taxa_df,rank,colours = NULL,
 					 sample = 'X.SampleID', abund = 'Abundance',
